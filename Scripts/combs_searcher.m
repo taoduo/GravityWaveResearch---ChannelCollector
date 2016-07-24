@@ -44,7 +44,7 @@ function combs_searcher(channelPath, dataPath, lowFreq, highFreq, combFreq, offs
         axes1 = axes('Parent', figure1);
         hold(axes1, 'all');
         markerPostions=ceil(lowFreq / combFreq) * combFreq : combFreq : floor(highFreq / combFreq) * combFreq; %your point goes here
-        yl = max(cp);
+        yl = max(cp) * 1.1;
         for i = 1 : length(markerPostions)
             line([markerPostions(i) markerPostions(i)],[0, yl], 'LineStyle', '-.', 'Color',[1 0 0], 'LineWidth', 0.1);
             if whetherToMark
