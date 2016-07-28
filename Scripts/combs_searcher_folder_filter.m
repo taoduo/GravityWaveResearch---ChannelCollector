@@ -1,5 +1,5 @@
-function combs_searcher_folder(dataPath, lowFreq, highFreq, combFreq, offset, whetherToMark)
-    % COMBS_SEARCHER_FOLDER Plot and mark at certain frequencies with equal gaps to
+function combs_searcher_folder_filter( dataPath, lowFreq, highFreq, combFreq, offset, whetherToMark )
+    % COMBS_SEARCHER_FOLDER_FILTER Plot and mark at certain frequencies with equal gaps to
     % show whether a comb structure of a particular frequency and offset exists in the plot
     
     % dataPath: the relative path from the script to the folder where all mat
@@ -13,7 +13,9 @@ function combs_searcher_folder(dataPath, lowFreq, highFreq, combFreq, offset, wh
     
     folder = what(dataPath);
     matFiles = folder.mat;
-    plotsFolderName = strcat(num2str(combFreq), '_', 'comb_search_plots_', num2str(lowFreq), '_', num2str(highFreq));
+    plotsFolderName = strcat(num2str(combFreq), '_', 'comb_search_filter_plots_', num2str(lowFreq), '_', num2str(highFreq));
+    chnTxtPath = strcat(plotsFolderName, '/', 'channels.txt');
+    chnTxtFile = fopen(chnTxtPath, 'wt');
     mkdir(plotsFolderName);
     for chni = 1 : numel(matFiles)
         % init the variables
@@ -24,7 +26,7 @@ function combs_searcher_folder(dataPath, lowFreq, highFreq, combFreq, offset, wh
         load(fullPath);
         freqGap = freqs(2) - freqs(1);
         markerPositions = (ceil((lowFreq - offset) / combFreq) * combFreq + offset) : combFreq : highFreq; 
-
+        
         % chop the data between the two frequencies
         il = floor(lowFreq / freqGap) + 1;
         ih = ceil(highFreq / freqGap) + 1;
@@ -39,6 +41,21 @@ function combs_searcher_folder(dataPath, lowFreq, highFreq, combFreq, offset, wh
         fp = freqs(il : ih);
         cp = coh(il : ih);
         
+        % if the data at these marker positions are not significant enough,
+        % skip
+        thres = mean(cp) * 3;
+        sigCount = 0; % count the number of significant lines
+        viablePositions = markerPositions(markerPositions <= freqs(ih));
+        if (viablePositions > 0)
+            for p = markerPositions
+                if ((ceil(p / freqGap) <= length(coh) && coh(ceil(p / freqGap)) >= thres) || (floor(p / freqGap) > 0 && floor(p / freqGap) <= length(coh) && coh(floor(p / freqGap)) >= thres))
+                    sigCount = sigCount + 1;
+                end
+            end
+            if (sigCount / length(viablePositions) < 0.5)
+                continue;
+            end
+        end
         % plot the mark lines
         [~, name, ~] = fileparts(fullPath);
         figure1 = figure;
@@ -64,6 +81,9 @@ function combs_searcher_folder(dataPath, lowFreq, highFreq, combFreq, offset, wh
         xlim([lowFreq, highFreq]);
         grid on;    
         saveas(figure1, strcat(plotsFolderName, '/', name, '.jpg'));
+        fprintf(chnTxtFile, strcat(name(1 : length(name) - 5), '\n'));
     end
+    fclose(chnTxtFile);
+
 end
 

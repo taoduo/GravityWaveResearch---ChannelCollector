@@ -1,19 +1,16 @@
-function combs_searcher_folder(dataPath, lowFreq, highFreq, combFreq, offset, whetherToMark)
-    % COMBS_SEARCHER_FOLDER Plot and mark at certain frequencies with equal gaps to
-    % show whether a comb structure of a particular frequency and offset exists in the plot
+function multiple_lines_searcher(dataPath, lowFreq, highFreq, lineFreq)
+    % MULTIPLE_LINES_SEARCHER Search for lines
+    % Detailed explanation goes here
     
     % dataPath: the relative path from the script to the folder where all mat
     % files lies in
     % lowFreq: the lower bound of the range of frequencies
     % highFreq: the upper bound
-    % combFreq: the frequency gap of the expected comb structure
-    % offset: the offset of the comb structure
-    % whetherToMark: whether to mark the frequencies with text. If the gap
-    % is too small, better not since they covers each other.
+    % lineFreq: the frequency of the lines to mark
     
     folder = what(dataPath);
     matFiles = folder.mat;
-    plotsFolderName = strcat(num2str(combFreq), '_', 'comb_search_plots_', num2str(lowFreq), '_', num2str(highFreq));
+    plotsFolderName = strcat('comb_search_plots_', num2str(lowFreq), '_', num2str(highFreq));
     mkdir(plotsFolderName);
     for chni = 1 : numel(matFiles)
         % init the variables
@@ -23,8 +20,7 @@ function combs_searcher_folder(dataPath, lowFreq, highFreq, combFreq, offset, wh
         fullPath = strcat(folder.path, '/', fn);
         load(fullPath);
         freqGap = freqs(2) - freqs(1);
-        markerPositions = (ceil((lowFreq - offset) / combFreq) * combFreq + offset) : combFreq : highFreq; 
-
+        
         % chop the data between the two frequencies
         il = floor(lowFreq / freqGap) + 1;
         ih = ceil(highFreq / freqGap) + 1;
@@ -47,11 +43,9 @@ function combs_searcher_folder(dataPath, lowFreq, highFreq, combFreq, offset, wh
         hold(axes1, 'all');
         
         yl = max(cp);
-        for i = 1 : length(markerPositions)
-            line([markerPositions(i) markerPositions(i)],[0, yl], 'LineStyle', '-.', 'Color',[1 0 0], 'LineWidth', 0.1);
-            if whetherToMark
-                text(markerPositions(i), yl, strcat(num2str(markerPositions(i)), '(', num2str(i), ')'), 'FontSize', 5);
-            end
+        for i = 1 : length(lineFreq)
+            line([lineFreq(i) lineFreq(i)],[0, yl], 'LineStyle', '-.', 'Color',[1 0 0], 'LineWidth', 0.1);
+            text(lineFreq(i), yl, strcat(num2str(lineFreq(i)), '(', num2str(i), ')'), 'FontSize', 5);
         end
         
         % plot the data lines
