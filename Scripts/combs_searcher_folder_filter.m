@@ -1,4 +1,4 @@
-function combs_searcher_folder_filter( dataPath, lowFreq, highFreq, combFreq, offset, whetherToMark )
+function combs_searcher_folder_filter( dataPath, lowFreq, highFreq, combFreq, offset, whetherToMark, filter_multiplier )
     % COMBS_SEARCHER_FOLDER_FILTER Plot and mark at certain frequencies with equal gaps to
     % show whether a comb structure of a particular frequency and offset exists in the plot
     
@@ -14,10 +14,11 @@ function combs_searcher_folder_filter( dataPath, lowFreq, highFreq, combFreq, of
     folder = what(dataPath);
     matFiles = folder.mat;
     plotsFolderName = strcat(num2str(combFreq), '_', 'comb_search_filter_plots_', num2str(lowFreq), '_', num2str(highFreq));
+    mkdir(plotsFolderName);
     chnTxtPath = strcat(plotsFolderName, '/', 'channels.txt');
     chnTxtFile = fopen(chnTxtPath, 'wt');
-    mkdir(plotsFolderName);
-    for chni = 1 : numel(matFiles)
+    fprintf(chnTxtFile, 'Results');
+    for chni = 1 : numel(matFiles);
         % init the variables
         coh=[];
         freqs = [];
@@ -26,7 +27,6 @@ function combs_searcher_folder_filter( dataPath, lowFreq, highFreq, combFreq, of
         load(fullPath);
         freqGap = freqs(2) - freqs(1);
         markerPositions = (ceil((lowFreq - offset) / combFreq) * combFreq + offset) : combFreq : highFreq; 
-        
         % chop the data between the two frequencies
         il = floor(lowFreq / freqGap) + 1;
         ih = ceil(highFreq / freqGap) + 1;
@@ -43,7 +43,7 @@ function combs_searcher_folder_filter( dataPath, lowFreq, highFreq, combFreq, of
         
         % if the data at these marker positions are not significant enough,
         % skip
-        thres = mean(cp) * 3;
+        thres = mean(cp) * filter_multiplier;
         sigCount = 0; % count the number of significant lines
         viablePositions = markerPositions(markerPositions <= freqs(ih));
         if (viablePositions > 0)
