@@ -15,12 +15,12 @@ class Interval {
         this.upper = upper;
     }
 }
-public class LineSplitter {
 
+public class Main {
     public static void main(String[] args) {
         try {
             Double[] lines = readLines(args[0]);
-            goMatlab(lines, 0.1, 0.05);
+            goMatlab(lines, 0.05, 1);
         } catch (Exception e) {
             System.out.println("Exception reading or writing file");
             e.printStackTrace();
@@ -115,7 +115,14 @@ public class LineSplitter {
             double h = data.get(i).get(data.get(i).size() - 1);
             double bot = l - (h - l) * margin;
             double top = h + (h - l) * margin;
-            bot = bot < 0 ? 0 : bot;
+            if (top - bot < 1) {
+                top = (top - bot) / 2 + 0.5;
+                bot = (top - bot) / 2 - 0.5;
+                if (bot < 0) {
+                    bot = 0;
+                    top = Math.max(1, top);
+                }
+            }
             intervals[i] = new Interval(bot, top);
         }
         return intervals;
