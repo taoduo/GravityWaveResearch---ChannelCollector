@@ -80,10 +80,6 @@ public class Main {
                 }
             }
         }
-        System.out.println("dp:");
-        p2D(dp);
-        System.out.println("divs:");
-        p2D(divs);
         List<List<Double>> result = new ArrayList<>();
         recoverSolution(result, nums, divs, 0, nums.length - 1);
         return result;
@@ -111,8 +107,13 @@ public class Main {
     private static Interval[] addMargin(List<List<Double>> data, double margin) {
         Interval[] intervals = new Interval[data.size()];
         for (int i = 0; i < data.size(); i++) {
-            double l = data.get(i).get(0);
-            double h = data.get(i).get(data.get(i).size() - 1);
+            double l, h;
+            if (data.get(0).size() == 1) {
+                l = data.get(i).get(0) - 0.5;
+                h = data.get(i).get(data.get(i).size() - 1) + 0.5;
+            }
+            l = data.get(i).get(0);
+            h = data.get(i).get(data.get(i).size() - 1);
             double bot = Math.max(0, l - (h - l) * margin);
             double top = Math.max(bot + 1, h + (h - l) * margin);
             intervals[i] = new Interval(bot, top);
