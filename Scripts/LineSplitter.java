@@ -111,9 +111,10 @@ public class Main {
             if (data.get(0).size() == 1) {
                 l = data.get(i).get(0) - 0.5;
                 h = data.get(i).get(data.get(i).size() - 1) + 0.5;
+            } else {
+                l = data.get(i).get(0);
+                h = data.get(i).get(data.get(i).size() - 1);
             }
-            l = data.get(i).get(0);
-            h = data.get(i).get(data.get(i).size() - 1);
             double bot = Math.max(0, l - (h - l) * margin);
             double top = Math.max(bot + 1, h + (h - l) * margin);
             intervals[i] = new Interval(bot, top);
