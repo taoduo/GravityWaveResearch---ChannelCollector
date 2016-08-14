@@ -113,16 +113,8 @@ public class Main {
         for (int i = 0; i < data.size(); i++) {
             double l = data.get(i).get(0);
             double h = data.get(i).get(data.get(i).size() - 1);
-            double bot = l - (h - l) * margin;
-            double top = h + (h - l) * margin;
-            if (top - bot < 1) {
-                top = (top - bot) / 2 + 0.5;
-                bot = (top - bot) / 2 - 0.5;
-                if (bot < 0) {
-                    bot = 0;
-                    top = Math.max(1, top);
-                }
-            }
+            double bot = Math.max(0, l - (h - l) * margin);
+            double top = Math.max(bot + 1, h + (h - l) * margin);
             intervals[i] = new Interval(bot, top);
         }
         return intervals;
