@@ -6,6 +6,7 @@ import java.io.PrintWriter;
  */
 public class ResultExport {
 	public static PrintWriter writer;
+    public static boolean newRow = true;
 	public static void main(String... args) throws Exception{
         // output at where the java file is
 		writer = new PrintWriter("write-up.html", "UTF-8");
@@ -22,14 +23,25 @@ public class ResultExport {
 		String cn;
 	    for (File file : files) {
 	        if (file.isDirectory()) {
+	        	// print one line each time
 	            if (file.getName().startsWith("line_")) {
 	            	freq = file.getName().substring(5);
                     // write the lines cell
-	            	writer.println("<tr>\n<td>" + freq + "</td>\n<td>");
+                    if (newRow) {
+	            		writer.println("<tr>\n<td>" + freq + "</td>\n<td>");
+	            		newRow = !newRow;
+	            	} else {
+	            		writer.println("<td>" + freq + "</td>\n<td>");
+	            		newRow = !newRow;
+	            	}
                     // write the channels cell
 	            	writeTable(file.listFiles());
                     // end of this row
-	            	writer.println("</td>\n</tr>");
+                    if (newRow) {
+                        writer.println("</td>\n</tr>");
+                    } else {
+                        writer.println("</td>");
+                    }
 	            }
 	        } else if (file.getName().endsWith("_data.jpg")) {
 	        	cn = file.getName();
@@ -45,7 +57,7 @@ public class ResultExport {
 	public static void writeHead() {
 		writer.println("<!DOCTYPE html>\n<html>\n<head>\n<title>HTML Tables</title>\n</head>\n<body>");
 		writer.println("<table border='1'>");
-		writer.println("<tr>\n<th>Line(Hz)</th>\n<th>Found in Channels</th>\n</tr>");
+		writer.println("<tr>\n<th>Line(Hz)</th>\n<th>Found in Channels</th>\n<th>Line(Hz)</th>\n<th>Found in Channels</th>\n</tr>");
 	}
 
 	public static void writeFoot() {
