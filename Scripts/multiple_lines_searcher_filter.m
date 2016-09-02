@@ -1,5 +1,7 @@
-function multiple_lines_searcher( dataPath, lowFreq, highFreq, lineFreq )
-    % MULTIPLE_LINES_SEARCHER Search for lines    
+function multiple_lines_searcher_filter(dataPath, lowFreq, highFreq, lineFreq, filter_multiplier)
+    % MULTIPLE_LINES_SEARCHER Search for lines
+    % Detailed explanation goes here
+    
     % dataPath: the relative path from the script to the folder where all mat
     % files lies in
     % lowFreq: the lower bound of the range of frequencies
@@ -8,7 +10,7 @@ function multiple_lines_searcher( dataPath, lowFreq, highFreq, lineFreq )
     
     folder = what(dataPath);
     matFiles = folder.mat;
-    plotsFolderName = strcat('line_search_plots_', num2str(lowFreq), '_', num2str(highFreq));
+    plotsFolderName = strcat('multiple_lines_search_plots_filter_', num2str(lowFreq), '_', num2str(highFreq));
     mkdir(plotsFolderName);
     for chni = 1 : numel(matFiles)
         % init the variables
@@ -33,6 +35,20 @@ function multiple_lines_searcher( dataPath, lowFreq, highFreq, lineFreq )
         fp = freqs(il : ih);
         cp = coh(il : ih);
         
+        % if the data at these marker positions are not significant enough,
+        % skip
+        thres = mean(cp) * filter_multiplier;
+        disp(strcat('cutoff:', num2str(thres)));
+        sigExist = false;
+        for p = lineFreq
+            if ((ceil(p / freqGap) <= length(coh) && coh(ceil(p / freqGap)) >= thres) || (floor(p / freqGap) > 0 && floor(p / freqGap) <= length(coh) && coh(floor(p / freqGap)) >= thres))
+                sigExist = true;
+                break;
+            end
+        end
+        if (not(sigExist))
+            continue;
+        end        
         % plot the mark lines
         [~, name, ~] = fileparts(fullPath);
         figure1 = figure;
@@ -42,9 +58,10 @@ function multiple_lines_searcher( dataPath, lowFreq, highFreq, lineFreq )
         
         yl = max(cp);
         for i = 1 : length(lineFreq)
-            line([lineFreq(i), lineFreq(i)], [0, yl], 'LineStyle', '-.', 'Color',[1 0 0], 'LineWidth', 0.1);
+            line([lineFreq(i) lineFreq(i)],[0, yl], 'LineStyle', '-.', 'Color',[1 0 0], 'LineWidth', 0.1);
             text(lineFreq(i), yl, strcat(num2str(lineFreq(i)), '(', num2str(i), ')'), 'FontSize', 5);
         end
+        
         % plot the data lines
         hold on;
         plot(fp, cp);
@@ -55,14 +72,6 @@ function multiple_lines_searcher( dataPath, lowFreq, highFreq, lineFreq )
         xlim([lowFreq, highFreq]);
         grid on;    
         saveas(figure1, strcat(plotsFolderName, '/', name, '.jpg'));
-        
-        % write lines txt
-        f = fopen(strcat(plotsFolderName, '/', 'lines.txt'),'w');
-      
     end
-    for l=lineFreq
-        fprintf(f,strcat(num2str(l), '\n'));
-    end
-    fclose(f);
 end
 
