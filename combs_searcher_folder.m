@@ -28,13 +28,13 @@ function combs_searcher_folder(dataPath, lowFreq, highFreq, combFreq, offset, wh
         % chop the data between the two frequencies
         il = floor(lowFreq / freqGap) + 1;
         ih = ceil(highFreq / freqGap) + 1;
-        if il > size(coh, 1)
+        if il > size(coh)
             disp(strcat(fn, ': low index ', num2str(ih) ,' exceeds ', num2str(size(coh, 1)), '. Empty.'));
             ih = 1;
             il = 1;
-        elseif ih > size(coh, 1)
+        elseif ih > size(coh)
             disp(strcat(fn, ': high index ', num2str(ih) ,' exceeds ', num2str(size(coh, 1)), '. Ranged Chopped.'));
-            ih = size(coh, 1);
+            ih = size(coh);
         end
         fp = freqs(il : ih);
         cp = coh(il : ih);

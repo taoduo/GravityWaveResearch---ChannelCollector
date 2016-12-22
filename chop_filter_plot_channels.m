@@ -1,41 +1,42 @@
-function chop_filter_plot_folder(path, lowFreq, highFreq, thresold, extremeCutoff)
+function chop_filter_plot_channels(channelPath, dataPath, lowFreq, highFreq, thresold, postfix, folderid)
     % This scripts loads all mat files from a folder and plot each mat file 
-    % within a range of frequencies. (coh ~ freqs)
+    % specified in a txt file within a range of frequencies. (coh ~ freqs)
     
     % Plots are saved as ./plots_<low_freq>_<high_freq>/<original_name>.jpg
     % Create if not exist, overwrite if exist
     
-    % path: the relative path from the script to the folder where all mat
+    % channelPath: the path to a txt file with all the channels
+    % dataPath: the relative path from the script to the folder where all mat
     % files lies in
     % lowFreq: the lower bound of the range of frequencies
     % highFreq: the upper bound
-    % thresold: the cutoff coherence value
-    % extreme cutoff: whether to implement extreme value cutoff to show the
-    % structures of lower regions
+    % thresold: the cutoff coherence
     
-    folder = what(path);
-    matFiles = folder.mat;
-    plotsFolderName = strcat('plots_', num2str(lowFreq), '_', num2str(highFreq));
-    if (extremeCutoff)
-        plotsFolderName = strcat(plotsFolderName, '_cut'); 
-    end
+    channels = textread(channelPath, '%s', 'delimiter', '\n');
+    folder = what(dataPath);
+    plotsFolderName = strcat(folderid, '_', num2str(numel(channels)), '_channels_plots_', num2str(lowFreq), '_', num2str(highFreq));
     mkdir(plotsFolderName);
-    for iFile = 1 : numel(matFiles)
+    for chni = 1 : numel(channels)
         % init the variables
         coh=[];
         freqs = [];
-        fullPath = strcat(folder.path, '/', char(matFiles(iFile)));
+        if postfix
+            fn = strcat(channels{chni, 1}, '_data', '.mat');
+        else
+            fn = strcat(channels{chni, 1}, '.mat');
+        end
+        fullPath = strcat(folder.path, '/', fn);
         load(fullPath);
         freqGap = freqs(2) - freqs(1);
         % chop the data between the two frequencies
         il = floor(lowFreq / freqGap) + 1;
         ih = ceil(highFreq / freqGap) + 1;
         if il > size(coh, 1)
-            disp(strcat(char(matFiles(iFile)), ': low index ', num2str(ih) ,' exceeds ', num2str(size(coh, 1)), '. Empty.'));
+            disp(strcat(char(matFiles(fn)), ': low index ', num2str(ih) ,' exceeds ', num2str(size(coh, 1)), '. Empty.'));
             ih = 1;
             il = 1;
         elseif ih > size(coh, 1)
-            disp(strcat(char(matFiles(iFile)), ': high index ', num2str(ih) ,' exceeds ', num2str(size(coh, 1)), '. Ranged Chopped.'));
+            disp(strcat(char(matFiles(fn)), ': high index ', num2str(ih) ,' exceeds ', num2str(size(coh, 1)), '. Ranged Chopped.'));
             ih = size(coh, 1);
         end
         
@@ -57,16 +58,7 @@ function chop_filter_plot_folder(path, lowFreq, highFreq, thresold, extremeCutof
         xlabel('Frequency (Hz)');
         ylabel('Coherence');
         xlim([lowFreq, highFreq]);
-        if (extremeCutoff)
-            maxCoh = max(coh);
-            avg = mean(coh);
-            if (maxCoh > 0.5 && maxCoh > avg * 5);
-                ylim([0, maxCoh / 2]);
-            end
-        end
         grid on;
-        dim = [0.2 0.5 0.3 0.3];
-        annotation('textbox',dim,'String',name,'FitBoxToText','on');
         saveas(figure1, strcat(plotsFolderName, '/', name, '.jpg'));
     end
 end
