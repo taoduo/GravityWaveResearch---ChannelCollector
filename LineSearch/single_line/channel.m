@@ -14,6 +14,7 @@ function channel(data_path, low, high, line_freq, output_path, auto_filter_thres
 	coh = [];
 	load(data_path);
 	[~, channel_name, ~] = fileparts(data_path);
+	disp(['working on channel ', channel_name]);
 	freqGap = freqs(2) - freqs(1);
 	il = floor(low / freqGap) + 1;
 	ih = ceil(high / freqGap) + 1;
@@ -39,4 +40,6 @@ function channel(data_path, low, high, line_freq, output_path, auto_filter_thres
 	else
 		output(channel_name, fp, cp, line_freq, output_path);
 	end
+	clear;
+	check_memory();
 end
