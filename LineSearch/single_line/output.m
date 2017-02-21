@@ -27,4 +27,6 @@ function output(channel_name, freqs, coh, line_freq, path)
 	yl = max(coh);
         line([line_freq, line_freq],[0, yl], 'LineStyle', '-.', 'Color',[1 0 0], 'LineWidth', 0.1);
         saveas(figure1, path);
+	clear all force;
+	close all force;
 end

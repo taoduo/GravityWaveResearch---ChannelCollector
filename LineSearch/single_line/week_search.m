@@ -6,8 +6,8 @@ function week_search(data_path, low, high, line_freq, output_path, auto_filter_t
         % line_freq: the frequency of the line, marked in figures
         % output_path: the folder where all the figures for this week to be saved at
 	% apply_auto_filter: filter out irrelevant channels automatically, details see
-	% channel.m
 	matFiles = dir(fullfile(data_path, '*.mat'));
+	disp(['working on week ', data_path]);
 	for file = matFiles'
 		coh = [];
 		freqs = [];
@@ -16,4 +16,5 @@ function week_search(data_path, low, high, line_freq, output_path, auto_filter_t
 		op = strcat(output_path, '/', namestr, '.jpg');
 		channel(fp, low, high, line_freq, op, auto_filter_thresold);
 	end
+	clear;
 end

@@ -24,4 +24,5 @@ function line_search(data_path, low, high, line_freq, output_path, auto_filter_t
 			week_search(full_data, low, high, line_freq, outp, auto_filter_thresold);
 		end
 	end
+	clear;
 end
