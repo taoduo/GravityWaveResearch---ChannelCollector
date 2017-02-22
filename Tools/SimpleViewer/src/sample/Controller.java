@@ -91,7 +91,9 @@ public class Controller {
                         if (chn != null) {
                             chnCount += chn.length;
                             for (File i : chn) {
-                                this.unselectedList.getItems().add(weekName + "/" + i.getName());
+                                if (!i.getName().startsWith(".") && i.getName().endsWith(".jpg")) {
+                                    this.unselectedList.getItems().add(weekName + "/" + i.getName());
+                                }
                             }
                         }
                     }
@@ -99,47 +101,21 @@ public class Controller {
                 selectedTotal = 0;
                 selectedCurrent = 0;
                 unselectedTotal = chnCount;
-                unselectedCurrent = (chnCount == 0) ? 0 : 1;
+                unselectedCurrent = 0;
                 refreshCounters();
                 dataPathLabel.setText(this.dataPath);
+            } else {
+                showDialog("Import Failure", "NULL FOLDER");
             }
         }
     }
 
     @FXML
-    public void onSelectKeyTyped(KeyEvent e) {
-        String c = e.getCharacter();
-        if (c.equals(" ")) {
-            // select stuff
-            String selectedChannel = unselectedList.getSelectionModel().getSelectedItem();
-            unselectedList.getItems().remove(selectedChannel);
-            selectedList.getItems().add(selectedChannel);
-        }
-        selectedTotal++;
-        unselectedCurrent--;
-        unselectedTotal--;
-        refreshCounters();
-    }
-
-    @FXML
-    public void onUnselectKeyTyped(KeyEvent e) {
-        String c = e.getCharacter();
-        if (c.equals(" ")) {
-            // select stuff
-            String selectedChannel = selectedList.getSelectionModel().getSelectedItem();
-            selectedList.getItems().remove(selectedChannel);
-            unselectedList.getItems().add(selectedChannel);
-        }
-        selectedCurrent--;
-        selectedTotal--;
-        unselectedTotal++;
-        refreshCounters();
-    }
-
-    @FXML
-    public void exportButtonClick(KeyEvent e) {
+    public void exportButtonClick() {
         for (String s : unselectedList.getItems()) {
-            new File(dataPath + "/" + s).delete();
+            if (!new File(dataPath + "/" + s).delete()) {
+                showDialog("Delete Failed", "Deleting " + dataPath + "/" + s + " failed");
+            }
         }
         unselectedList.getItems().clear();
         unselectedCurrent = 0;
@@ -149,9 +125,43 @@ public class Controller {
             LineExporter.export(this.dataPath);
             showDialog("Export Success", "HTML saved to " + this.dataPath);
         } catch (Exception x) {
+            x.printStackTrace();
             showDialog("Export Failure", x.getMessage());
         }
     }
+
+    @FXML
+    public void onSelectKeyTyped(KeyEvent e) {
+        if (e.getCharacter().equals(" ")) {
+            // select stuff
+            String selectedChannel = unselectedList.getSelectionModel().getSelectedItem();
+            unselectedList.getItems().remove(selectedChannel);
+            if (unselectedCurrent != 1) {
+                unselectedList.getSelectionModel().select(unselectedCurrent);
+            }
+            selectedList.getItems().add(selectedChannel);
+            selectedTotal++;
+            unselectedTotal--;
+            refreshCounters();
+        }
+    }
+
+    @FXML
+    public void onUnselectKeyTyped(KeyEvent e) {
+        if (e.getCharacter().equals(" ")) {
+            // select stuff
+            String selectedChannel = selectedList.getSelectionModel().getSelectedItem();
+            selectedList.getItems().remove(selectedChannel);
+            if (unselectedCurrent != 1) {
+                unselectedList.getSelectionModel().select(unselectedCurrent);
+            }
+            unselectedList.getItems().add(selectedChannel);
+            selectedTotal--;
+            unselectedTotal++;
+            refreshCounters();
+        }
+    }
+
 
     private void refreshCounters() {
         selectedCount.setText(selectedCurrent + "/" + selectedTotal);
@@ -162,7 +172,7 @@ public class Controller {
         this.appStage = stage;
     }
 
-    private void showDialog( String header, String content) {
+    private void showDialog(String header, String content) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("SimpleViewer");
         alert.setHeaderText(header);

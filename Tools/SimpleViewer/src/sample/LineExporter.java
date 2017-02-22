@@ -4,22 +4,20 @@ import java.io.File;
 import java.util.List;
 import java.util.ArrayList;
 import java.io.PrintWriter;
-import java.util.Arrays;
 import java.util.Comparator;
-import java.util.Scanner;
 import java.util.Collections;
 
 /*
  * LineExporter.java
  * To use, do
- * java Exporter <data_path>
+ * java LineExporter <data_path>
  * data_path structure: <data_path>/<weeks_in_gps_time>/<channels>
  * <weeks_in_gps_time> example: L1_COH_1161388815_1161993615_SHORT_1_webpage
  * Export as html that works in the same folder as <data_path>
  * It is required that the tail of data_path end with line_xxx. eg. /line_50.12
  */
-class LineExporter {
-	private static PrintWriter writer;
+public class LineExporter {
+	public static PrintWriter writer;
 
 	public static void export(String... args) throws Exception {
 		File[] files = new File(args[0]).listFiles();
@@ -52,7 +50,7 @@ class LineExporter {
 	/*
 	 * path is the path to the week folder
 	 */
-	private static void writeWeek(String path, String week, String week_folder) {
+	public static void writeWeek(String path, String week, String week_folder) {
 		String id = week.replace(" ", "");
 		writer.println("<li class='week-wrapper'>");
 		writer.println("	<button class='btn btn-default' data-target='#" + id + "' data-toggle='collapse'>" + week.toUpperCase() + "</button>");
@@ -69,7 +67,7 @@ class LineExporter {
 
 		for (int i = 0; i < channels.size(); i++) {
 			writer.println("<li>");
-			writer.println("	<a href='" + week_folder + "/" + channels.get(i) + "' target='plotFrame'>");
+			writer.println("	<a class='btn plot-link' data-plot='" + week_folder + "/" + channels.get(i) + "'>");
 			writer.println("		" + channels.get(i).split("\\.")[0]);
 			writer.println("	</a>");
 			writer.println("</li>");
@@ -79,7 +77,7 @@ class LineExporter {
 		writer.println("</li>");
 	}
 
-	private static void writeHead(String observatory, String line) {
+	public static void writeHead(String observatory, String line) {
 		writer.println("<!DOCTYPE html>");
 		writer.println("<html>");
 		writer.println("	<head>");
@@ -119,12 +117,17 @@ class LineExporter {
 		writer.println("			<ul class='list-unstyled'>");
 	}
 
-	private static void writeFoot() {
+	public static void writeFoot() {
 		writer.println("			</ul>");
 		writer.println("</div>");
-		writer.println("					<iframe name='plotFrame' height='500' class='col-md-8' style='position: fixed'></iframe>");
+		writer.println("<img src=\"\" id=\"plot\" style=\"z-index:-1;position:fixed;height:500px\"class=\"img-fluid img-thumbnail col-md-8\" alt=\"\">");
 		writer.println("			</div>");
 		writer.println("		</div>");
+		writer.println("		<script>");
+		writer.println("			$('.plot-link').click(function() {");
+		writer.println("				$('#plot').attr(\"src\", $(this).attr('data-plot'));");
+		writer.println("			});");
+		writer.println("		</script>");
 		writer.println("	</body>");
 		writer.println("</html>");
 	}
