@@ -2,4 +2,4 @@
 
 GUI software.
 
-![GUI DEMO](GUI.png)
+![GUI DEMO](demo.png)
