@@ -6,7 +6,7 @@
   <property name="module.jdk.bin.simpleviewer" value="${project.jdk.bin}"/>
   <property name="module.jdk.classpath.simpleviewer" value="${project.jdk.classpath}"/>
   
-  <property name="compiler.args.simpleviewer" value="-encoding UTF-8 -source 8 -target 1.8 ${compiler.args}"/>
+  <property name="compiler.args.simpleviewer" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
   
   <property name="simpleviewer.output.dir" value="${module.simpleviewer.basedir}/out/production/SimpleViewer"/>
   <property name="simpleviewer.testoutput.dir" value="${module.simpleviewer.basedir}/out/test/SimpleViewer"/>

@@ -19,21 +19,24 @@
     <exclude name="**/*.pyc/**"/>
     <exclude name="**/*.pyo/**"/>
     <exclude name="**/*.rbc/**"/>
-    <exclude name="**/*.yarb/**"/>
     <exclude name="**/*~/**"/>
     <exclude name="**/.DS_Store/**"/>
     <exclude name="**/.git/**"/>
     <exclude name="**/.hg/**"/>
     <exclude name="**/.svn/**"/>
     <exclude name="**/CVS/**"/>
+    <exclude name="**/RCS/**"/>
+    <exclude name="**/SCCS/**"/>
     <exclude name="**/__pycache__/**"/>
     <exclude name="**/_svn/**"/>
+    <exclude name="**/rcs/**"/>
     <exclude name="**/vssver.scc/**"/>
     <exclude name="**/vssver2.scc/**"/>
   </patternset>
   <patternset id="library.patterns">
     <include name="*.war"/>
     <include name="*.swc"/>
+    <include name="*.apk"/>
     <include name="*.zip"/>
     <include name="*.egg"/>
     <include name="*.ane"/>
@@ -49,7 +52,6 @@
     <exclude name="**/?*.flex"/>
     <exclude name="**/?*.kt"/>
     <exclude name="**/?*.clj"/>
-    <exclude name="**/?*.aj"/>
   </patternset>
   
   <!-- JDK definitions -->
@@ -91,9 +93,6 @@
   <property name="project.jdk.home" value="${jdk.home.1.8}"/>
   <property name="project.jdk.bin" value="${jdk.bin.1.8}"/>
   <property name="project.jdk.classpath" value="jdk.classpath.1.8"/>
-  
-  
-  <!-- Project Libraries -->
   <!-- Register Custom Compiler Taskdefs -->
   <property name="javac2.home" value="${idea.home}/lib"/>
   <path id="javac2.classpath">
@@ -115,9 +114,60 @@
     <!-- Perform any build initialization in this target -->
   </target>
   
-  <target name="clean" depends="clean.module.simpleviewer" description="cleanup all"/>
+  <target name="clean" depends="clean.module.simpleviewer, clean.artifact.simpleviewer" description="cleanup all"/>
   
   <target name="build.modules" depends="init, clean, compile.module.simpleviewer" description="build all modules"/>
   
-  <target name="all" depends="build.modules" description="build all"/>
+  <target name="init.artifacts">
+    <property name="artifacts.temp.dir" value="${basedir}/__artifacts_temp"/>
+    <property name="artifact.output.simpleviewer" value="${basedir}/out/artifacts/SimpleViewer"/>
+    <mkdir dir="${artifacts.temp.dir}"/>
+    <property name="artifact.temp.output.SimpleViewer" value="${artifacts.temp.dir}/SimpleViewer.jar"/>
+    <taskdef resource="com/sun/javafx/tools/ant/antlib.xml" uri="javafx:com.sun.javafx.tools.ant" classpath="${jdk.home.1.8}/lib/ant-javafx.jar"/>
+  </target>
+  
+  <target name="clean.artifact.simpleviewer" description="clean SimpleViewer artifact output">
+    <delete dir="${artifact.output.simpleviewer}"/>
+  </target>
+  
+  <target name="artifact.simpleviewer" depends="init.artifacts, compile.module.simpleviewer" description="Build &#39;SimpleViewer&#39; artifact" xmlns:fx="javafx:com.sun.javafx.tools.ant">
+    <mkdir dir="${artifact.output.simpleviewer}"/>
+    <copy todir="${artifact.temp.output.SimpleViewer}">
+      <fileset dir="${simpleviewer.output.dir}"/>
+    </copy>
+    <fx:fileset id="all_but_SimpleViewer" dir="${artifact.temp.output.SimpleViewer}" includes="**/*.jar">
+      <exclude name="SimpleViewer.jar"/>
+    </fx:fileset>
+    <fx:fileset id="all_SimpleViewer" dir="${artifact.temp.output.SimpleViewer}" includes="**/*.jar"/>
+    <fx:application id="SimpleViewer_id" name="SimpleViewer" mainClass="sample.Main"/>
+    <fx:jar destfile="${artifact.temp.output.SimpleViewer}/SimpleViewer.jar">
+      <fx:application refid="SimpleViewer_id"/>
+      <fileset dir="${artifact.temp.output.SimpleViewer}" excludes="**/*.jar"/>
+      <fx:resources>
+        <fx:fileset refid="all_but_SimpleViewer"/>
+      </fx:resources>
+      <manifest/>
+    </fx:jar>
+    <fx:deploy width="600" height="400" updatemode="background" outdir="${artifact.temp.output.SimpleViewer}/deploy" outfile="SimpleViewer">
+      <fx:application refid="SimpleViewer_id"/>
+      <fx:info title="SimpleViewer" vendor="Duo Tao"/>
+      <fx:resources>
+        <fx:fileset refid="all_SimpleViewer"/>
+      </fx:resources>
+    </fx:deploy>
+    <copy todir="${artifact.output.simpleviewer}">
+      <fileset dir="${artifact.temp.output.SimpleViewer}/deploy"/>
+    </copy>
+    <delete includeemptydirs="true">
+      <fileset dir="${artifact.temp.output.SimpleViewer}"/>
+    </delete>
+  </target>
+  
+  <target name="build.all.artifacts" depends="artifact.simpleviewer" description="Build all artifacts">
+    
+    <!-- Delete temporary files -->
+    <delete dir="${artifacts.temp.dir}"/>
+  </target>
+  
+  <target name="all" depends="build.modules, build.all.artifacts" description="build all"/>
 </project>
