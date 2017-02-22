@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class LineSplitter {
-    class Interval {
+    private static class Interval {
         double lower;
         double upper;
         public Interval(double lower, double upper) {
