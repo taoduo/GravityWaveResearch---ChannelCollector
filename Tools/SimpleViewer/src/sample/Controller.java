@@ -5,6 +5,7 @@ import java.io.File;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
@@ -39,17 +40,17 @@ public class Controller {
     @FXML
     public Label dataPathLabel;
 
-    public Stage appStage;
+    private Stage appStage;
 
-    public String dataPath;
+    private String dataPath;
 
-    public int unselectedTotal;
+    private int unselectedTotal;
 
-    public int unselectedCurrent;
+    private int unselectedCurrent;
 
-    public int selectedTotal;
+    private int selectedTotal;
 
-    public int selectedCurrent;
+    private int selectedCurrent;
 
     @FXML
     public void initialize() {
@@ -76,35 +77,33 @@ public class Controller {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setTitle("Import Images");
         File file = directoryChooser.showDialog(this.appStage);
-        if (file != null) {
+        if (file != null && file.isDirectory()) {
             this.dataPath = file.getPath();
-            File[] images = new File(this.dataPath).listFiles();
             unselectedList.getItems().clear();
             selectedList.getItems().clear();
-            if (images != null) {
-                for (File i : images) {
-                    this.unselectedList.getItems().add(i.getName());
+            File[] weeks = new File(this.dataPath).listFiles();
+            if (weeks != null) {
+                int chnCount = 0;
+                for (File week : weeks) {
+                    if (week != null && week.isDirectory()) {
+                        String weekName = week.getName();
+                        File[] chn = week.listFiles();
+                        if (chn != null) {
+                            chnCount += chn.length;
+                            for (File i : chn) {
+                                this.unselectedList.getItems().add(weekName + "/" + i.getName());
+                            }
+                        }
+                    }
                 }
-                selectedCurrent = 0;
                 selectedTotal = 0;
-                unselectedCurrent = 1;
-                unselectedTotal = images.length;
+                selectedCurrent = 0;
+                unselectedTotal = chnCount;
+                unselectedCurrent = (chnCount == 0) ? 0 : 1;
                 refreshCounters();
                 dataPathLabel.setText(this.dataPath);
             }
         }
-
-    }
-
-    @FXML
-    public void exportButtonClick() {
-        for (String s : unselectedList.getItems()) {
-            new File(dataPath + "/" + s).delete();
-        }
-        unselectedList.getItems().clear();
-        unselectedCurrent = 0;
-        unselectedTotal = 0;
-        refreshCounters();
     }
 
     @FXML
@@ -137,12 +136,37 @@ public class Controller {
         refreshCounters();
     }
 
-    public void refreshCounters() {
+    @FXML
+    public void exportButtonClick(KeyEvent e) {
+        for (String s : unselectedList.getItems()) {
+            new File(dataPath + "/" + s).delete();
+        }
+        unselectedList.getItems().clear();
+        unselectedCurrent = 0;
+        unselectedTotal = 0;
+        refreshCounters();
+        try {
+            LineExporter.export(this.dataPath);
+            showDialog("Export Success", "HTML saved to " + this.dataPath);
+        } catch (Exception x) {
+            showDialog("Export Failure", x.getMessage());
+        }
+    }
+
+    private void refreshCounters() {
         selectedCount.setText(selectedCurrent + "/" + selectedTotal);
         unselectedCount.setText(unselectedCurrent + "/" + unselectedTotal);
     }
 
-    public void setAppStage(Stage stage) {
+    void setAppStage(Stage stage) {
         this.appStage = stage;
+    }
+
+    private void showDialog( String header, String content) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("SimpleViewer");
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 }
