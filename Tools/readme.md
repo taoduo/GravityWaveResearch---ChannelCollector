@@ -16,4 +16,6 @@
 
 * Single Line: Run MATLAB scritps and do the search in SimpleViewer. Then use LineExport to export to HTML.
 
+* Single Line: Now we have incorpated LineExporter into SimpleViewer. The job becomes easier!
+
 * Multiple Lines: Give LineSplitter the lines we want to do search on. LineSplitter generates MATLAB code. MATLAB runs the code and gives the plot to ChannelsViewer. The output of ChannelViewer, when there are multiple lines, can be given to MultipleLineExporter and output the lines as an HTML table.
