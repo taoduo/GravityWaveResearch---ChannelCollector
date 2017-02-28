@@ -84,6 +84,5 @@ function combs_searcher_folder_filter( dataPath, lowFreq, highFreq, combFreq, of
         fprintf(chnTxtFile, strcat(name(1 : length(name) - 5), '\n'));
     end
     fclose(chnTxtFile);
-
 end
 
