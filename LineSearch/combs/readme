@@ -1,0 +1,16 @@
+This module search for a line in data of all weeks.
+To use, call
+1. function combs_search( dataPath, lowFreq, highFreq, combFreq, offset, filter_multiplier, output_path )
+
+data_path: the path that contains all weeks folder
+lowFreq: the lower search bound
+highFreq: the higher search bound
+combFreq: the gap between harmonics of the comb
+offset: the start frequency of the comb
+filter_multiplier: the filter (how much a significant data should be greater than the average)
+output_path: the folder where all the week folders locate in
+	the output_path will be created
+	the structure is output_path/<weeks>/<figures>
+
+2. hierarchical structure: comb_search -> week_search -> channel -> output
+Details for week_search, channel and output are found in the in-file documents. They can be used for other types of searches

@@ -1,5 +1,4 @@
-function combs_searcher_folder_filter( dataPath, lowFreq, highFreq, combFreq, offset, whetherToMark, filter_multiplier )
-    % COMBS_SEARCHER_FOLDER_FILTER Plot and mark at certain frequencies with equal gaps to
+function combs_searcher_folder_filter( dataPath, lowFreq, highFreq, combFreq, offset, filter_multiplier, output_path )    % COMBS_SEARCHER_FOLDER_FILTER Plot and mark at certain frequencies with equal gaps to
     % show whether a comb structure of a particular frequency and offset exists in the plot
     
     % dataPath: the relative path from the script to the folder where all mat
