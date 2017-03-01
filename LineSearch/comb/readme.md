@@ -1,5 +1,6 @@
 This module search for a comb in data of all weeks.
 To use,
+
 1. Create a Comb object and a Search object
 
 2. comb_search(data_path, search, comb, output_path)
