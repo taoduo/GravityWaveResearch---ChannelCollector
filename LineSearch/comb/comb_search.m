@@ -7,6 +7,7 @@ function comb_search(data_path, search, comb, output_path)
 		% the output_path will be created
 		% the structure is output_path/<weeks>/<figures>
 
+	output_path = strcat(output_path, '/comb_', num2str(comb.comb));
 	mkdir(output_path);
 	files = dir(data_path);
 	dirFlags = [files.isdir];
