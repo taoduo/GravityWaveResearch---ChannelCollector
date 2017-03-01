@@ -16,6 +16,7 @@ function comb_search(data_path, search, comb, output_path)
 		week_data = strcat(data_path, '/', week.name, '/data');
 		week_output = strcat(output_path, '/', week.name);
 		if (exist(week_data)) % sometimes they do not have the data folder
+			search.dump();
 			week_search(week_data, search, comb, week_output);
 		end
 	end
