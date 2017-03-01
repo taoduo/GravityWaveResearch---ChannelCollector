@@ -11,7 +11,7 @@ function week_search(data_path, search, comb, output_path)
 	disp(['working on week ', data_path]);
 	for chn = matFiles'
 		channel_data = strcat(data_path, '/', chn.name);
-		[~, namestr, ~] = fileparts(data_path);
+		[~, namestr, ~] = fileparts(channel_data);
 		channel_output = strcat(output_path, '/', namestr, '.jpg');
 		channel(channel_data, search, comb, channel_output);
 	end
