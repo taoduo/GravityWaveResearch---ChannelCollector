@@ -8,13 +8,14 @@ function channel(data_path, search, comb, output_path)
 	freqs = [];
 	coh = [];
 	load(data_path);
+	freqGap = freqs(1) - freqs(0);
 	[fp, cp] = search.chopData(freqs, coh, data_path);
 
 	lines = comb.getLines();
 	markPos = lines(lines >= search.low & lines <= search.high);
 	if (search.filter ~= 0)
         if (length(markPos) > 0)
-						thres = mean(cp) * filter;
+						thres = mean(cp) * search.filter;
 		        sigCount = 0; % count the number of significant lines
             for p = lines
                 if ((ceil(p / freqGap) <= length(coh) && coh(ceil(p / freqGap)) >= thres) || (floor(p / freqGap) <= length(coh) && coh(floor(p / freqGap)) >= thres))
