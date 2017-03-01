@@ -10,13 +10,6 @@ function combs_searcher_folder_filter( dataPath, lowFreq, highFreq, combFreq, of
     % whetherToMark: whether to mark the frequencies with text. If the gap
     % is too small, better not since they covers each other.
     
-    folder = what(dataPath);
-    matFiles = folder.mat;
-    plotsFolderName = strcat(num2str(combFreq), '_', 'comb_search_filter_plots_', num2str(lowFreq), '_', num2str(highFreq));
-    mkdir(plotsFolderName);
-    chnTxtPath = strcat(plotsFolderName, '/', 'channels.txt');
-    chnTxtFile = fopen(chnTxtPath, 'wt');
-    fprintf(chnTxtFile, 'Results');
     for chni = 1 : numel(matFiles);
         % init the variables
         coh=[];

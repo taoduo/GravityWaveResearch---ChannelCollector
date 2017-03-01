@@ -21,10 +21,10 @@ function channel(data_path, low, high, line_freq, output_path, auto_filter_thres
 	if il > length(coh)
 		disp(strcat(data_path, ' out of range. Skipped.'));		
 		return
-    	elseif ih > length(coh)
-        	disp(strcat(data_path, ' range chopped.'));
-		ih = length(coh);
-    	end
+	elseif ih > length(coh)
+    	disp(strcat(data_path, ' range chopped.'));
+	ih = length(coh);
+	end
 	fp = freqs(il : ih);
 	cp = coh(il : ih);
 	if (auto_filter_thresold ~= 0)

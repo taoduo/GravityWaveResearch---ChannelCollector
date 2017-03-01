@@ -1,20 +1,18 @@
-function week_search(data_path, low, high, line_freq, output_path, auto_filter_thresold)
-	% search for a line in all channels in a week at data_path
-	    % data_path: the path to the folder of mat files
-	    % low: the lower search bound
-	    % high: the higher search bound
-	    % line_freq: the frequency of the line, marked in figures
-	    % output_path: the folder where all the figures for this week to be saved at
-	% apply_auto_filter: filter out irrelevant channels automatically, details see
+function week_search(data_path, search, comb, output_path)
+	% Search for a comb in all channels in a week at data_path
+  % data_path: the path that contains all weeks folder
+	% search: configurations of this search (high / low /filter)
+	% comb: parameters of the comb (see the structure Comb)
+	% output_path: the folder where all the week folders locate in
+		% the output_path  be created
+		% the structure is output_path/<weeks>/<figures>
+	mkdir(output_path);
 	matFiles = dir(fullfile(data_path, '*.mat'));
 	disp(['working on week ', data_path]);
-	for file = matFiles'
-		coh = [];
-		freqs = [];
-		fp = strcat(data_path, '/', file.name);
-		[pathstr, namestr, ext] = fileparts(fp);
-		op = strcat(output_path, '/', namestr, '.jpg');
-		channel(fp, low, high, line_freq, op, auto_filter_thresold);
+	for channel = matFiles'
+		channel_data = strcat(data_path, '/', channel.name);
+		[~, namestr, ~] = fileparts(data_path);
+		channel_output = strcat(output_path, '/', namestr, '.jpg');
+		channel(channel_data, search, comb, channel_output);
 	end
-	clear;
 end
