@@ -19,10 +19,10 @@ function channel(data_path, low, high, line_freq, output_path, auto_filter_thres
 	il = floor(low / freqGap) + 1;
 	ih = ceil(high / freqGap) + 1;
 	if il > length(coh)
-		disp(strcat(data_path, ' out of range. Skipped.'));		
+		disp(strcat(data_path, ' out of range. Skipped.'));
 		return
 	elseif ih > length(coh)
-    	disp(strcat(data_path, ' range chopped.'));
+			disp(strcat(data_path, ' range chopped.'));
 	ih = length(coh);
 	end
 	fp = freqs(il : ih);
@@ -30,7 +30,7 @@ function channel(data_path, low, high, line_freq, output_path, auto_filter_thres
 	if (auto_filter_thresold ~= 0)
 		all_avg = mean(cp);
 		fl = floor((line_freq - 0.05) / freqGap) + 1;
-        	fh = ceil((line_freq + 0.05) / freqGap) + 1;
+					fh = ceil((line_freq + 0.05) / freqGap) + 1;
 		fh = min(fh, ih);
 		fcp = coh(fl : fh);
 		filt_max = max(fcp);
