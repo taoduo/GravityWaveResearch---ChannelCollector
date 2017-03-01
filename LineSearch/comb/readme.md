@@ -6,8 +6,9 @@ To use, call
 * search: configurations of this search (high / low /filter)
 * comb: parameters of the comb	% path: where the plot is saved, down to /channel.jpg
 * output_path: the folder where all the week folders locate in
-	the output_path will be created
-	the structure is output_path/<weeks>/<figures>
+	- the output_path will be created
+	- the structure is output_path/<weeks>/<figures>
 
 3. hierarchical structure: comb_search -> week_search -> channel -> output
+
 Details for week_search, channel and output are found in the in-file documents. They can be used for other types of searches
