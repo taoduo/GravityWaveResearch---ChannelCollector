@@ -14,20 +14,20 @@ function channel(data_path, search, comb, output_path)
 	lines = comb.getLines();
 	markPos = lines(lines >= search.low & lines <= search.high);
 	if (search.filter ~= 0)
-        if (length(markPos) > 0)
+				sigCount = 0; % count the number of significant lines
+				if (length(markPos) > 0)
 						thres = mean(cp) * search.filter;
-		        sigCount = 0; % count the number of significant lines
-            for p = lines
-                if ((ceil(p / freqGap) <= length(coh) && coh(ceil(p / freqGap)) >= thres) || (floor(p / freqGap) <= length(coh) && coh(floor(p / freqGap)) >= thres))
-                    sigCount = sigCount + 1;
-                end
-            end
-        else
+						for p = lines
+								if ((ceil(p / freqGap) <= length(coh) && coh(ceil(p / freqGap)) >= thres) || (floor(p / freqGap) <= length(coh) && coh(floor(p / freqGap)) >= thres))
+										sigCount = sigCount + 1;
+								end
+						end
+				else
 					disp(['Search range does not contain any line of the comb.']);
 					search.dump();
 					comb.dump();
 				end
-				if (sigCount / length(markPos) < 0.3)
+				if (sigCount > 0)
 						return;
 				end
 	end

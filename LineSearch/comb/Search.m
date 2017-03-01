@@ -1,4 +1,4 @@
-classdef Search
+classdef CombSearch
 	% Search configurations
 	properties
 		low,
@@ -21,7 +21,7 @@ classdef Search
 				il = false;
 				ih = false;
 			elseif ih > length(coh)
-		    disp(strcat(data_path, ' range chopped.'));
+				disp(strcat(data_path, ' range chopped.'));
 				ih = length(coh);
 			end
 			fp = freqs(il : ih);
