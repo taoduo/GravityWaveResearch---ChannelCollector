@@ -17,7 +17,7 @@ classdef Comb
 		end
 
 		function dump(obj)
-			disp(['Comb:', obj.low, ' ', obj.high, ' ', obj.comb]);
+			disp(strcat('Comb:',num2str(obj.low), '#', num2str(obj.high), '#', num2str(obj.comb)));
 		end
 	end
 end

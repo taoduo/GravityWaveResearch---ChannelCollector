@@ -29,7 +29,7 @@ classdef Search
 		end
 
 		function dump(obj)
-			disp(['Search: ', obj.low, ' ', obj.high, ' ', obj.filter]);
+			disp(strcat('Search: ', num2str(obj.low), '#', num2str(obj.high), '#', num2str(obj.filter)));
 		end
 	end
 end
