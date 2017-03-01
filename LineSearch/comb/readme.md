@@ -13,4 +13,4 @@ To use,
 
 3. hierarchical structure: comb_search -> week_search -> channel -> output
 
-	Details for week_search, channel and output are found in the in-file documents. They can be used for other types of searches
+Details for week_search, channel and output are found in the in-file documents. They can be used for other types of searches
