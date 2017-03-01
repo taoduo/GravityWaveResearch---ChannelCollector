@@ -16,13 +16,13 @@ function output(channel_name, freqs, coh, search, comb, markPos, output_path)
 
 	% plot the mark lines
 	yl = max(coh);
-	for i = 1 : length(markerPos)
-			line([markerPos(i) markerPos(i)],[0, yl], 'LineStyle', '-.', 'Color',[1 0 0], 'LineWidth', 0.1);
+	for i = 1 : length(markPos)
+			line([markPos(i) markPos(i)],[0, yl], 'LineStyle', '-.', 'Color',[1 0 0], 'LineWidth', 0.1);
 	end
 
 	% plot the data lines
 	hold on;
-	plot(fp, cp);
+	plot(freqs, coh);
 	t = title(channel_name);
 	set(t, 'interpreter', 'none');
 	xlabel('Frequency (Hz)');
