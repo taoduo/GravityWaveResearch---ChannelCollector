@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_simpleviewer" default="compile.module.simpleviewer">
+  <dirname property="module.simpleviewer.basedir" file="${ant.file.module_simpleviewer}"/>
+  
+  <property name="module.jdk.home.simpleviewer" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.simpleviewer" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.simpleviewer" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.simpleviewer" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
+  
+  <property name="simpleviewer.output.dir" value="${module.simpleviewer.basedir}/out/production/SimpleViewer"/>
+  <property name="simpleviewer.testoutput.dir" value="${module.simpleviewer.basedir}/out/test/SimpleViewer"/>
+  
+  <path id="simpleviewer.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="simpleviewer.module.production.classpath">
+    <path refid="${module.jdk.classpath.simpleviewer}"/>
+  </path>
+  
+  <path id="simpleviewer.runtime.production.module.classpath">
+    <pathelement location="${simpleviewer.output.dir}"/>
+  </path>
+  
+  <path id="simpleviewer.module.classpath">
+    <path refid="${module.jdk.classpath.simpleviewer}"/>
+    <pathelement location="${simpleviewer.output.dir}"/>
+  </path>
+  
+  <path id="simpleviewer.runtime.module.classpath">
+    <pathelement location="${simpleviewer.testoutput.dir}"/>
+    <pathelement location="${simpleviewer.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.simpleviewer">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.simpleviewer">
+    <patternset refid="excluded.from.module.simpleviewer"/>
+  </patternset>
+  
+  <path id="simpleviewer.module.sourcepath">
+    <dirset dir="${module.simpleviewer.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.simpleviewer" depends="compile.module.simpleviewer.production,compile.module.simpleviewer.tests" description="Compile module SimpleViewer"/>
+  
+  <target name="compile.module.simpleviewer.production" depends="register.custom.compilers" description="Compile module SimpleViewer; production classes">
+    <mkdir dir="${simpleviewer.output.dir}"/>
+    <javac2 destdir="${simpleviewer.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.simpleviewer}/javac">
+      <compilerarg line="${compiler.args.simpleviewer}"/>
+      <bootclasspath refid="simpleviewer.module.bootclasspath"/>
+      <classpath refid="simpleviewer.module.production.classpath"/>
+      <src refid="simpleviewer.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.simpleviewer"/>
+    </javac2>
+    
+    <copy todir="${simpleviewer.output.dir}">
+      <fileset dir="${module.simpleviewer.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.simpleviewer.tests" depends="register.custom.compilers,compile.module.simpleviewer.production" description="compile module SimpleViewer; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.simpleviewer" description="cleanup module">
+    <delete dir="${simpleviewer.output.dir}"/>
+    <delete dir="${simpleviewer.testoutput.dir}"/>
+  </target>
+</project>

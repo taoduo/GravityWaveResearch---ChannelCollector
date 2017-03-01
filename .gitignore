@@ -1,2 +1,4 @@
 .*
 !/.gitignore
+main.m
+*.class
