@@ -9,7 +9,7 @@ To use,
 	- comb: parameters of the comb	% path: where the plot is saved, down to /channel.jpg
 	- output_path: the folder where all the week folders locate in
 		- the output_path will be created
-		- the structure is output_path/<weeks>/<figures>
+		- the structure is output_path/\<weeks\>/\<figures\>
 
 3. hierarchical structure: comb_search -> week_search -> channel -> output
 
