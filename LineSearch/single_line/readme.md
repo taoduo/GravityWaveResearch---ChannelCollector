@@ -9,7 +9,7 @@ To use, call
 	* line_freq: the frequency of the line, marked in figures
 	* output_path: the folder where all the week folders locate in
 		- the output_path will be created
-		- the structure is output_path/<weeks>/<figures>
+		- the structure is output_path/\<weeks\>/\<figures\>
 
 2. hierarchical structure: line_search -> week_search -> channel -> output
 
