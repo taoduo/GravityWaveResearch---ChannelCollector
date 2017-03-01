@@ -9,7 +9,6 @@ function output(channel_name, freqs, coh, search, comb, markPos, output_path)
 	% output_path: the output path down to the jpg image
 
 	% init the figure
-	[~, name, ~] = fileparts(fullPath);
 	figure1 = figure;
 	set(figure1, 'Visible', 'off');
 	axes1 = axes('Parent', figure1);
