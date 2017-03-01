@@ -8,7 +8,7 @@ function channel(data_path, search, comb, output_path)
 	freqs = [];
 	coh = [];
 	load(data_path);
-	freqGap = freqs(1) - freqs(0);
+	freqGap = freqs(2) - freqs(1);
 	[fp, cp] = search.chopData(freqs, coh, data_path);
 
 	lines = comb.getLines();
