@@ -27,7 +27,7 @@ function channel(data_path, search, comb, output_path)
 					comb.dump();
 				end
 				if (sigCount / length(markPos) < 0.3)
-						continue;
+						return;
 				end
 	end
 	[~, channel_name, ~] = fileparts(data_path);
