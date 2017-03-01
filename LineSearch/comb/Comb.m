@@ -17,7 +17,7 @@ classdef Comb
 		end
 
 		function dump(obj)
-			disp(['Comb:', comb.low, ' ', comb.high, ' ', comb.comb]);
+			disp(['Comb:', obj.low, ' ', obj.high, ' ', obj.comb]);
 		end
 	end
 end

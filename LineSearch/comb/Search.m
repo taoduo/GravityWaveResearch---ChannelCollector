@@ -28,8 +28,8 @@ classdef Search
 			cp = coh(il : ih);
 		end
 
-		function dump()
-			disp(['Search: ', search.low, ' ', search.high, ' ', search.filter]);
+		function dump(obj)
+			disp(['Search: ', obj.low, ' ', obj.high, ' ', obj.filter]);
 		end
 	end
 end
