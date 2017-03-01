@@ -6,7 +6,7 @@ classdef Comb
 		comb
 	end
 	methods
-		function obj = Comb(low, offset, comb, high)
+		function obj = Comb(low, comb, high)
 			obj.low = low;
 			obj.high = high;
 			obj.comb = comb;
