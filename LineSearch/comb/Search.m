@@ -1,4 +1,4 @@
-classdef CombSearch
+classdef Search
 	% Search configurations
 	properties
 		low,
