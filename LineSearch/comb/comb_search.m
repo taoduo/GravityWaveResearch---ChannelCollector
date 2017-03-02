@@ -8,7 +8,6 @@ function comb_search(data_path, search, comb, output_path)
 		% the structure is output_path/<weeks>/<figures>
 
 	output_path = strcat(output_path, '/comb_', num2str(comb.comb));
-	mkdir(output_path);
 	files = dir(data_path);
 	dirFlags = [files.isdir];
 	weeks = files(dirFlags);
@@ -17,6 +16,7 @@ function comb_search(data_path, search, comb, output_path)
 		week_data = strcat(data_path, '/', week.name, '/data');
 		week_output = strcat(output_path, '/', week.name);
 		if (exist(week_data)) % sometimes they do not have the data folder
+			mkdir(output_path);
 			week_search(week_data, search, comb, week_output);
 		end
 	end
