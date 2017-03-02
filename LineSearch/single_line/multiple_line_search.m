@@ -11,6 +11,6 @@ function multiple_line_search(data_path, lines_array, output_path, auto_filter_t
 	mkdir(output_path);
 	for i = 1 : size(lines_array, 1)
 		line = lines_array(i, :);
-		line_search(data_path, line(1), line(2), line(3), strcat(output_path, '/line_', num2str(line(3))), auto_filter_thresold);
+		line_search(data_path, line(1), line(2), line(3), output_path, auto_filter_thresold);
 	end
 end

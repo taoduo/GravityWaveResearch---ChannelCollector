@@ -10,7 +10,7 @@ function line_search(data_path, low, high, line_freq, output_path, auto_filter_t
 	%  the output_path will be created
 	%  the structure is output_path/<weeks>/<figures>
 	% apply_auto_filter: automatically filters out irrelevant channels, details see channel.m
-
+	output_path = strcat(output_path, '/line_', num2str(line_freq));
 	files = dir(data_path);
 	dirFlags = [files.isdir];
 	weeks = files(dirFlags);
