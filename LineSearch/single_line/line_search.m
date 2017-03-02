@@ -6,9 +6,10 @@ function line_search(data_path, low, high, line_freq, output_path, auto_filter_t
 	% low: the lower search bound
 	% high: the higher search bound
 	% line_freq: the frequency of the line, marked in figures
-	% output_path: the folder where all the week folders locate in
+	% output_path: the folder where the line_xx folder locates in
 	%  the output_path will be created
-	%  the structure is output_path/<weeks>/<figures>
+	%  the structure is output_path/line_xx/<weeks>/<figures>
+	%	 notices that we create the folder inside since we use the same folder name for all lines
 	% apply_auto_filter: automatically filters out irrelevant channels, details see channel.m
 	output_path = strcat(output_path, '/line_', num2str(line_freq));
 	files = dir(data_path);
