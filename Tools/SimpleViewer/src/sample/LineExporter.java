@@ -51,11 +51,7 @@ public class LineExporter {
 	 * path is the path to the week folder
 	 */
 	public static void writeWeek(String path, String week, String week_folder) {
-		String id = week.replace(" ", "");
-		writer.println("<li class='week-wrapper'>");
-		writer.println("	<button class='btn btn-default' data-target='#" + id + "' data-toggle='collapse'>" + week.toUpperCase() + "</button>");
-		writer.println("	<div class='collapse' id='" + id + "'>");
-		writer.println("		<ul class='list-unstyled'>");
+		// get file lists and sort them
 		File[] files = new File(path).listFiles();
 		List<String> channels = new ArrayList<>();
 		for (File f : files) {
@@ -64,7 +60,13 @@ public class LineExporter {
 			}
 		}
 		Collections.sort(channels);
-
+		// print the first part
+		String id = week.replace(" ", "");
+		writer.println("<li class='week-wrapper'>");
+		writer.println("	<button class='btn btn-default' data-target='#" + id + "' data-toggle='collapse'>" + week.toUpperCase() + (channels.isEmpty() ? "(EMPTY)" : "") + "</button>");
+		writer.println("	<div class='collapse' id='" + id + "'>");
+		writer.println("		<ul class='list-unstyled'>");
+		// print the channels
 		for (int i = 0; i < channels.size(); i++) {
 			writer.println("<li>");
 			writer.println("	<a class='btn plot-link' data-plot='" + week_folder + "/" + channels.get(i) + "'>");
