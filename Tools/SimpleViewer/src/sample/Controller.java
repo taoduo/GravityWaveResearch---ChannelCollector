@@ -111,6 +111,15 @@ public class Controller {
     }
 
     @FXML
+    public void selectAllButtonClick() {
+        while (!unselectedList.getItems().isEmpty()) {
+            // select stuff
+            String selectedChannel = unselectedList.getItems().get(0);
+            select(selectedChannel);
+        }
+    }
+
+    @FXML
     public void exportButtonClick() {
         for (String s : unselectedList.getItems()) {
             if (!new File(dataPath + "/" + s).delete()) {
@@ -135,14 +144,7 @@ public class Controller {
         if (e.getCharacter().equals(" ")) {
             // select stuff
             String selectedChannel = unselectedList.getSelectionModel().getSelectedItem();
-            unselectedList.getItems().remove(selectedChannel);
-            if (unselectedCurrent != 1) {
-                unselectedList.getSelectionModel().select(unselectedCurrent);
-            }
-            selectedList.getItems().add(selectedChannel);
-            selectedTotal++;
-            unselectedTotal--;
-            refreshCounters();
+            select(selectedChannel);
         }
     }
 
@@ -162,10 +164,20 @@ public class Controller {
         }
     }
 
-
     private void refreshCounters() {
         selectedCount.setText(selectedCurrent + "/" + selectedTotal);
         unselectedCount.setText(unselectedCurrent + "/" + unselectedTotal);
+    }
+
+    private void select(String channel) {
+        unselectedList.getItems().remove(channel);
+        if (unselectedCurrent != 1) {
+            unselectedList.getSelectionModel().select(unselectedCurrent);
+        }
+        selectedList.getItems().add(channel);
+        selectedTotal++;
+        unselectedTotal--;
+        refreshCounters();
     }
 
     void setAppStage(Stage stage) {
