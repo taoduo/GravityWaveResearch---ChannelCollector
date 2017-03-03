@@ -124,7 +124,7 @@ public class LineExporter {
 		writer.println("			</div>");
 		writer.println("		</div>");
 		writer.println("		<script>");
-		writer.println("			$('.plot-link').click(function() {");
+		writer.println("			$('.plot-link').hover(function() {");
 		writer.println("				$('#plot').attr(\"src\", $(this).attr('data-plot'));");
 		writer.println("			});");
 		writer.println("		</script>");
