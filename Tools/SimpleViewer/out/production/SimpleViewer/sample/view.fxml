@@ -81,7 +81,8 @@
             <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                <children>
                   <Button fx:id="importBtn" mnemonicParsing="false" onAction="#importButtonClick" text="Import" />
-                  <Label fx:id="dataPathLabel" prefHeight="27.0" prefWidth="647.0" text=".." />
+                  <Button mnemonicParsing="false" onAction="#selectAllButtonClick" text="Select All" />
+                  <Label fx:id="dataPathLabel" prefHeight="27.0" prefWidth="555.0" text=".." />
                   <Button mnemonicParsing="false" onAction="#exportButtonClick" text="Export" />
                </children>
                <VBox.margin>
