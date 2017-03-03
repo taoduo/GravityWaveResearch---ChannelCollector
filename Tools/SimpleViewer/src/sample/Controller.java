@@ -154,8 +154,8 @@ public class Controller {
             // select stuff
             String selectedChannel = selectedList.getSelectionModel().getSelectedItem();
             selectedList.getItems().remove(selectedChannel);
-            if (unselectedCurrent != 1) {
-                unselectedList.getSelectionModel().select(unselectedCurrent);
+            if (selectedCurrent != 1) {
+                selectedList.getSelectionModel().select(selectedCurrent);
             }
             unselectedList.getItems().add(selectedChannel);
             selectedTotal--;
