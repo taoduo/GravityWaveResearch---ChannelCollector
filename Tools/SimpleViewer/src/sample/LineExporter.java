@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.List;
 import java.util.ArrayList;
 import java.io.PrintWriter;
-import java.util.Comparator;
 import java.util.Collections;
 
 /*
@@ -17,22 +16,22 @@ import java.util.Collections;
  * It is required that the tail of data_path end with line_xxx. eg. /line_50.12
  */
 public class LineExporter {
-	public static PrintWriter writer;
+	private static PrintWriter writer;
 
-	public static void export(String... args) throws Exception {
+	static void export(String... args) throws Exception {
 		File[] files = new File(args[0]).listFiles();
 		List<String> weeks = new ArrayList<>();
-		for (File f : files) {
-			if (!f.getName().startsWith(".") && f.isDirectory()) {
-				weeks.add(f.getName());
+		if (files != null) {
+			for (File f : files) {
+				if (!f.getName().startsWith(".") && f.isDirectory()) {
+					weeks.add(f.getName());
+				}
 			}
 		}
-		Collections.sort(weeks, new Comparator<String>() {
-			public int compare(String o1, String o2) {
-				int t1 = Integer.parseInt(o1.split("_")[2]);
-				int t2 = Integer.parseInt(o2.split("_")[2]);
-				return t1 - t2;
-			}
+		weeks.sort((o1, o2)->{
+			int t1 = Integer.parseInt(o1.split("_")[2]);
+			int t2 = Integer.parseInt(o2.split("_")[2]);
+			return t1 - t2;
 		});
 
 		writer = new PrintWriter(args[0] + "/index.html", "UTF-8");
@@ -50,13 +49,15 @@ public class LineExporter {
 	/*
 	 * path is the path to the week folder
 	 */
-	public static void writeWeek(String path, String week, String week_folder) {
+	private static void writeWeek(String path, String week, String week_folder) {
 		// get file lists and sort them
 		File[] files = new File(path).listFiles();
 		List<String> channels = new ArrayList<>();
-		for (File f : files) {
-			if (!f.getName().startsWith(".") && f.getName().endsWith(".jpg")) {
-				channels.add(f.getName());
+		if (files != null) {
+			for (File f : files) {
+				if (!f.getName().startsWith(".") && f.getName().endsWith(".jpg")) {
+					channels.add(f.getName());
+				}
 			}
 		}
 		Collections.sort(channels);
@@ -67,19 +68,19 @@ public class LineExporter {
 		writer.println("	<div class='collapse' id='" + id + "'>");
 		writer.println("		<ul class='list-unstyled'>");
 		// print the channels
-		for (int i = 0; i < channels.size(); i++) {
+		channels.forEach((chn)-> {
 			writer.println("<li>");
-			writer.println("	<a class='btn plot-link' data-plot='" + week_folder + "/" + channels.get(i) + "'>");
-			writer.println("		" + channels.get(i).split("\\.")[0]);
+			writer.println("	<a class='btn plot-link' data-plot='" + week_folder + "/" + chn + "'>");
+			writer.println("		" + chn.split("\\.")[0]);
 			writer.println("	</a>");
 			writer.println("</li>");
-		}
+		});
 		writer.println("		</ul>");
 		writer.println("	</div>");
 		writer.println("</li>");
 	}
 
-	public static void writeHead(String observatory, String line) {
+	private static void writeHead(String observatory, String line) {
 		writer.println("<!DOCTYPE html>");
 		writer.println("<html>");
 		writer.println("	<head>");
@@ -119,7 +120,7 @@ public class LineExporter {
 		writer.println("			<ul class='list-unstyled'>");
 	}
 
-	public static void writeFoot() {
+	private static void writeFoot() {
 		writer.println("			</ul>");
 		writer.println("</div>");
 		writer.println("<img src=\"\" id=\"plot\" style=\"z-index:-1;position:fixed;height:500px\"class=\"img-fluid img-thumbnail col-md-7\" alt=\"\">");
