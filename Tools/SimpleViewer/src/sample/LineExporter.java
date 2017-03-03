@@ -120,7 +120,7 @@ public class LineExporter {
 	public static void writeFoot() {
 		writer.println("			</ul>");
 		writer.println("</div>");
-		writer.println("<img src=\"\" id=\"plot\" style=\"z-index:-1;position:fixed;height:500px\"class=\"img-fluid img-thumbnail col-md-8\" alt=\"\">");
+		writer.println("<img src=\"\" id=\"plot\" style=\"z-index:-1;position:fixed;height:500px\"class=\"img-fluid img-thumbnail col-md-7\" alt=\"\">");
 		writer.println("			</div>");
 		writer.println("		</div>");
 		writer.println("		<script>");
