@@ -19,6 +19,10 @@ public class LineExporter {
 	private static PrintWriter writer;
 
 	static void export(String... args) throws Exception {
+		// init writer
+		writer = new PrintWriter(args[0] + "/index.html", "UTF-8");
+
+		// get weeks
 		File[] files = new File(args[0]).listFiles();
 		List<String> weeks = new ArrayList<>();
 		if (files != null) {
@@ -34,22 +38,43 @@ public class LineExporter {
 			return t1 - t2;
 		});
 
-		writer = new PrintWriter(args[0] + "/index.html", "UTF-8");
+		// some parameters
 		String observatory = weeks.get(0).split("_")[0];
 		String[] line = args[0].split("/");
 		String ln = line[line.length - 1].split("_")[1];
-		writeHead(observatory, ln);
+
+		// modify weeks to include the full path
 		for (int i = 0; i < weeks.size(); i++) {
-			writeWeek(args[0] + "/" + weeks.get(i), "week " + (i + 1), weeks.get(i));
+			weeks.set(i, args[0] + "/" + weeks.get(i));
+		}
+		writeHead(observatory, ln, weeks);
+		for (int i = 0; i < weeks.size(); i++) {
+			writeWeek(weeks.get(i), "week " + (i + 1));
 	    }
 	    writeFoot();
 	    writer.close();
 	}
 
 	/*
-	 * path is the path to the week folder
+	 * Write the week buttons
 	 */
-	private static void writeWeek(String path, String week, String week_folder) {
+	private static void  writeWeekBtn(List<String> weeks) {
+		writer.println("		<ul class='list-inline'>");
+		for (int i = 0; i < weeks.size(); i++) {
+			File[] chns = new File(weeks.get(i)).listFiles();
+			if (chns != null && chns.length != 0) {
+				writer.println("			<li><button class='btn btn-default week-btn' data-target='#week" + (i + 1) + "' data-toggle='collapse'>WEEK " + (i + 1) + "</button></li>");
+			} else {
+				writer.println("			<li><button disabled class='btn btn-default week-btn' data-target='#week" + (i + 1) + "' data-toggle='collapse'>WEEK " + (i + 1) + "</button></li>");
+			}
+		}
+		writer.println("		</ul>");
+	}
+
+	/*
+	 * Write the channel data for this week
+	 */
+	private static void writeWeek(String path, String week) {
 		// get file lists and sort them
 		File[] files = new File(path).listFiles();
 		List<String> channels = new ArrayList<>();
@@ -63,24 +88,22 @@ public class LineExporter {
 		Collections.sort(channels);
 		// print the first part
 		String id = week.replace(" ", "");
-		writer.println("<li class='week-wrapper'>");
-		writer.println("	<button class='btn btn-default' data-target='#" + id + "' data-toggle='collapse'>" + week.toUpperCase() + (channels.isEmpty() ? "(EMPTY)" : "") + "</button>");
-		writer.println("	<div class='collapse' id='" + id + "'>");
-		writer.println("		<ul class='list-unstyled'>");
+		writer.println("				<li class='week-wrapper collapse' id='" + id + "'>");
+		writer.println("					<h4>" + week.toUpperCase() + "</h4>");
+		writer.println("					<ul class='list-unstyled'>");
 		// print the channels
 		channels.forEach((chn)-> {
-			writer.println("<li>");
-			writer.println("	<a class='btn plot-link' data-plot='" + week_folder + "/" + chn + "'>");
-			writer.println("		" + chn.split("\\.")[0]);
-			writer.println("	</a>");
-			writer.println("</li>");
+			writer.println("					<li>");
+			writer.println("						<a class='btn plot-link' data-plot='" + path + "/" + chn + "'>");
+			writer.println("							" + chn.split("\\.")[0]);
+			writer.println("						</a>");
+			writer.println("					</li>");
 		});
-		writer.println("		</ul>");
-		writer.println("	</div>");
-		writer.println("</li>");
+		writer.println("					</ul>");
+		writer.println("				</li>");
 	}
 
-	private static void writeHead(String observatory, String line) {
+	private static void writeHead(String observatory, String line, List<String> weeks) {
 		writer.println("<!DOCTYPE html>");
 		writer.println("<html>");
 		writer.println("	<head>");
@@ -115,6 +138,7 @@ public class LineExporter {
 		writer.println("			</h4>");
 		writer.println("			<h5>(Comment)</h5>");
 		writer.println("		</header>");
+		writeWeekBtn(weeks);
 		writer.println("		<div class='row'>");
 		writer.println("			<div class='col-md-4'>");
 		writer.println("			<ul class='list-unstyled'>");
@@ -122,13 +146,17 @@ public class LineExporter {
 
 	private static void writeFoot() {
 		writer.println("			</ul>");
-		writer.println("</div>");
-		writer.println("<img src=\"\" id=\"plot\" style=\"z-index:-1;position:fixed;height:500px\"class=\"img-fluid img-thumbnail col-md-7\" alt=\"\">");
+		writer.println("			</div>");
+		writer.println("			<img src=\"\" id=\"plot\" style=\"z-index:-1;position:fixed;height:500px\"class=\"img-fluid img-thumbnail col-md-7\" alt=\"\">");
 		writer.println("			</div>");
 		writer.println("		</div>");
 		writer.println("		<script>");
 		writer.println("			$('.plot-link').hover(function() {");
 		writer.println("				$('#plot').attr(\"src\", $(this).attr('data-plot'));");
+		writer.println("			});");
+		writer.println("			$('.week-btn').click(function() {");
+		writer.println("				var weekList = $($(this).attr('data-target'));");
+		writer.println("				weekList.parent().prepend(weekList);");
 		writer.println("			});");
 		writer.println("		</script>");
 		writer.println("	</body>");
