@@ -127,6 +127,9 @@ public class LineExporter {
 		writer.println("			.week-wrapper {");
 		writer.println("				margin-bottom: 10px;");
 		writer.println("			}");
+		writer.println("			.week-btn-open {");
+		writer.println("				font-weight: bold;");
+		writer.println("			}");
 		writer.println("		</style>");
 		writer.println("	</head>");
 		writer.println("	<body>");
@@ -157,6 +160,9 @@ public class LineExporter {
 		writer.println("			$('.week-btn').click(function() {");
 		writer.println("				var weekList = $($(this).attr('data-target'));");
 		writer.println("				weekList.parent().prepend(weekList);");
+		writer.println("				if (weekList.hasClass('collapse')) {");
+		writer.println("					$(this).toggleClass('week-btn-open');");
+		writer.println("				}");
 		writer.println("			});");
 		writer.println("		</script>");
 		writer.println("	</body>");
