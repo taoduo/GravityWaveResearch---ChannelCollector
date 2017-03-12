@@ -28,8 +28,9 @@ function channel(data_path, low, high, line_freq, output_path, auto_filter_thres
 	cp = coh(il : ih);
 	if (auto_filter_thresold ~= 0)
 		all_avg = mean(cp);
-		fl = floor((line_freq - 0.05) / freqGap) + 1;
-					fh = ceil((line_freq + 0.05) / freqGap) + 1;
+		offset = (high - low) / 50;
+		fl = floor((line_freq - offset) / freqGap) + 1;
+		fh = ceil((line_freq + offset) / freqGap) + 1;
 		fh = min(fh, ih);
 		fcp = coh(fl : fh);
 		filt_max = max(fcp);
