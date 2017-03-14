@@ -49,7 +49,7 @@ public class LineExporter {
 		}
 		writeHead(observatory, ln, weeks);
 		for (int i = 0; i < weeks.size(); i++) {
-			writeWeek(weeks.get(i), "week " + (i + 1));
+			writeWeek(new File(weeks.get(i)), "week " + (i + 1));
 	    }
 	    writeFoot();
 	    writer.close();
@@ -74,9 +74,9 @@ public class LineExporter {
 	/*
 	 * Write the channel data for this week
 	 */
-	private static void writeWeek(String path, String week) {
+	private static void writeWeek(File weekFolder, String week) {
 		// get file lists and sort them
-		File[] files = new File(path).listFiles();
+		File[] files = weekFolder.listFiles();
 		List<String> channels = new ArrayList<>();
 		if (files != null) {
 			for (File f : files) {
@@ -94,7 +94,7 @@ public class LineExporter {
 		// print the channels
 		channels.forEach((chn)-> {
 			writer.println("					<li>");
-			writer.println("						<a class='btn plot-link' data-plot='" + path + "/" + chn + "'>");
+			writer.println("						<a class='btn plot-link' data-plot='./" + weekFolder.getName() + "/" + chn + "'>");
 			writer.println("							" + chn.split("\\.")[0]);
 			writer.println("						</a>");
 			writer.println("					</li>");
@@ -150,7 +150,7 @@ public class LineExporter {
 	private static void writeFoot() {
 		writer.println("			</ul>");
 		writer.println("			</div>");
-		writer.println("			<img src=\"\" id=\"plot\" style=\"z-index:-1;position:fixed;height:500px\"class=\"img-fluid img-thumbnail col-md-7\" alt=\"\">");
+		writer.println("			<img src=\"\" id=\"plot\" style=\"z-index:-1;position:fixed;height:350px\"class=\"img-fluid img-thumbnail col-md-7\" alt=\"\">");
 		writer.println("			</div>");
 		writer.println("		</div>");
 		writer.println("		<script>");
