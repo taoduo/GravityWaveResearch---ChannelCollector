@@ -2,12 +2,14 @@ package sample;
 
 import java.io.File;
 
+import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -39,6 +41,12 @@ public class Controller {
 
     @FXML
     public Label dataPathLabel;
+
+    @FXML
+    public TextField commentText;
+
+    @FXML
+    public TextField sourceText;
 
     private Stage appStage;
 
@@ -131,7 +139,7 @@ public class Controller {
         unselectedTotal = 0;
         refreshCounters();
         try {
-            LineExporter.export(this.dataPath);
+            LineExporter.export(this.dataPath, null, sourceText.getText());
             showDialog("Export Success", "HTML saved to " + this.dataPath);
         } catch (Exception x) {
             x.printStackTrace();
@@ -161,6 +169,24 @@ public class Controller {
             selectedTotal--;
             unselectedTotal++;
             refreshCounters();
+        }
+    }
+
+    @FXML
+    public void previewBtnClick() {
+        Application app = new Main();
+        System.out.println(dataPath + "/index.html");
+        app.getHostServices().showDocument(dataPath + "/index.html");
+    }
+
+    @FXML
+    public void commentBtnClick() {
+        try {
+            LineExporter.export(this.dataPath, commentText.getText(), sourceText.getText());
+            showDialog("Success", "HTML saved to " + this.dataPath);
+        } catch (Exception x) {
+            x.printStackTrace();
+            showDialog("Failure", x.getMessage());
         }
     }
 

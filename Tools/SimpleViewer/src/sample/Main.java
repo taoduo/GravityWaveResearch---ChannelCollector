@@ -1,6 +1,7 @@
 package sample;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -19,11 +20,9 @@ public class Main extends Application {
 
         // start the application
         primaryStage.setTitle("Simple Viewer");
-        primaryStage.setScene(new Scene(root, 875, 650));
+        primaryStage.setScene(new Scene(root, 875, 700));
         primaryStage.show();
     }
-
-
 
     public static void main(String[] args) {
         launch(args);

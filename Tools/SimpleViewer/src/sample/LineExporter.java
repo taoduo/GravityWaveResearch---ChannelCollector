@@ -18,12 +18,19 @@ import java.util.Collections;
 public class LineExporter {
 	private static PrintWriter writer;
 
-	static void export(String... args) throws Exception {
+	/**
+	 *
+	 * @param location the location where html should be saved (no file name)
+	 * @param comments the comments in the form of html
+	 * @param source the source URL where line is found
+	 * @throws Exception when things go wrong
+	 */
+	static void export(String location, String comments, String source) throws Exception {
 		// init writer
-		writer = new PrintWriter(args[0] + "/index.html", "UTF-8");
+		writer = new PrintWriter(location + "/index.html", "UTF-8");
 
 		// get weeks
-		File[] files = new File(args[0]).listFiles();
+		File[] files = new File(location).listFiles();
 		List<String> weeks = new ArrayList<>();
 		if (files != null) {
 			for (File f : files) {
@@ -40,14 +47,14 @@ public class LineExporter {
 
 		// some parameters
 		String observatory = weeks.get(0).split("_")[0];
-		String[] line = args[0].split("/");
+		String[] line = location.split("/");
 		String ln = line[line.length - 1].split("_")[1];
 
 		// modify weeks to include the full path
 		for (int i = 0; i < weeks.size(); i++) {
-			weeks.set(i, args[0] + "/" + weeks.get(i));
+			weeks.set(i, location + "/" + weeks.get(i));
 		}
-		writeHead(observatory, ln, weeks);
+		writeHead(observatory, ln, weeks, comments, source);
 		for (int i = 0; i < weeks.size(); i++) {
 			writeWeek(new File(weeks.get(i)), "week " + (i + 1));
 	    }
@@ -103,7 +110,7 @@ public class LineExporter {
 		writer.println("				</li>");
 	}
 
-	private static void writeHead(String observatory, String line, List<String> weeks) {
+	private static void writeHead(String observatory, String line, List<String> weeks, String comments, String source) {
 		writer.println("<!DOCTYPE html>");
 		writer.println("<html>");
 		writer.println("	<head>");
@@ -136,10 +143,14 @@ public class LineExporter {
 		writer.println("		<div class='container'>");
 		writer.println("		<header>");
 		writer.println("			<h4>");
-		writer.println("				Presented here are the coherence tool search results of a " + line + " Hz line in " + observatory + ". The line is posted");
-		writer.println("				<a href='#'> here</a>.");
+		if (source != null) {
+			writer.println("				Presented here are the coherence tool search results of a " + line + " Hz line in " + observatory + ". The line is posted");
+			writer.println("				<a href='#'> here</a>.");
+		} else {
+			writer.println("				Presented here are the coherence tool search results of a " + line + " Hz line in " + observatory + ".");
+		}
 		writer.println("			</h4>");
-		writer.println("			<h5>(Comment)</h5>");
+		writer.println("			<h5>" + comments + "</h5>");
 		writer.println("		</header>");
 		writeWeekBtn(weeks);
 		writer.println("		<div class='row'>");
