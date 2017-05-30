@@ -48,6 +48,9 @@ public class Controller {
     @FXML
     public TextField sourceText;
 
+    @FXML
+    public Application app;
+
     private Stage appStage;
 
     private String dataPath;
@@ -139,7 +142,7 @@ public class Controller {
         unselectedTotal = 0;
         refreshCounters();
         try {
-            LineExporter.export(this.dataPath, null, sourceText.getText());
+            LineExporter.export(this.dataPath, commentText.getText(), sourceText.getText());
             showDialog("Export Success", "HTML saved to " + this.dataPath);
         } catch (Exception x) {
             x.printStackTrace();
@@ -174,15 +177,14 @@ public class Controller {
 
     @FXML
     public void previewBtnClick() {
-        Application app = new Main();
-        System.out.println(dataPath + "/index.html");
-        app.getHostServices().showDocument(dataPath + "/index.html");
+        this.app.getHostServices().showDocument("file://" + dataPath + "/index.html");
     }
 
     @FXML
     public void commentBtnClick() {
         try {
             LineExporter.export(this.dataPath, commentText.getText(), sourceText.getText());
+            commentText.clear();
             showDialog("Success", "HTML saved to " + this.dataPath);
         } catch (Exception x) {
             x.printStackTrace();
@@ -209,7 +211,7 @@ public class Controller {
     void setAppStage(Stage stage) {
         this.appStage = stage;
     }
-
+    void setApp(Application app) { this.app = app; }
     private void showDialog(String header, String content) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("SimpleViewer");

@@ -15,7 +15,7 @@ import java.util.Collections;
  * Export as html that works in the same folder as <data_path>
  * It is required that the tail of data_path end with line_xxx. eg. /line_50.12
  */
-public class LineExporter {
+class LineExporter {
 	private static PrintWriter writer;
 
 	/**
@@ -143,9 +143,9 @@ public class LineExporter {
 		writer.println("		<div class='container'>");
 		writer.println("		<header>");
 		writer.println("			<h4>");
-		if (source != null) {
+		if (source.length() != 0) {
 			writer.println("				Presented here are the coherence tool search results of a " + line + " Hz line in " + observatory + ". The line is posted");
-			writer.println("				<a href='#'> here</a>.");
+			writer.println("				<a href='" + source + "'> here</a>.");
 		} else {
 			writer.println("				Presented here are the coherence tool search results of a " + line + " Hz line in " + observatory + ".");
 		}
