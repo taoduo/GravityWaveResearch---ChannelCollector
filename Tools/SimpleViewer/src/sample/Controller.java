@@ -2,12 +2,14 @@ package sample;
 
 import java.io.File;
 
+import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -39,6 +41,15 @@ public class Controller {
 
     @FXML
     public Label dataPathLabel;
+
+    @FXML
+    public TextField commentText;
+
+    @FXML
+    public TextField sourceText;
+
+    @FXML
+    public Application app;
 
     private Stage appStage;
 
@@ -131,7 +142,8 @@ public class Controller {
         unselectedTotal = 0;
         refreshCounters();
         try {
-            LineExporter.export(this.dataPath);
+            LineExporter.export(this.dataPath, commentText.getText(), sourceText.getText());
+            commentText.clear();
             showDialog("Export Success", "HTML saved to " + this.dataPath);
         } catch (Exception x) {
             x.printStackTrace();
@@ -164,6 +176,23 @@ public class Controller {
         }
     }
 
+    @FXML
+    public void previewBtnClick() {
+        this.app.getHostServices().showDocument("file://" + dataPath + "/index.html");
+    }
+
+    @FXML
+    public void commentBtnClick() {
+        try {
+            LineExporter.export(this.dataPath, commentText.getText(), sourceText.getText());
+            commentText.clear();
+            showDialog("Success", "HTML saved to " + this.dataPath);
+        } catch (Exception x) {
+            x.printStackTrace();
+            showDialog("Failure", x.getMessage());
+        }
+    }
+
     private void refreshCounters() {
         selectedCount.setText(selectedCurrent + "/" + selectedTotal);
         unselectedCount.setText(unselectedCurrent + "/" + unselectedTotal);
@@ -183,7 +212,7 @@ public class Controller {
     void setAppStage(Stage stage) {
         this.appStage = stage;
     }
-
+    void setApp(Application app) { this.app = app; }
     private void showDialog(String header, String content) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("SimpleViewer");
