@@ -23,7 +23,7 @@ function line_search(data_path, low, high, line_freq, output_path, auto_filter_t
 		if exist(full_data)
 			week_search(full_data, low, high, line_freq, outp, auto_filter_thresold);
 		else
-			mkdir(strcat(outp, '_NO_DATA'));
+			mkdir(strcat(outp, 'NODATA'));
 		end
 	end
 	clear;
