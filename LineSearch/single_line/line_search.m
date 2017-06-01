@@ -12,6 +12,7 @@ function line_search(data_path, low, high, line_freq, output_path, auto_filter_t
 	%	 notices that we create the folder inside since we use the same folder name for all lines
 	% apply_auto_filter: automatically filters out irrelevant channels, details see channel.m
 	output_path = strcat(output_path, '/line_', num2str(line_freq));
+	mkdir(output_path);
 	files = dir(data_path);
 	dirFlags = [files.isdir];
 	weeks = files(dirFlags);
@@ -19,10 +20,10 @@ function line_search(data_path, low, high, line_freq, output_path, auto_filter_t
 	for week = weeks'
 		full_data = strcat(data_path, '/', week.name, '/data');
 		outp = strcat(output_path, '/', week.name);
-		mkdir(outp);
-		if (exist(full_data))
-			mkdir(output_path);
+		if exist(full_data)
 			week_search(full_data, low, high, line_freq, outp, auto_filter_thresold);
+		else
+			mkdir(strcat(outp, 'NODATA'));
 		end
 	end
 	clear;
