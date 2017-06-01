@@ -117,8 +117,8 @@ class LineExporter {
 	private static void  writeWeekBtn(List<String> weeks) {
 		writer.println("		<ul class='list-inline'>");
 		for (int i = 0; i < weeks.size(); i++) {
-			if (weeks.get(i).endsWith("NODATA")) {
-				writer.println("			<li><button class='btn btn-default week-btn' data-target='#week" + (i + 1) + "' data-toggle='collapse' style='text-decoration: line-through;'>WEEK " + (i + 1) + "</button></li>");
+			if (weeks.get(i).endsWith("_NODATA")) {
+				writer.println("			<li><button disabled class='btn btn-default week-btn' data-target='#week" + (i + 1) + "' data-toggle='collapse' style='text-decoration: line-through;'>WEEK " + (i + 1) + "</button></li>");
 				continue;
 			}
 			File[] chns = new File(weeks.get(i)).listFiles();
@@ -186,5 +186,4 @@ class LineExporter {
 		writer.println("	</body>");
 		writer.println("</html>");
 	}
-
 }
