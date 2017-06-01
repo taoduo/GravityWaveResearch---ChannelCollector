@@ -11,6 +11,7 @@ import java.util.Collections;
  * To use, do
  * java LineExporter <data_path>
  * data_path structure: <data_path>/<weeks_in_gps_time>/<channels>
+ * 		** When no data, it should be <data_path>/<weeks_in_gps_time>NODATA
  * <weeks_in_gps_time> example: L1_COH_1161388815_1161993615_SHORT_1_webpage
  * Export as html that works in the same folder as <data_path>
  * It is required that the tail of data_path end with line_xxx. eg. /line_50.12
@@ -62,54 +63,6 @@ class LineExporter {
 	    writer.close();
 	}
 
-	/*
-	 * Write the week buttons
-	 */
-	private static void  writeWeekBtn(List<String> weeks) {
-		writer.println("		<ul class='list-inline'>");
-		for (int i = 0; i < weeks.size(); i++) {
-			File[] chns = new File(weeks.get(i)).listFiles();
-			if (chns != null && chns.length != 0) {
-				writer.println("			<li><button class='btn btn-default week-btn' data-target='#week" + (i + 1) + "' data-toggle='collapse'>WEEK " + (i + 1) + "</button></li>");
-			} else {
-				writer.println("			<li><button disabled class='btn btn-default week-btn' data-target='#week" + (i + 1) + "' data-toggle='collapse'>WEEK " + (i + 1) + "</button></li>");
-			}
-		}
-		writer.println("		</ul>");
-	}
-
-	/*
-	 * Write the channel data for this week
-	 */
-	private static void writeWeek(File weekFolder, String week) {
-		// get file lists and sort them
-		File[] files = weekFolder.listFiles();
-		List<String> channels = new ArrayList<>();
-		if (files != null) {
-			for (File f : files) {
-				if (!f.getName().startsWith(".") && f.getName().endsWith(".jpg")) {
-					channels.add(f.getName());
-				}
-			}
-		}
-		Collections.sort(channels);
-		// print the first part
-		String id = week.replace(" ", "");
-		writer.println("				<li class='week-wrapper collapse' id='" + id + "'>");
-		writer.println("					<h4>" + week.toUpperCase() + "</h4>");
-		writer.println("					<ul class='list-unstyled'>");
-		// print the channels
-		channels.forEach((chn)-> {
-			writer.println("					<li>");
-			writer.println("						<a class='btn plot-link' data-plot='./" + weekFolder.getName() + "/" + chn + "'>");
-			writer.println("							" + chn.split("\\.")[0]);
-			writer.println("						</a>");
-			writer.println("					</li>");
-		});
-		writer.println("					</ul>");
-		writer.println("				</li>");
-	}
-
 	private static void writeHead(String observatory, String line, List<String> weeks, String comments, String source) {
 		writer.println("<!DOCTYPE html>");
 		writer.println("<html>");
@@ -157,6 +110,60 @@ class LineExporter {
 		writer.println("			<div class='col-md-4'>");
 		writer.println("			<ul class='list-unstyled'>");
 	}
+
+	/*
+	 * Write the week buttons
+	 */
+	private static void  writeWeekBtn(List<String> weeks) {
+		writer.println("		<ul class='list-inline'>");
+		for (int i = 0; i < weeks.size(); i++) {
+			if (weeks.get(i).endsWith("NODATA")) {
+				writer.println("			<li><button class='btn btn-default week-btn' data-target='#week" + (i + 1) + "' data-toggle='collapse' style='text-decoration: line-through;'>WEEK " + (i + 1) + "</button></li>");
+				continue;
+			}
+			File[] chns = new File(weeks.get(i)).listFiles();
+			if (chns != null && chns.length != 0) { // normal
+				writer.println("			<li><button class='btn btn-default week-btn' data-target='#week" + (i + 1) + "' data-toggle='collapse'>WEEK " + (i + 1) + "</button></li>");
+			} else {
+				writer.println("			<li><button disabled class='btn btn-default week-btn' data-target='#week" + (i + 1) + "' data-toggle='collapse'>WEEK " + (i + 1) + "</button></li>");
+			}
+		}
+		writer.println("		</ul>");
+	}
+
+	/*
+	 * Write the channel data for this week
+	 */
+	private static void writeWeek(File weekFolder, String week) {
+		// get file lists and sort them
+		File[] files = weekFolder.listFiles();
+		List<String> channels = new ArrayList<>();
+		if (files != null) {
+			for (File f : files) {
+				if (!f.getName().startsWith(".") && f.getName().endsWith(".jpg")) {
+					channels.add(f.getName());
+				}
+			}
+		}
+		Collections.sort(channels);
+		// print the first part
+		String id = week.replace(" ", "");
+		writer.println("				<li class='week-wrapper collapse' id='" + id + "'>");
+		writer.println("					<h4>" + week.toUpperCase() + "</h4>");
+		writer.println("					<ul class='list-unstyled'>");
+		// print the channels
+		channels.forEach((chn)-> {
+			writer.println("					<li>");
+			writer.println("						<a class='btn plot-link' data-plot='./" + weekFolder.getName() + "/" + chn + "'>");
+			writer.println("							" + chn.split("\\.")[0]);
+			writer.println("						</a>");
+			writer.println("					</li>");
+		});
+		writer.println("					</ul>");
+		writer.println("				</li>");
+	}
+
+
 
 	private static void writeFoot() {
 		writer.println("			</ul>");
