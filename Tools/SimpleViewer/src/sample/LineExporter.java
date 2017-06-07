@@ -104,6 +104,7 @@ class LineExporter {
 		}
 		writer.println("			</h4>");
 		writer.println("			<h5>" + comments + "</h5>");
+		writer.println("			<em>Button disabled: not found. Button with delete line: no data.</em>");
 		writer.println("		</header>");
 		writeWeekBtn(weeks);
 		writer.println("		<div class='row'>");
