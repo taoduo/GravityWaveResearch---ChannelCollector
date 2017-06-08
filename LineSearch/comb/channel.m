@@ -27,7 +27,7 @@ function channel(data_path, search, comb, output_path)
 					search.dump();
 					comb.dump();
 				end
-				if (sigCount == 0)
+				if (sigCount < size(lines) / 3)
 						return;
 				end
 	end
