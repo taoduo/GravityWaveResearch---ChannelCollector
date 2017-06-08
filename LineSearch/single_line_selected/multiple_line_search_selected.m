@@ -12,7 +12,6 @@ function multiple_line_search_selected(data_path, lines_array, output_path, auto
 	mkdir(output_path);
 	for i = 1 : size(lines_array, 1)
 		line = lines_array(i, :);
-		line_search_selected(data_path, line(1), line(2), line(3), output_path,
-				auto_filter_thresold, selected_weeks);
+		line_search_selected(data_path, line(1), line(2), line(3), output_path, auto_filter_thresold, selected_weeks);
 	end
 end
