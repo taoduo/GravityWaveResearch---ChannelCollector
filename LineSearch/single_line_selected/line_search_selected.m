@@ -16,9 +16,9 @@ function line_search_selected(data_path, low, high, line_freq, output_path, auto
 	mkdir(output_path);
 	files = dir(data_path);
 	dirFlags = [files.isdir];
-	for week = selected_weeks'
+	for w = selected_weeks'
+		week = transpose(w);
 		full_data = strcat(data_path, '/', week, '/data');
-		fprintf(week);
 		outp = strcat(output_path, '/', week);
 		if exist(full_data)
 			week_search(full_data, low, high, line_freq, outp, auto_filter_thresold);
