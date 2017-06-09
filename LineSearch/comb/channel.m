@@ -10,7 +10,9 @@ function channel(data_path, search, comb, output_path)
 	load(data_path);
 	freqGap = freqs(2) - freqs(1);
 	[fp, cp] = search.chopData(freqs, coh, data_path);
-
+	if (fp == false)
+		return;
+	end
 	lines = comb.getLines();
 	markPos = lines(lines >= search.low & lines <= search.high);
 	if (search.filter ~= 0)

@@ -23,10 +23,11 @@ classdef Search
 			high = line.line + obj.zoom;
 			il = floor(low / freqGap) + 1;
 			ih = ceil(high / freqGap) + 1;
-			if il > length(coh)
+			if il > length(coh) % no data is in the search range
 				disp(strcat(data_path, ' out of range. Skipped.'));
-				il = false;
-				ih = false;
+				fp = false;
+				cp = false;
+				return;
 			elseif ih > length(coh)
 				disp(strcat(data_path, ' range chopped.'));
 				ih = length(coh);

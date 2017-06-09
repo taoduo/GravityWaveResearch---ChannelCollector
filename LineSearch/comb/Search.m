@@ -18,8 +18,9 @@ classdef Search
 			ih = ceil(obj.high / freqGap) + 1;
 			if il > length(coh)
 				disp(strcat(data_path, ' out of range. Skipped.'));
-				il = false;
-				ih = false;
+				fp = false;
+				cp = false;
+				return;
 			elseif ih > length(coh)
 				disp(strcat(data_path, ' range chopped.'));
 				ih = length(coh);

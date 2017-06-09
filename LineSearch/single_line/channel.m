@@ -11,7 +11,9 @@ function channel(data_path, search, line, output_path)
 	[~, channel_name, ~] = fileparts(data_path);
 	freqGap = freqs(2) - freqs(1);
 	[fp, cp] = search.chopData(data_path, freqs, coh, line);
-
+	if (fp == false)
+		return;
+	end
 	if (search.filter ~= 0)
 		all_avg = mean(cp);
 		offset = line.resolution;
