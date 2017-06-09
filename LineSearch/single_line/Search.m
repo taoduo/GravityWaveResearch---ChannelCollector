@@ -19,8 +19,8 @@ classdef Search
 
 		function [fp, cp] = chopData(obj, data_path, freqs, coh, line)
 			freqGap = freqs(2) - freqs(1);
-			low = line.line - zoom;
-			high = line.line + zoom;
+			low = line.line - obj.zoom;
+			high = line.line + obj.zoom;
 			il = floor(low / freqGap) + 1;
 			ih = ceil(high / freqGap) + 1;
 			if il > length(coh)
