@@ -1,17 +1,12 @@
-function line_search(data_path, low, high, line_freq, output_path, auto_filter_thresold)
-	% search for a line in all weeks at data_path
-	%  the data directory structure:
-	%   data_path/<weeks_in_gps_time>/data/<data_of_this_week>
+function line_search(data_path, search, line, output_path)
+	% Search for a line in all weeks, all channels
 	% data_path: the path that contains all weeks folder
-	% low: the lower search bound
-	% high: the higher search bound
-	% line_freq: the frequency of the line, marked in figures
-	% output_path: the folder where the line_xx folder locates in
-	%  the output_path will be created
-	%  the structure is output_path/line_xx/<weeks>/<figures>
-	%	 notices that we create the folder inside since we use the same folder name for all lines
-	% apply_auto_filter: automatically filters out irrelevant channels, details see channel.m
-	output_path = strcat(output_path, '/line_', num2str(line_freq));
+	% search: configurations of this search (high / low /filter)
+	% comb: parameters of the line (see the structure Line)
+	% output_path: the folder where all the week folders locate in
+		% the output_path will be created
+		% the structure is output_path/<weeks>/<plots>
+	output_path = strcat(output_path, '/line_', num2str(line.line));
 	mkdir(output_path);
 	files = dir(data_path);
 	dirFlags = [files.isdir];
@@ -21,7 +16,7 @@ function line_search(data_path, low, high, line_freq, output_path, auto_filter_t
 		full_data = strcat(data_path, '/', week.name, '/data');
 		outp = strcat(output_path, '/', week.name);
 		if exist(full_data)
-			week_search(full_data, low, high, line_freq, outp, auto_filter_thresold);
+			week_search(full_data, search, line, outp);
 		else
 			mkdir(strcat(outp, '_NODATA'));
 		end

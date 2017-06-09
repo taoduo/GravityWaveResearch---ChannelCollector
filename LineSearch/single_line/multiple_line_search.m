@@ -1,16 +1,19 @@
-function multiple_line_search(data_path, lines_array, output_path, auto_filter_thresold)
+function multiple_line_search(data_path, lines_array, output_path, auto_filter_thresold, resolution)
 	% search for multiple lines in lines_array in all weeks at data_path
 		%  the data directory structure:
 		%   data_path/<weeks_in_gps_time>/data/<data_of_this_week>
-		% data_path: the path that contains all weeks folder
-		% lines_array: [low1, high1, line1; low1, high2, line2; ...]
+	% data_path: the path that contains all weeks folder
+	% lines_array: [low1, high1, line1; low2, high2, line2; ...]
 	% output_path: the folder where all the line folders locate in
 		%  the output_path will be created
 		%  the structure is output_path/<lines>/<weeks>/<figures>
 	% apply_auto_filter: automatically filters out irrelevant channels, details see channel.m
+	% resolution: the resolution of the line. The program will search within range of "line plusminus resolution"
 	mkdir(output_path);
 	for i = 1 : size(lines_array, 1)
-		line = lines_array(i, :);
-		line_search(data_path, line(1), line(2), line(3), output_path, auto_filter_thresold);
+		line_data = lines_array(i, :);
+		search = Search(line_data(1), line_data(2), auto_filter_thresold);
+		line = Line(line_data(3), resolution);
+		line_search(data_path, search, line, output_path);
 	end
 end

@@ -1,5 +1,5 @@
 function channel(data_path, search, comb, output_path)
-	% Search for a line in a channel at data_path
+	% Search for a comb in a channel at data_path
 	% data_path: the path to the mat file
 	% search: configurations of this search (high / low /filter)
 	% comb: parameters of the comb

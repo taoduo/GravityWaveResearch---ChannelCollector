@@ -5,7 +5,7 @@ function comb_search(data_path, search, comb, output_path)
 	% comb: parameters of the comb (see the structure Comb)
 	% output_path: the folder where all the week folders locate in
 		% the output_path will be created
-		% the structure is output_path/<weeks>/<figures>
+		% the structure is output_path/<weeks>/<plots>
 
 	output_path = strcat(output_path, '/comb_', num2str(comb.comb));
 	files = dir(data_path);
