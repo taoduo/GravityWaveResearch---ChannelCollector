@@ -3,13 +3,20 @@ classdef Search
 	properties
 		low,
 		high,
-		filter
+		filter,
+		selected_weeks
 	end
 	methods
-		function obj = Search(low, high, filter)
+		function obj = Search(low, high, filter, selected_weeks)
 			obj.low = low;
 			obj.high = high;
 			obj.filter = filter;
+			if nargin == 3
+				obj.selected_weeks = [];
+			end
+			if nargin == 4
+				obj.selected_weeks = selected_weeks;
+			end
 		end
 
 		function [fp, cp] = chopData(obj, freqs, coh, data_path)
