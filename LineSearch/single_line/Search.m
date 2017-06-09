@@ -41,7 +41,7 @@ classdef Search
 				disp('All weeks selected.');
 			else
 				disp('Weeks selected:');
-				for w = obj.selected_weeks:
+				for w = obj.selected_weeks
 					disp(w);
 				end
 			end
