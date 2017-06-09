@@ -44,6 +44,7 @@ classdef Search
 				for w = obj.selected_weeks:
 					disp(w);
 				end
+			end
 		end
 	end
 end
