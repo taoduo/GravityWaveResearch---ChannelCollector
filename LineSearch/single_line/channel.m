@@ -10,7 +10,7 @@ function channel(data_path, search, line, output_path)
 	load(data_path);
 	[~, channel_name, ~] = fileparts(data_path);
 	freqGap = freqs(2) - freqs(1);
-	[fp, cp] = search.chopData(freqs, coh, data_path);
+	[fp, cp] = search.chopData(data_path, freqs, coh, line);
 
 	if (search.filter ~= 0)
 		all_avg = mean(cp);

@@ -15,6 +15,7 @@ classdef Line
 				obj.resolution = resolution;
 			end
 		end
+
 		function dump(obj)
 			disp(strcat('Line:', num2str(obj.line), '# Resolution:', num2str(obj.resolution)));
 		end

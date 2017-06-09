@@ -1,28 +1,28 @@
 classdef Search
 	% Search configurations
 	properties
-		low,
-		high,
-		filter,
-		selected_weeks
+		zoom, % the x-axis range of the plot, centerd at the single line. One-sided.
+		filter, % filter thresold
+		selected_weeks % the weeks selected, as array, in folder names. Empty to select all.
 	end
 	methods
-		function obj = Search(low, high, filter, selected_weeks)
-			obj.low = low;
-			obj.high = high;
+		function obj = Search(zoom, filter, selected_weeks)
+			obj.zoom = zoom;
 			obj.filter = filter;
-			if nargin == 3
+			if nargin == 2
 				obj.selected_weeks = [];
 			end
-			if nargin == 4
+			if nargin == 3
 				obj.selected_weeks = selected_weeks;
 			end
 		end
 
-		function [fp, cp] = chopData(obj, freqs, coh, data_path)
+		function [fp, cp] = chopData(obj, data_path, freqs, coh, line)
 			freqGap = freqs(2) - freqs(1);
-			il = floor(obj.low / freqGap) + 1;
-			ih = ceil(obj.high / freqGap) + 1;
+			low = line.line - zoom;
+			high = line.line + zoom;
+			il = floor(low / freqGap) + 1;
+			ih = ceil(high / freqGap) + 1;
 			if il > length(coh)
 				disp(strcat(data_path, ' out of range. Skipped.'));
 				il = false;
@@ -36,7 +36,14 @@ classdef Search
 		end
 
 		function dump(obj)
-			disp(strcat('Search: ', num2str(obj.low), '#', num2str(obj.high), '#', num2str(obj.filter)));
+			disp(strcat('Zoom: ', num2str(obj.zoom), '#', num2str(obj.filter)));
+			if length(obj.selected_weeks) == 0
+				disp('All weeks selected.');
+			else
+				disp('Weeks selected:');
+				for w = obj.selected_weeks:
+					disp(w);
+				end
 		end
 	end
 end

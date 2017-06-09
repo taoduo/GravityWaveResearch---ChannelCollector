@@ -2,7 +2,7 @@ function line_search(data_path, search, line, output_path)
 	% Search for a line in all weeks, all channels
 	% data_path: the path that contains all weeks folder
 	% search: configurations of this search
-	% comb: parameters of the line (see the structure Line)
+	% line: parameters of the line (see the structure Line)
 	% output_path: the folder where all the week folders locate in
 		% the output_path will be created
 		% the structure is output_path/<weeks>/<plots>
