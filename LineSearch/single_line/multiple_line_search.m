@@ -12,13 +12,13 @@ function multiple_line_search(data_path, lines_array, output_path, auto_filter_t
 	mkdir(output_path);
 	for i = 1 : size(lines_array, 1)
 		line_data = lines_array(i, :);
-		search = Search(line_data(1), line_data(2), auto_filter_thresold, selected_weeks);
 		line = Line(line_data(3), resolution);
 		if nargin == 5
-			line_search(data_path, search, line, output_path);
+			search = Search(line_data(1), line_data(2), auto_filter_thresold);
 		end
 		if nargin == 6
-			line_search(data_path, search, line, output_path);
+			search = Search(line_data(1), line_data(2), auto_filter_thresold, selected_weeks);
 		end
+		line_search(data_path, search, line, output_path);
 	end
 end
