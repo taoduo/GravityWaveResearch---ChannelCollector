@@ -1,6 +1,6 @@
 ifo = IFOModel;
 sm = SourceModel;
-iter = [2,3,4,5];
+iter = [10,20,30,40,50];
 times = zeros(1, numel(iter));
 for i = 1 : numel(iter)
     t = cputime;
@@ -10,3 +10,5 @@ for i = 1 : numel(iter)
     times(i) = cputime - t;
 end
 scatter(iter, times);
+p = polyfit(iter, times,2);
+fprintf('avg time:%f', p(2));
