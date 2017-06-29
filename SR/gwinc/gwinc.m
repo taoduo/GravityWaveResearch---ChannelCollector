@@ -439,23 +439,7 @@ if ( fig > 0 )
       disp(sprintf('BNS reach:              %7.2f Gpc (comoving, z = %2.1f)', ...
         sss.NeutronStar.advanced.comovingReachMpc / 1000,sss.NeutronStar.reachZ))
     end
-
-    if sss.BlackHole.horizonZ < 0.5
-      disp(sprintf('BBH range:              %7.2f Mpc (comoving)', ...
-                   sss.BlackHole.comovingRangeMpc))
-      disp(sprintf('BBH horizon:            %7.2f Mpc (comoving)', ...
-                   sss.BlackHole.advanced.comovingHorizonMpc))
-      disp(sprintf('BBH reach:              %7.2f Mpc (comoving)', ...
-                   sss.BlackHole.advanced.comovingReachMpc))
-    else
-      disp(sprintf('BBH range:              %7.2f Gpc (comoving, z = %2.1f)', ...
-        sss.BlackHole.comovingRangeMpc / 1000, sss.BlackHole.advanced.rangeZ))
-      disp(sprintf('BBH horizon:            %7.2f Gpc (comoving, z = %2.1f)', ...
-        sss.BlackHole.advanced.comovingHorizonMpc / 1000,sss.BlackHole.horizonZ))
-      disp(sprintf('BBH reach:              %7.2f Gpc (comoving, z = %2.1f)', ...
-        sss.BlackHole.advanced.comovingReachMpc / 1000,sss.BlackHole.reachZ))
-    end
-      disp(sprintf('Stochastic Omega:          %4.3g',sss.Omega)) 
+    disp(sprintf('Stochastic Omega:          %4.3g',sss.Omega)) 
   end  
 end
 
