@@ -1,0 +1,528 @@
+(************** Content-type: application/mathematica **************
+                     CreatedBy='Mathematica 5.2'
+
+                    Mathematica-Compatible Notebook
+
+This notebook can be used with any Mathematica-compatible
+application, such as Mathematica, MathReader or Publicon. The data
+for the notebook starts with the line containing stars above.
+
+To get the notebook into a Mathematica-compatible application, do
+one of the following:
+
+* Save the data starting with the line of stars above into a file
+  with a name ending in .nb, then open the file inside the
+  application;
+
+* Copy the data starting with the line of stars above to the
+  clipboard, then use the Paste menu command inside the application.
+
+Data for notebooks contains only printable 7-bit ASCII and can be
+sent directly in email or through ftp in text mode.  Newlines can be
+CR, LF or CRLF (Unix, Macintosh or MS-DOS style).
+
+NOTE: If you modify the data for this notebook not in a Mathematica-
+compatible application, you must delete the line below containing
+the word CacheID, otherwise Mathematica-compatible applications may
+try to use invalid cache data.
+
+For more information on notebooks and Mathematica-compatible 
+applications, contact Wolfram Research:
+  web: http://www.wolfram.com
+  email: info@wolfram.com
+  phone: +1-217-398-0700 (U.S.)
+
+Notebook reader applications are available free of charge from 
+Wolfram Research.
+*******************************************************************)
+
+(*CacheID: 232*)
+
+
+(*NotebookFileLineBreakTest
+NotebookFileLineBreakTest*)
+(*NotebookOptionsPosition[     18034,        467]*)
+(*NotebookOutlinePosition[     18725,        491]*)
+(*  CellTagsIndexPosition[     18681,        487]*)
+(*WindowFrame->Normal*)
+
+
+
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[
+    \(\(\( (*\ 
+      fsr\ calculations\ \
+*) \)\(\[IndentingNewLine]\)\(\[IndentingNewLine]\)\( (*\ 
+      source\ location\ and\ polarisation\ tensors\ \
+*) \)\(\[IndentingNewLine]\)\( (*\ n\  = \ r_hat, \ l\  = \ theta_hat, \ 
+      m\  = \ phi_hat\ *) \)\(\[IndentingNewLine]\)\(\(n\  = \ {Sin[
+              theta]\ Cos[phi], \ Sin[theta]\ Sin[phi], \ 
+          Cos[theta]};\)\[IndentingNewLine]
+    \(l = \ {Cos[theta] Cos[phi], 
+          Cos[theta] Sin[phi], \(-Sin[theta]\)};\)\[IndentingNewLine]
+    \(m = \ {\(-Sin[phi]\), \ \ Cos[phi], \ 
+          0};\)\[IndentingNewLine]\[IndentingNewLine]
+    \(Print[StringForm["\<l=``\>", MatrixForm[l]]];\)\[IndentingNewLine]
+    \(Print[StringForm["\<m=``\>", MatrixForm[m]]];\)\[IndentingNewLine]
+    \(Print[
+        StringForm["\<n=``\>", 
+          MatrixForm[n]]];\)\[IndentingNewLine]\[IndentingNewLine]
+    \(eP\  = \ 
+        Outer[Times, l\ , \ l] - Outer[Times, m, \ m];\)\[IndentingNewLine]
+    \(eC\  = \ 
+        Outer[Times, l\ , \ m] + 
+          Outer[Times, m, \ l];\)\[IndentingNewLine]\[IndentingNewLine]
+    \(Print[StringForm["\<eP=``\>", MatrixForm[eP]]];\)\[IndentingNewLine]
+    \(Print[
+        StringForm["\<eC=``\>", 
+          MatrixForm[eC]]];\)\[IndentingNewLine]\[IndentingNewLine] (*\ 
+      unit\ vectors\ along\ detector\ arms\ *) \[IndentingNewLine]
+    \(a = {1, 0, 0};\)\[IndentingNewLine]
+    \(b = {0, 1, 0};\)\[IndentingNewLine]\[IndentingNewLine] (*\ 
+      dot\ products\ of\ unit\ vectors\ along\ detector\ arms\ with\ \
+polarisation\ tensors\ *) \[IndentingNewLine]
+    \(ePaa = FullSimplify[a . eP . a];\)\[IndentingNewLine]
+    \(ePbb = FullSimplify[b . eP . b];\)\[IndentingNewLine]
+    \(eCaa = FullSimplify[a . eC . a];\)\[IndentingNewLine]
+    \(eCbb = 
+        FullSimplify[
+          b . eC . b];\)\[IndentingNewLine] (*\[IndentingNewLine]Print[
+        StringForm["\<ePaa=``\>", ePaa]]; \[IndentingNewLine]Print[
+        StringForm["\<ePbb=``\>", ePbb]]; \[IndentingNewLine]Print[
+        StringForm["\<eCaa=``\>", eCaa]]; \[IndentingNewLine]Print[
+        StringForm["\<eCbb=``\>", 
+          
+          eCbb]];\[IndentingNewLine]*) \[IndentingNewLine]\[IndentingNewLine] \
+(*\ LW\ antenna\ patterns\ as\ sanity\ check\ *) \[IndentingNewLine]
+    \(Fp\  = \ 0.5\ *\ \((ePaa\  - \ ePbb)\);\)\[IndentingNewLine]
+    \(Fc\  = \ 0.5\ *\ \((eCaa\  - \ eCbb)\);\)\[IndentingNewLine]
+    \(Print[StringForm["\<Fp=``\>", Fp]];\)\[IndentingNewLine]
+    \(Print[
+        StringForm["\<Fc=``\>", 
+          Fc]];\)\[IndentingNewLine]\[IndentingNewLine] (*\ 
+      compare\ with\ standard\ expressions\ in\ the\ literature\ \
+*) \[IndentingNewLine]
+    Simplify[
+      Fp - \((1/2)\) Cos[2\ phi]\ \((1 + Cos[theta]^2)\)]\[IndentingNewLine]
+    Simplify[Fc\  - \ \((\(-1\))\) Sin[2\ phi]\ Cos[theta]]\)\)\)], "Input"],
+
+Cell[BoxData[
+    InterpretationBox["\<\"l=\\!\\(\\*TagBox[\\((\[NoBreak] \
+\\*TagBox[GridBox[{{\\(\\(\\(Cos[phi]\\)\\)\\\\ \\(\\(Cos[theta]\\)\\)\\)}, {\
+\\(\\(\\(Cos[theta]\\)\\)\\\\ \\(\\(Sin[phi]\\)\\)\\)}, {\\(-\\(\\(Sin[theta]\
+\\)\\)\\)}}, RowSpacings -> 1, ColumnAlignments -> Left], Column] \[NoBreak])\
+\\), Function[BoxForm`e$, MatrixForm[BoxForm`e$]]]\\)\"\>",
+      StringForm[ "l=``", 
+        MatrixForm[ {
+          Times[ 
+            Cos[ phi], 
+            Cos[ theta]], 
+          Times[ 
+            Cos[ theta], 
+            Sin[ phi]], 
+          Times[ -1, 
+            Sin[ theta]]}]],
+      Editable->False]], "Print"],
+
+Cell[BoxData[
+    InterpretationBox["\<\"m=\\!\\(\\*TagBox[\\((\[NoBreak] \
+\\*TagBox[GridBox[{{\\(-\\(\\(Sin[phi]\\)\\)\\)}, {\\(Cos[phi]\\)}, \
+{\\\"0\\\"}}, RowSpacings -> 1, ColumnAlignments -> Left], Column] \
+\[NoBreak])\\), Function[BoxForm`e$, MatrixForm[BoxForm`e$]]]\\)\"\>",
+      StringForm[ "m=``", 
+        MatrixForm[ {
+          Times[ -1, 
+            Sin[ phi]], 
+          Cos[ phi], 0}]],
+      Editable->False]], "Print"],
+
+Cell[BoxData[
+    InterpretationBox["\<\"n=\\!\\(\\*TagBox[\\((\[NoBreak] \
+\\*TagBox[GridBox[{{\\(\\(\\(Cos[phi]\\)\\)\\\\ \\(\\(Sin[theta]\\)\\)\\)}, {\
+\\(\\(\\(Sin[phi]\\)\\)\\\\ \\(\\(Sin[theta]\\)\\)\\)}, {\\(Cos[theta]\\)}}, \
+RowSpacings -> 1, ColumnAlignments -> Left], Column] \[NoBreak])\\), \
+Function[BoxForm`e$, MatrixForm[BoxForm`e$]]]\\)\"\>",
+      StringForm[ "n=``", 
+        MatrixForm[ {
+          Times[ 
+            Cos[ phi], 
+            Sin[ theta]], 
+          Times[ 
+            Sin[ phi], 
+            Sin[ theta]], 
+          Cos[ theta]}]],
+      Editable->False]], "Print"],
+
+Cell[BoxData[
+    InterpretationBox["\<\"eP=\\!\\(\\*TagBox[\\((\[NoBreak] \\*GridBox[{{\\(\
+\\(\\(\\(Cos[phi]\\)\\^2\\\\ \\(Cos[theta]\\)\\^2\\)\\) - \
+\\(Sin[phi]\\)\\^2\\), \\(\\(\\(\\(\\(Cos[phi]\\)\\)\\\\ \\(\\(Sin[phi]\\)\\)\
+\\)\\) + \\(\\(\\(\\(Cos[phi]\\)\\)\\\\ \\(Cos[theta]\\)\\^2\\\\ \
+\\(\\(Sin[phi]\\)\\)\\)\\)\\), \\(\\(\\(-\\(\\(Cos[phi]\\)\\)\\)\\)\\\\ \
+\\(\\(Cos[theta]\\)\\)\\\\ \\(\\(Sin[theta]\\)\\)\\)}, \
+{\\(\\(\\(\\(\\(Cos[phi]\\)\\)\\\\ \\(\\(Sin[phi]\\)\\)\\)\\) + \
+\\(\\(\\(\\(Cos[phi]\\)\\)\\\\ \\(Cos[theta]\\)\\^2\\\\ \
+\\(\\(Sin[phi]\\)\\)\\)\\)\\), \\(\\(\\(-\\(Cos[phi]\\)\\^2\\)\\) + \
+\\(\\(\\(Cos[theta]\\)\\^2\\\\ \\(Sin[phi]\\)\\^2\\)\\)\\), \
+\\(\\(\\(-\\(\\(Cos[theta]\\)\\)\\)\\)\\\\ \\(\\(Sin[phi]\\)\\)\\\\ \
+\\(\\(Sin[theta]\\)\\)\\)}, {\\(\\(\\(-\\(\\(Cos[phi]\\)\\)\\)\\)\\\\ \
+\\(\\(Cos[theta]\\)\\)\\\\ \\(\\(Sin[theta]\\)\\)\\), \
+\\(\\(\\(-\\(\\(Cos[theta]\\)\\)\\)\\)\\\\ \\(\\(Sin[phi]\\)\\)\\\\ \
+\\(\\(Sin[theta]\\)\\)\\), \\(\\(Sin[theta]\\)\\^2\\)}}, RowSpacings -> 1, \
+ColumnSpacings -> 1, ColumnAlignments -> Left] \[NoBreak])\\), \
+Function[BoxForm`e$, MatrixForm[BoxForm`e$]]]\\)\"\>",
+      StringForm[ "eP=``", 
+        MatrixForm[ {{
+          Plus[ 
+            Times[ 
+              Power[ 
+                Cos[ phi], 2], 
+              Power[ 
+                Cos[ theta], 2]], 
+            Times[ -1, 
+              Power[ 
+                Sin[ phi], 2]]], 
+          Plus[ 
+            Times[ 
+              Cos[ phi], 
+              Sin[ phi]], 
+            Times[ 
+              Cos[ phi], 
+              Power[ 
+                Cos[ theta], 2], 
+              Sin[ phi]]], 
+          Times[ -1, 
+            Cos[ phi], 
+            Cos[ theta], 
+            Sin[ theta]]}, {
+          Plus[ 
+            Times[ 
+              Cos[ phi], 
+              Sin[ phi]], 
+            Times[ 
+              Cos[ phi], 
+              Power[ 
+                Cos[ theta], 2], 
+              Sin[ phi]]], 
+          Plus[ 
+            Times[ -1, 
+              Power[ 
+                Cos[ phi], 2]], 
+            Times[ 
+              Power[ 
+                Cos[ theta], 2], 
+              Power[ 
+                Sin[ phi], 2]]], 
+          Times[ -1, 
+            Cos[ theta], 
+            Sin[ phi], 
+            Sin[ theta]]}, {
+          Times[ -1, 
+            Cos[ phi], 
+            Cos[ theta], 
+            Sin[ theta]], 
+          Times[ -1, 
+            Cos[ theta], 
+            Sin[ phi], 
+            Sin[ theta]], 
+          Power[ 
+            Sin[ theta], 2]}}]],
+      Editable->False]], "Print"],
+
+Cell[BoxData[
+    InterpretationBox["\<\"eC=\\!\\(\\*TagBox[\\((\[NoBreak] \\*GridBox[{{\\(\
+\\(\\(-2\\)\\)\\\\ \\(\\(Cos[phi]\\)\\)\\\\ \\(\\(Cos[theta]\\)\\)\\\\ \
+\\(\\(Sin[phi]\\)\\)\\), \\(\\(\\(\\(Cos[phi]\\)\\^2\\\\ \
+\\(\\(Cos[theta]\\)\\)\\)\\) - \\(\\(\\(\\(Cos[theta]\\)\\)\\\\ \
+\\(Sin[phi]\\)\\^2\\)\\)\\), \\(\\(\\(Sin[phi]\\)\\)\\\\ \
+\\(\\(Sin[theta]\\)\\)\\)}, {\\(\\(\\(\\(Cos[phi]\\)\\^2\\\\ \\(\\(Cos[theta]\
+\\)\\)\\)\\) - \\(\\(\\(\\(Cos[theta]\\)\\)\\\\ \\(Sin[phi]\\)\\^2\\)\\)\\), \
+\\(2\\\\ \\(\\(Cos[phi]\\)\\)\\\\ \\(\\(Cos[theta]\\)\\)\\\\ \
+\\(\\(Sin[phi]\\)\\)\\), \\(\\(\\(-\\(\\(Cos[phi]\\)\\)\\)\\)\\\\ \
+\\(\\(Sin[theta]\\)\\)\\)}, {\\(\\(\\(Sin[phi]\\)\\)\\\\ \
+\\(\\(Sin[theta]\\)\\)\\), \\(\\(\\(-\\(\\(Cos[phi]\\)\\)\\)\\)\\\\ \
+\\(\\(Sin[theta]\\)\\)\\), \\\"0\\\"}}, RowSpacings -> 1, ColumnSpacings -> \
+1, ColumnAlignments -> Left] \[NoBreak])\\), Function[BoxForm`e$, \
+MatrixForm[BoxForm`e$]]]\\)\"\>",
+      StringForm[ "eC=``", 
+        MatrixForm[ {{
+          Times[ -2, 
+            Cos[ phi], 
+            Cos[ theta], 
+            Sin[ phi]], 
+          Plus[ 
+            Times[ 
+              Power[ 
+                Cos[ phi], 2], 
+              Cos[ theta]], 
+            Times[ -1, 
+              Cos[ theta], 
+              Power[ 
+                Sin[ phi], 2]]], 
+          Times[ 
+            Sin[ phi], 
+            Sin[ theta]]}, {
+          Plus[ 
+            Times[ 
+              Power[ 
+                Cos[ phi], 2], 
+              Cos[ theta]], 
+            Times[ -1, 
+              Cos[ theta], 
+              Power[ 
+                Sin[ phi], 2]]], 
+          Times[ 2, 
+            Cos[ phi], 
+            Cos[ theta], 
+            Sin[ phi]], 
+          Times[ -1, 
+            Cos[ phi], 
+            Sin[ theta]]}, {
+          Times[ 
+            Sin[ phi], 
+            Sin[ theta]], 
+          Times[ -1, 
+            Cos[ phi], 
+            Sin[ theta]], 0}}]],
+      Editable->False]], "Print"],
+
+Cell[BoxData[
+    InterpretationBox["\<\"Fp=\\!\\(0.5`\\\\ \\(\\((\\(Cos[phi]\\)\\^2 + \
+\\(\\(\\(Cos[phi]\\)\\^2\\\\ \\(Cos[theta]\\)\\^2\\)\\) - \\(Sin[phi]\\)\\^2 \
+- \\(\\(\\(Cos[theta]\\)\\^2\\\\ \\(Sin[phi]\\)\\^2\\)\\))\\)\\)\\)\"\>",
+      StringForm[ "Fp=``", 
+        Times[ 0.5, 
+          Plus[ 
+            Power[ 
+              Cos[ phi], 2], 
+            Times[ 
+              Power[ 
+                Cos[ phi], 2], 
+              Power[ 
+                Cos[ theta], 2]], 
+            Times[ -1, 
+              Power[ 
+                Sin[ phi], 2]], 
+            Times[ -1, 
+              Power[ 
+                Cos[ theta], 2], 
+              Power[ 
+                Sin[ phi], 2]]]]],
+      Editable->False]], "Print"],
+
+Cell[BoxData[
+    InterpretationBox["\<\"Fc=\\!\\(0.5`\\\\ \\(\\((\\(\\(\\(\\(-2\\)\\)\\\\ \
+\\(\\(Cos[phi]\\)\\)\\\\ \\(\\(Cos[theta]\\)\\)\\\\ \
+\\(\\(Sin[phi]\\)\\)\\)\\) - \\(\\(\\(\\(Cos[theta]\\)\\)\\\\ \
+\\(\\(Sin[\\(\\(2\\\\ phi\\)\\)]\\)\\)\\)\\))\\)\\)\\)\"\>",
+      StringForm[ "Fc=``", 
+        Times[ 0.5, 
+          Plus[ 
+            Times[ -2, 
+              Cos[ phi], 
+              Cos[ theta], 
+              Sin[ phi]], 
+            Times[ -1, 
+              Cos[ theta], 
+              Sin[ 
+                Times[ 2, phi]]]]]],
+      Editable->False]], "Print"],
+
+Cell[BoxData[
+    \(0.`\)], "Output"],
+
+Cell[BoxData[
+    \(0.`\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\(\(\[IndentingNewLine]\)\( (*\ 
+      exact\ antenna\ pattern\ functions\ at\ fsr\ *) \)\(\[IndentingNewLine]\
+\)\(\[IndentingNewLine]\)\( (*\ arm\ lengths\ for\ H1, \ 
+      H2\ in\ meters\ and\ seconds\ *) \)\(\[IndentingNewLine]\)\(\(L1\  = \ 
+        4000;\)\ \[IndentingNewLine]
+    \(L2\  = 2000;\)\[IndentingNewLine]
+    \(c\  = \ 300000000;\)\ \[IndentingNewLine]
+    \(T1\  = \ L1/c;\)\[IndentingNewLine]
+    \(T2\  = \ L2/c;\)\[IndentingNewLine]\[IndentingNewLine] (*\ 
+      fsr\ for\ H1\ *) \[IndentingNewLine]
+    \(f\  = \ 1/\((2\ T1)\);\)\[IndentingNewLine]
+    \(Print[
+        StringForm["\<fsr = ``\>", 
+          f]];\)\[IndentingNewLine]\[IndentingNewLine] (*\ 
+      response\ functions\ *) \[IndentingNewLine]
+    \(D1a\  = \ \((1/2)\)*\ 
+          Exp[\(-I\)\ 2\ Pi\ f\ T1]\ \ *\((Exp[I\ Pi\ f\ T1 \((1 + a . n)\)] 
+                Sin[Pi\ f\ T1 \((1 - a . n)\)]/\((Pi\ f\ T1 \((1 - 
+                          a . n)\))\) + \ 
+              Exp[\(-I\)\ Pi\ f\ T1 \((1 - a . n)\)] 
+                Sin[Pi\ f\ T1 \((1 + a . n)\)]/\((Pi\ f\ T1 \((1 + 
+                          a . n)\))\))\);\)\[IndentingNewLine]\
+\[IndentingNewLine]
+    \(D1b\  = \ \((1/2)\)*\ 
+          Exp[\(-I\)\ 2\ Pi\ f\ T1]\ \ *\((Exp[I\ Pi\ f\ T1 \((1 + b . n)\)] 
+                Sin[Pi\ f\ T1 \((1 - b . n)\)]/\((Pi\ f\ T1 \((1 - 
+                          b . n)\))\) + \ 
+              Exp[\(-I\)\ Pi\ f\ T1 \((1 - b . n)\)] 
+                Sin[Pi\ f\ T1 \((1 + b . n)\)]/\((Pi\ f\ T1 \((1 + 
+                          b . n)\))\))\);\)\[IndentingNewLine]\
+\[IndentingNewLine]
+    \(D2a\  = \ \((1/2)\)*\ 
+          Exp[\(-I\)\ 2\ Pi\ f\ T2]\ \ *\((Exp[I\ Pi\ f\ T2 \((1 + a . n)\)] 
+                Sin[Pi\ f\ T2 \((1 - a . n)\)]/\((Pi\ f\ T2 \((1 - 
+                          a . n)\))\) + \ 
+              Exp[\(-I\)\ Pi\ f\ T2 \((1 - a . n)\)] 
+                Sin[Pi\ f\ T2 \((1 + a . n)\)]/\((Pi\ f\ T2 \((1 + 
+                          a . n)\))\))\);\)\[IndentingNewLine]\
+\[IndentingNewLine]
+    \(D2b\  = \ \((1/2)\)*\ 
+          Exp[\(-I\)\ 2\ Pi\ f\ T2]\ \ *\((Exp[I\ Pi\ f\ T2 \((1 + b . n)\)] 
+                Sin[Pi\ f\ T2 \((1 - b . n)\)]/\((Pi\ f\ T2 \((1 - 
+                          b . n)\))\) + \ 
+              Exp[\(-I\)\ Pi\ f\ T2 \((1 - b . n)\)] 
+                Sin[Pi\ f\ T2 \((1 + b . n)\)]/\((Pi\ f\ T2 \((1 + 
+                          b . n)\))\))\);\)\[IndentingNewLine]\
+\[IndentingNewLine]
+    \(G1p\  = \ \((1/2)\)*\((ePaa\ D1a\  - ePbb\ D1b)\);\)\[IndentingNewLine]
+    \(G1c\  = \ \((1/2)\)*\((eCaa\ D1a\  - eCbb\ D1b)\);\)\[IndentingNewLine]
+    \(G2p\  = \ \((1/2)\)*\((ePaa\ D2a\  - ePbb\ D2b)\);\)\[IndentingNewLine]
+    \(G2c\  = \ \((1/2)\)*\((eCaa\ D2a\  - eCbb\ D2b)\);\)\[IndentingNewLine]
+    \)\)\)], "Input"],
+
+Cell[BoxData[
+    InterpretationBox["\<\"fsr = \\!\\(37500\\)\"\>",
+      StringForm[ "fsr = ``", 37500],
+      Editable->False]], "Print"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(\(\(\[IndentingNewLine]\)\( (*\ 
+      overlap\ reduction\ function\ for\ H1 - 
+        H2\ and\ acceptance\ functions\ D1, \ 
+      D2\ at\ fsr*) \)\(\[IndentingNewLine]\)\(\[IndentingNewLine]\)\(\(\
+orf12int\  = \ \((5/\((8\ *\ Pi)\))\)\ *\ 
+          Sin[theta]\ *\ \((G1p\ Conjugate[G2p]\  + \ 
+              G1c\ Conjugate[G2c])\);\)\ \[IndentingNewLine]
+    \(orf11int\  = \ \((5/\((8\ *\ Pi)\))\)\ *\ 
+          Sin[theta]\ *\ \((G1p\ Conjugate[G1p]\  + \ 
+              G1c\ Conjugate[G1c])\);\)\ \[IndentingNewLine]
+    \(orf22int\  = \ \((5/\((8\ *\ Pi)\))\)\ *\ 
+          Sin[theta]\ *\ \((G2p\ Conjugate[G2p]\  + \ 
+              G2c\ Conjugate[
+                  G2c])\);\)\ \[IndentingNewLine]\[IndentingNewLine] (*\ 
+      split\ up\ integrals\ into\ two\ parts\ since\ denominator\ of\ \
+integrand\  \[Rule] \ 0\ at\ theta = Pi/2\ *) \[IndentingNewLine]
+    \(orf12\  = \ 
+        NIntegrate[orf12int, \ {theta, \ 0, \ Pi/2}, \ {phi, \ 0, \ 2*Pi}] + 
+          NIntegrate[
+            orf12int, \ {theta, \ Pi/2, \ Pi}, \ {phi, \ 0, \ 
+              2*Pi}];\)\[IndentingNewLine]
+    \(orf11\  = \ 
+        NIntegrate[orf11int, \ {theta, \ 0, \ Pi/2}, \ {phi, \ 0, \ 2*Pi}] + 
+          NIntegrate[
+            orf11int, \ {theta, \ Pi/2, \ Pi}, \ {phi, \ 0, \ 
+              2*Pi}];\)\[IndentingNewLine]
+    \(orf22\  = \ 
+        NIntegrate[orf22int, \ {theta, \ 0, \ Pi/2}, \ {phi, \ 0, \ 2*Pi}] + 
+          NIntegrate[
+            orf22int, \ {theta, \ Pi/2, \ Pi}, \ {phi, \ 0, \ 
+              2*Pi}];\)\[IndentingNewLine]\[IndentingNewLine] (*\ 
+      take\ real\ part, \ 
+      since\ very\ small\ imaginary\ part\ due\ to\ machine\ round - 
+        off\ *) \[IndentingNewLine]
+    \(D1 = Sqrt[Re[orf11]];\)\[IndentingNewLine]
+    \(D2 = Sqrt[Re[orf22]];\)\[IndentingNewLine]\[IndentingNewLine]
+    \(Print[StringForm["\<orf12 = ``\>", orf12]];\)\[IndentingNewLine]
+    \(Print[StringForm["\<D1 = ``\>", D1]];\)\[IndentingNewLine]
+    \(Print[
+        StringForm["\<D2 = ``\>", 
+          D2]];\)\[IndentingNewLine]\[IndentingNewLine]
+    \)\)\)], "Input"],
+
+Cell[BoxData[
+    InterpretationBox["\<\"orf12 = \\!\\(4.802734046642195`*^-12 + \
+\\(\\(0.043725496679363686`\\\\ \[ImaginaryI]\\)\\)\\)\"\>",
+      StringForm[ "orf12 = ``", 
+        Complex[ 4.8027340466421948*^-12, 0.043725496679363686]],
+      Editable->False]], "Print"],
+
+Cell[BoxData[
+    InterpretationBox["\<\"D1 = \\!\\(0.18525258845665613`\\)\"\>",
+      StringForm[ "D1 = ``", 0.18525258845665613],
+      Editable->False]], "Print"],
+
+Cell[BoxData[
+    InterpretationBox["\<\"D2 = \\!\\(0.615536504280289`\\)\"\>",
+      StringForm[ "D2 = ``", 0.61553650428028905],
+      Editable->False]], "Print"]
+}, Open  ]],
+
+Cell[BoxData[""], "Input"]
+},
+FrontEndVersion->"5.2 for Macintosh",
+ScreenRectangle->{{0, 1024}, {0, 702}},
+WindowSize->{945, 579},
+WindowMargins->{{Automatic, 28}, {37, Automatic}},
+PrintingCopies->1,
+PrintingPageRange->{1, Automatic}
+]
+
+(*******************************************************************
+Cached data follows.  If you edit this Notebook file directly, not
+using Mathematica, you must remove the line containing CacheID at
+the top of  the file.  The cache data will then be recreated when
+you save this file from within Mathematica.
+*******************************************************************)
+
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+
+(*NotebookFileOutline
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[1776, 53, 2826, 55, 699, "Input"],
+Cell[4605, 110, 644, 16, 53, "Print"],
+Cell[5252, 128, 442, 10, 53, "Print"],
+Cell[5697, 140, 606, 15, 53, "Print"],
+Cell[6306, 157, 2582, 74, 61, "Print"],
+Cell[8891, 233, 1975, 55, 59, "Print"],
+Cell[10869, 290, 738, 22, 25, "Print"],
+Cell[11610, 314, 585, 16, 23, "Print"],
+Cell[12198, 332, 37, 1, 27, "Output"],
+Cell[12238, 335, 37, 1, 27, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[12312, 341, 2782, 52, 587, "Input"],
+Cell[15097, 395, 139, 3, 23, "Print"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[15273, 403, 2101, 42, 395, "Input"],
+Cell[17377, 447, 276, 5, 25, "Print"],
+Cell[17656, 454, 166, 3, 23, "Print"],
+Cell[17825, 459, 164, 3, 23, "Print"]
+}, Open  ]],
+Cell[18004, 465, 26, 0, 27, "Input"]
+}
+]
+*)
+
+
+
+(*******************************************************************
+End of Mathematica Notebook file.
+*******************************************************************)
+

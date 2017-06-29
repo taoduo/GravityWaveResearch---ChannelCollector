@@ -143,7 +143,9 @@ public class Controller {
         refreshCounters();
         try {
             LineExporter.export(this.dataPath, commentText.getText(), sourceText.getText());
+            System.out.println("a");
             commentText.clear();
+            System.out.println("b");
             showDialog("Export Success", "HTML saved to " + this.dataPath);
         } catch (Exception x) {
             x.printStackTrace();

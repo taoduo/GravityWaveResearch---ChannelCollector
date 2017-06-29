@@ -1,2 +1,9 @@
 # GW Research Scripts
-This is the scripts I use for coherence search in GW research for LIGO. For details about it, contact Duo Tao at taod@carleton.edu.
+This repository is for all of my LIGO research.
+
+LineSearch has the scripts I use for coherence search in GW research for LIGO.
+
+Tools has the GUI Software I write for the coherence tool.
+
+SR is the signal recycling project. 
+
