@@ -11,15 +11,15 @@ function [optOmega, optTransmission, optPhase, optBNSRange] = scan_src(finenessT
     power = 125;
     saveResults = '';
     saveFileID = -1;
-    if nargin == 1
+    if nargin == 6 + 1
         power = varargin{1};
-    elseif nargin == 2
-        power = varargin{1};
-        saveResults = varargin{2};
-    elseif nargin == 3
+    elseif nargin == 6 + 2
         power = varargin{1};
         saveResults = varargin{2};
-        saveFileID = fopen(varargin{3},'w');
+    elseif nargin == 6 + 3
+        power = varargin{1};
+        saveResults = varargin{2};
+        saveFileID = fopen(varargin{3},'a');
     end
     % initialize
     dataArray = zeros(int64(((maxTransmission - minTransmission) / finenessTransmission) ...
@@ -38,7 +38,7 @@ function [optOmega, optTransmission, optPhase, optBNSRange] = scan_src(finenessT
                 n = n + 1;
                 if n / size(dataArray, 1) > percentage + 0.1
                     percentage = percentage + 0.1;
-                    fprintf("%%%d DONE...\n", int32(percentage * 100));
+                    fprintf('%%%d DONE...\n', int32(percentage * 100));
                 end
             catch e
                 disp(e);
@@ -60,10 +60,11 @@ function [optOmega, optTransmission, optPhase, optBNSRange] = scan_src(finenessT
         fprintf(saveFileID, '%dW Stochastic Optimal Configurations:\n', power);
         fprintf(saveFileID, 'Transmission:%f\nPhase:%f\nOmega:%8.2E\nBNS Range:%f\n', optTransmission, ...
             optPhase, optOmega, optBNSRange);
+        fprintf(saveFileID, '-------------------------\n');
         fclose(saveFileID);
     end
     % save results
     if ~strcmp(saveResults, '')
-        save('results.mat', 'dataArray');
+        save(saveResults, 'dataArray');
     end
 end
