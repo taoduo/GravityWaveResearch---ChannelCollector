@@ -1,36 +1,56 @@
-% scan configurations
-finenessReflectivity = 0.001;
-minReflectivity = 0.0;
-maxReflectivity = 1 - finenessReflectivity;
-finenessPhase = 1 / 360 * 2 * pi;
-maxPhase = 2 * pi;
-
-% scan results
-optOmega = 1;
-optReflectivity = 0;
-optPhase = 0;
-
-
-bnsArray = zeros(int64((maxReflectivity / finenessReflectivity) * (maxPhase / finenessPhase)), 3);
-n = 1;
-
-for reflectivity = minReflectivity : finenessReflectivity : maxReflectivity 
-    for phase = 0 : finenessPhase : maxPhase
-        ifo = IFOModel;
-        src = SourceModel;
-        try
-            score = gwinc(10, 3000, ifo, src, 2, 125, phase, 1 - reflectivity - ifo.Optics.Loss);
-            bnsArray(n,:) = [reflectivity, rad2deg(phase), score.NeutronStar.comovingRangeMpc];
-            n = n + 1;
-            if optOmega > score.Omega
-                optOmega = score.Omega;
-                optPhase = phase;
-                optReflectivity = reflectivity;
+function [optOmega, optTransmission, optPhase, optBNSRange] = scan_src(finenessTransmission, ...
+    minTransmission, maxTransmission, finenessPhase, minPhase, maxPhase, varargin)
+    addpath(genpath('/Users/duotao/Desktop/gw/git/SR/gwinc'));
+    % Scan to optimize the SRC parameters for stochasic search. Phase is in degrees.
+    % Optionals:
+    % varargin{1}: power
+    % varargin{2}: if to save results
+    
+    % fetch the optional parameters
+    power = 125;
+    saveResults = true;
+    if nargin == 1
+        power = varargin{1};
+    elseif nargin == 2
+        power = varargin{1};
+        saveResults = varargin{2};
+    end
+    % initialize
+    dataArray = zeros(int64(((maxTransmission - minTransmission) / finenessTransmission) ...
+        * ((maxPhase - minPhase) / finenessPhase)), 4);
+    n = 1;
+    ifo = IFOModel;
+    src = SourceModel;
+    percentage = 0;
+    % scanning...
+    for transmission = minTransmission : finenessTransmission : maxTransmission
+        for phase_deg = minPhase : finenessPhase : maxPhase
+            try
+                phase = deg2rad(phase_deg); % change to radian
+                score = gwinc(10, 3000, ifo, src, 2, power, phase, transmission);
+                dataArray(n, :) = [transmission, phase_deg, score.NeutronStar.comovingRangeMpc, score.Omega];
+                n = n + 1;
+                if n / size(dataArray, 1) > percentage + 0.1
+                    percentage = percentage + 0.1;
+                    fprintf("%%%d DONE...\n", int32(percentage * 100));
+                end
+            catch e
+                disp(e);
+                fprintf('transmission:%f\tphase:%d\tERROR\n', transmission, phase_deg);
             end
-            % fprintf('refl:%f\tphase:%d\tOptOmega:%1.4e\n', reflectivity, int32(rad2deg(phase)), optOmega);
-        catch e
-            fprintf('refl:%f\tphase:%d\tERROR\n', reflectivity, int32(rad2deg(phase)));
         end
     end
+    % find the optimal and print
+    [~, opt_ind] = min(dataArray(:, 4));
+    optOmega = dataArray(opt_ind, 4);
+    optTransmission = dataArray(opt_ind, 1);
+    optPhase = dataArray(opt_ind, 2);
+    optBNSRange = dataArray(opt_ind, 3);
+    fprintf('Stochastic Optimal Configurations:\n');
+    fprintf('Transmission:%f\nPhase:%f\nOmega:%8.2E\nBNS Range:%f', optTransmission, ...
+        optPhase, optOmega, optBNSRange);
+    % save results
+    if saveResults
+        save('results.mat', 'dataArray');
+    end
 end
-save('results.mat');
