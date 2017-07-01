@@ -1,19 +1,25 @@
 function [optOmega, optTransmission, optPhase, optBNSRange] = scan_src(finenessTransmission, ...
     minTransmission, maxTransmission, finenessPhase, minPhase, maxPhase, varargin)
-    addpath(genpath('/Users/duotao/Desktop/gw/git/SR/gwinc'));
     % Scan to optimize the SRC parameters for stochasic search. Phase is in degrees.
     % Optionals:
     % varargin{1}: power
-    % varargin{2}: if to save results
+    % varargin{2}: .mat file to save the results. Empty not to save
+    % varargin{3}: print results to file, not to terminal. Empty not to
+    % save.
     
     % fetch the optional parameters
     power = 125;
-    saveResults = true;
+    saveResults = '';
+    saveFileID = -1;
     if nargin == 1
         power = varargin{1};
     elseif nargin == 2
         power = varargin{1};
         saveResults = varargin{2};
+    elseif nargin == 3
+        power = varargin{1};
+        saveResults = varargin{2};
+        saveFileID = fopen(varargin{3},'w');
     end
     % initialize
     dataArray = zeros(int64(((maxTransmission - minTransmission) / finenessTransmission) ...
@@ -46,11 +52,18 @@ function [optOmega, optTransmission, optPhase, optBNSRange] = scan_src(finenessT
     optTransmission = dataArray(opt_ind, 1);
     optPhase = dataArray(opt_ind, 2);
     optBNSRange = dataArray(opt_ind, 3);
-    fprintf('Stochastic Optimal Configurations:\n');
-    fprintf('Transmission:%f\nPhase:%f\nOmega:%8.2E\nBNS Range:%f', optTransmission, ...
-        optPhase, optOmega, optBNSRange);
+    if saveFileID == -1
+        fprintf('%dW Stochastic Optimal Configurations:\n', power);
+        fprintf('Transmission:%f\nPhase:%f\nOmega:%8.2E\nBNS Range:%f\n', optTransmission, ...
+            optPhase, optOmega, optBNSRange);
+    else
+        fprintf(saveFileID, '%dW Stochastic Optimal Configurations:\n', power);
+        fprintf(saveFileID, 'Transmission:%f\nPhase:%f\nOmega:%8.2E\nBNS Range:%f\n', optTransmission, ...
+            optPhase, optOmega, optBNSRange);
+        fclose(saveFileID);
+    end
     % save results
-    if saveResults
+    if ~strcmp(saveResults, '')
         save('results.mat', 'dataArray');
     end
 end

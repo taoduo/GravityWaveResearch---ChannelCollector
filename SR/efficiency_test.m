@@ -1,4 +1,3 @@
-addpath(genpath('/Users/duotao/Desktop/gw/git/SR/gwinc'));
 ifo = IFOModel;
 sm = SourceModel;
 iter = [10,20,30,40,50];
