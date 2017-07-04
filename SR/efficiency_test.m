@@ -1,3 +1,5 @@
+% code used to measure the expected running time of the gwinc to gauge the
+% improvement of the efficiency.
 ifo = IFOModel;
 sm = SourceModel;
 iter = [10,20,30,40,50];
