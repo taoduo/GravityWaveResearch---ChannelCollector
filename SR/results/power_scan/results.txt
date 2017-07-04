@@ -1,20 +1,20 @@
 5W Stochastic Optimal Configurations:
-Transmission:0.100000
-Phase:20.000000
-Omega:1.33E-09
-BNS Range:92.182415
+Transmission:0.198000
+Phase:60.000000
+Omega:6.52E-10
+BNS Range:174.436753
 -------------------------
 10W Stochastic Optimal Configurations:
-Transmission:0.100000
-Phase:20.000000
-Omega:7.75E-10
-BNS Range:130.186145
+Transmission:0.148000
+Phase:32.000000
+Omega:6.68E-10
+BNS Range:162.676400
 -------------------------
 15W Stochastic Optimal Configurations:
-Transmission:0.100000
-Phase:20.000000
-Omega:6.75E-10
-BNS Range:152.824876
+Transmission:0.110000
+Phase:22.000000
+Omega:6.71E-10
+BNS Range:158.937827
 -------------------------
 20W Stochastic Optimal Configurations:
 Transmission:0.087000
