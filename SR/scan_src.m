@@ -26,7 +26,7 @@ function [optOmega, optTransmission, optPhase, optBNSRange] = scan_src(finenessT
         power = varargin{1};
         saveResults = varargin{2};
         saveFileID = fopen(varargin{3},'a');
-        cutoff = varargin(4);
+        cutoff = varargin{4};
     end
     % initialize
     dataArray = zeros(int64(((maxTransmission - minTransmission) / finenessTransmission) ...
@@ -38,7 +38,7 @@ function [optOmega, optTransmission, optPhase, optBNSRange] = scan_src(finenessT
     % scanning...
     for transmission = minTransmission : finenessTransmission : maxTransmission
         for phase_deg = minPhase : finenessPhase : maxPhase
-            try
+            %try
                 phase = deg2rad(phase_deg); % change to radian
                 score = gwinc(cutoff, 3000, ifo, src, 2, power, phase, transmission);
                 dataArray(n, :) = [transmission, phase_deg, score.NeutronStar.comovingRangeMpc, score.Omega];
@@ -47,10 +47,10 @@ function [optOmega, optTransmission, optPhase, optBNSRange] = scan_src(finenessT
                     percentage = percentage + 0.1;
                     fprintf('%%%d DONE...\n', int32(percentage * 100));
                 end
-            catch e
-                disp(e);
-                fprintf('transmission:%f\tphase:%d\tERROR\n', transmission, phase_deg);
-            end
+%             catch e
+%                 disp(e);
+%                 fprintf('transmission:%f\tphase:%d\tERROR\n', transmission, phase_deg);
+%             end
         end
     end
     % find the optimal and print
