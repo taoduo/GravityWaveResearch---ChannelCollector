@@ -6,11 +6,13 @@ function [optOmega, optTransmission, optPhase, optBNSRange] = scan_src(finenessT
     % varargin{2}: .mat file to save the results. Empty not to save
     % varargin{3}: print results to file, not to terminal. Empty not to
     % save.
+    % varargin{4}: lower frequency cutoff. Default at 10Hz.
     
     % fetch the optional parameters
     power = 125;
     saveResults = '';
     saveFileID = -1;
+    cutoff = 10;
     if nargin == 6 + 1
         power = varargin{1};
     elseif nargin == 6 + 2
@@ -20,6 +22,11 @@ function [optOmega, optTransmission, optPhase, optBNSRange] = scan_src(finenessT
         power = varargin{1};
         saveResults = varargin{2};
         saveFileID = fopen(varargin{3},'a');
+    elseif nargin == 6 + 4
+        power = varargin{1};
+        saveResults = varargin{2};
+        saveFileID = fopen(varargin{3},'a');
+        cutoff = varargin(4);
     end
     % initialize
     dataArray = zeros(int64(((maxTransmission - minTransmission) / finenessTransmission) ...
@@ -33,7 +40,7 @@ function [optOmega, optTransmission, optPhase, optBNSRange] = scan_src(finenessT
         for phase_deg = minPhase : finenessPhase : maxPhase
             try
                 phase = deg2rad(phase_deg); % change to radian
-                score = gwinc(10, 3000, ifo, src, 2, power, phase, transmission);
+                score = gwinc(cutoff, 3000, ifo, src, 2, power, phase, transmission);
                 dataArray(n, :) = [transmission, phase_deg, score.NeutronStar.comovingRangeMpc, score.Omega];
                 n = n + 1;
                 if n / size(dataArray, 1) > percentage + 0.1
