@@ -15,6 +15,7 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("main", help="main results")
     parser.add_argument("new", help="new results")
+    return parser.parse_args()
 
 
 def merge(main_dir, new_dir):
@@ -25,15 +26,12 @@ def merge(main_dir, new_dir):
             if os.path.isdir(mdir):
                 merge(mdir, ndir)
             else:
-                shutil.copytree(mdir, ndir)
+                shutil.copytree(ndir, mdir)
         else:
-            if os.path.isfile(os.path.join(main_dir, f)):
-                print "File " + new_dir + "/" + f + "exists in main directory and ignored"
-            else:
-                raise Exception("Error with " + new_dir + "/" + f)
+            print "File " + new_dir + "/" + f + " is not copied."
 
 
-if __name__ == "__main_":
+if __name__ == "__main__":
     args = parse_args()
     mainDir = args.main
     newDir = args.new
