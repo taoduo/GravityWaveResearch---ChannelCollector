@@ -1,6 +1,8 @@
 package sample;
 
-import java.io.File;
+import java.io.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -115,6 +117,25 @@ public class Controller {
                 unselectedCurrent = 0;
                 refreshCounters();
                 dataPathLabel.setText(this.dataPath);
+                try {
+                    File indexPage = new File(this.dataPath + "/index.html");
+                    if (indexPage.exists()) {
+                        final BufferedReader reader = new BufferedReader(new FileReader(indexPage));
+                        final StringBuilder contents = new StringBuilder();
+                        while (reader.ready()) {
+                            contents.append(reader.readLine());
+                        }
+                        reader.close();
+                        final String stringContents = contents.toString();
+                        Pattern pattern = Pattern.compile("<h5>(.*)</h5>");
+                        Matcher matcher = pattern.matcher(stringContents);
+                        if (matcher.find()) {
+                            this.commentText.setText(matcher.group(1));
+                        }
+                    }
+                } catch (Exception e) {
+                    showDialog("Exception", "Exception when reading in index page.");
+                }
             } else {
                 showDialog("Import Failure", "NULL FOLDER");
             }
