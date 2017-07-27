@@ -1,0 +1,240 @@
+5W Stochastic Optimal Configurations:
+Transmission:0.190000
+Phase:61.000000
+Omega:6.62E-10
+BNS Range:173.366312
+-------------------------
+10W Stochastic Optimal Configurations:
+Transmission:0.144000
+Phase:33.000000
+Omega:6.79E-10
+BNS Range:161.490424
+-------------------------
+15W Stochastic Optimal Configurations:
+Transmission:0.108000
+Phase:23.000000
+Omega:6.82E-10
+BNS Range:158.068259
+-------------------------
+20W Stochastic Optimal Configurations:
+Transmission:0.083000
+Phase:17.000000
+Omega:6.84E-10
+BNS Range:154.130782
+-------------------------
+25W Stochastic Optimal Configurations:
+Transmission:0.069000
+Phase:14.000000
+Omega:6.85E-10
+BNS Range:153.827666
+-------------------------
+30W Stochastic Optimal Configurations:
+Transmission:0.056000
+Phase:11.000000
+Omega:6.86E-10
+BNS Range:149.849042
+-------------------------
+35W Stochastic Optimal Configurations:
+Transmission:0.051000
+Phase:10.000000
+Omega:6.86E-10
+BNS Range:152.145461
+-------------------------
+40W Stochastic Optimal Configurations:
+Transmission:0.046000
+Phase:9.000000
+Omega:6.87E-10
+BNS Range:152.913195
+-------------------------
+45W Stochastic Optimal Configurations:
+Transmission:0.041000
+Phase:8.000000
+Omega:6.88E-10
+BNS Range:152.389218
+-------------------------
+50W Stochastic Optimal Configurations:
+Transmission:0.036000
+Phase:7.000000
+Omega:6.88E-10
+BNS Range:150.592448
+-------------------------
+55W Stochastic Optimal Configurations:
+Transmission:0.031000
+Phase:6.000000
+Omega:6.89E-10
+BNS Range:147.342175
+-------------------------
+60W Stochastic Optimal Configurations:
+Transmission:0.031000
+Phase:6.000000
+Omega:6.90E-10
+BNS Range:151.422940
+-------------------------
+65W Stochastic Optimal Configurations:
+Transmission:0.027000
+Phase:5.000000
+Omega:6.90E-10
+BNS Range:147.090611
+-------------------------
+70W Stochastic Optimal Configurations:
+Transmission:0.026000
+Phase:5.000000
+Omega:6.90E-10
+BNS Range:149.715785
+-------------------------
+75W Stochastic Optimal Configurations:
+Transmission:0.026000
+Phase:5.000000
+Omega:6.94E-10
+BNS Range:152.801923
+-------------------------
+80W Stochastic Optimal Configurations:
+Transmission:0.022000
+Phase:4.000000
+Omega:6.93E-10
+BNS Range:146.212343
+-------------------------
+85W Stochastic Optimal Configurations:
+Transmission:0.021000
+Phase:4.000000
+Omega:6.91E-10
+BNS Range:148.019980
+-------------------------
+90W Stochastic Optimal Configurations:
+Transmission:0.021000
+Phase:4.000000
+Omega:6.93E-10
+BNS Range:150.633774
+-------------------------
+95W Stochastic Optimal Configurations:
+Transmission:0.021000
+Phase:4.000000
+Omega:6.97E-10
+BNS Range:152.992011
+-------------------------
+100W Stochastic Optimal Configurations:
+Transmission:0.017000
+Phase:3.000000
+Omega:7.01E-10
+BNS Range:143.130755
+-------------------------
+105W Stochastic Optimal Configurations:
+Transmission:0.016000
+Phase:3.000000
+Omega:6.97E-10
+BNS Range:144.125771
+-------------------------
+110W Stochastic Optimal Configurations:
+Transmission:0.016000
+Phase:3.000000
+Omega:6.95E-10
+BNS Range:146.373986
+-------------------------
+115W Stochastic Optimal Configurations:
+Transmission:0.016000
+Phase:3.000000
+Omega:6.95E-10
+BNS Range:148.448964
+-------------------------
+120W Stochastic Optimal Configurations:
+Transmission:0.016000
+Phase:3.000000
+Omega:6.96E-10
+BNS Range:150.366707
+-------------------------
+125W Stochastic Optimal Configurations:
+Transmission:0.016000
+Phase:3.000000
+Omega:6.99E-10
+BNS Range:152.141771
+-------------------------
+130W Stochastic Optimal Configurations:
+Transmission:0.016000
+Phase:3.000000
+Omega:7.03E-10
+BNS Range:153.787350
+-------------------------
+135W Stochastic Optimal Configurations:
+Transmission:0.016000
+Phase:3.000000
+Omega:7.08E-10
+BNS Range:155.315368
+-------------------------
+140W Stochastic Optimal Configurations:
+Transmission:0.016000
+Phase:3.000000
+Omega:7.14E-10
+BNS Range:156.736575
+-------------------------
+145W Stochastic Optimal Configurations:
+Transmission:0.012000
+Phase:2.000000
+Omega:7.10E-10
+BNS Range:142.087110
+-------------------------
+150W Stochastic Optimal Configurations:
+Transmission:0.011000
+Phase:2.000000
+Omega:7.07E-10
+BNS Range:141.719912
+-------------------------
+155W Stochastic Optimal Configurations:
+Transmission:0.011000
+Phase:2.000000
+Omega:7.04E-10
+BNS Range:143.346512
+-------------------------
+160W Stochastic Optimal Configurations:
+Transmission:0.011000
+Phase:2.000000
+Omega:7.02E-10
+BNS Range:144.886787
+-------------------------
+165W Stochastic Optimal Configurations:
+Transmission:0.011000
+Phase:2.000000
+Omega:7.01E-10
+BNS Range:146.346101
+-------------------------
+170W Stochastic Optimal Configurations:
+Transmission:0.011000
+Phase:2.000000
+Omega:7.01E-10
+BNS Range:147.729515
+------------------------
+175W Stochastic Optimal Configurations:
+Transmission:0.011000
+Phase:2.000000
+Omega:7.01E-10
+BNS Range:149.041789
+-------------------------
+180W Stochastic Optimal Configurations:
+Transmission:0.011000
+Phase:2.000000
+Omega:7.03E-10
+BNS Range:150.287392
+-------------------------
+185W Stochastic Optimal Configurations:
+Transmission:0.011000
+Phase:2.000000
+Omega:7.04E-10
+BNS Range:151.470511
+-------------------------
+190W Stochastic Optimal Configurations:
+Transmission:0.011000
+Phase:2.000000
+Omega:7.07E-10
+BNS Range:152.595067
+-------------------------
+195W Stochastic Optimal Configurations:
+Transmission:0.011000
+Phase:2.000000
+Omega:7.10E-10
+BNS Range:153.664720
+-------------------------
+200W Stochastic Optimal Configurations:
+Transmission:0.011000
+Phase:2.000000
+Omega:7.13E-10
+BNS Range:154.682892
+-------------------------
