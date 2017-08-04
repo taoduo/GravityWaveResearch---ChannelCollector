@@ -1,3 +1,6 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -7,39 +10,47 @@ import java.util.regex.Pattern;
  */
 public class TextProcessorA {
     public static void main(String...args) {
-        Scanner scanner = new Scanner(System.in);
         Pattern p1 = Pattern.compile("(\\d+)W.*");
         Pattern p2 = Pattern.compile(".*:(.*)");
+        StringBuilder s = new StringBuilder();
 
-        while (scanner.hasNextLine()) {
-            String l1 = scanner.nextLine();
-            String l2 = scanner.nextLine();
-            String l3 = scanner.nextLine();
-            String l4 = scanner.nextLine();
-            String l5 = scanner.nextLine();
-            scanner.nextLine();
-            Matcher m = p1.matcher(l1);
-            String power = "", transmission = "", phase = "", omega = "", range = "";
-            if (m.find()) {
-                power = m.group(1);
+        BufferedReader br = null;
+        try {
+            br = new BufferedReader(new FileReader(args[0]));
+            String l1, l2, l3, l4, l5;
+            while ((l1 = br.readLine()) != null) {
+                l2 = br.readLine();
+                l3 = br.readLine();
+                l4 = br.readLine();
+                l5 = br.readLine();
+                br.readLine();
+                Matcher m = p1.matcher(l1);
+                String power = "", transmission = "", phase = "", omega = "", range = "";
+                if (m.find()) {
+                    power = m.group(1);
+                }
+                m = p2.matcher(l2);
+                if (m.find()) {
+                    transmission = m.group(1);
+                }
+                m = p2.matcher(l3);
+                if (m.find()) {
+                    phase = m.group(1);
+                }
+                m = p2.matcher(l4);
+                if (m.find()) {
+                    omega = m.group(1);
+                }
+                m = p2.matcher(l5);
+                if (m.find()) {
+                    range = m.group(1);
+                }
+                s.append(power + "," + transmission + "," + phase + "," + omega + "," + range + ";");
             }
-            m = p2.matcher(l2);
-            if (m.find()) {
-                transmission = m.group(1);
-            }
-            m = p2.matcher(l3);
-            if (m.find()) {
-                phase = m.group(1);
-            }
-            m = p2.matcher(l4);
-            if (m.find()) {
-                omega = m.group(1);
-            }
-            m = p2.matcher(l5);
-            if (m.find()) {
-                range = m.group(1);
-            }
-            System.out.print(power + "," + transmission + "," + phase + "," + omega + "," + range + ";");
+            br.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        System.out.print(s.toString());
     }
 }
