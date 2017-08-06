@@ -4,7 +4,7 @@ function score = intStoch(f, h2, OverlapMode, ifo, source)
 % score via the f^7/3 integral
 
 npow = source.Stochastic.powerlaw;
-
+fRef = source.Stochastic.referenceFrequency;
 % try to find global f_bounce, set by gwinc in suspR
 % this is used to define the start of the integral
 global f_bounce
@@ -22,10 +22,10 @@ global nse;
 switch OverlapMode
   case 0
    nse.ovlp = ovlp(f, ifo);
-   integrandSt = nse.ovlp.^2.*f.^(npow-6)./(h2.^2);
+   integrandSt = nse.ovlp.^2.*f.^(2 * npow - 6)./(h2.^2 * fRef^(2 * npow));
   otherwise
-   integrandSt = nse.ovlp.^2.*f.^(npow-6)./(h2.^2);
-end;
+   integrandSt = nse.ovlp.^2.*f.^(2 * npow - 6)./(h2.^2 * fRef^(2 * npow));
+end
 x = trapz(f,integrandSt);
 
 x = 2*x;				                      % positive & negative frequencies

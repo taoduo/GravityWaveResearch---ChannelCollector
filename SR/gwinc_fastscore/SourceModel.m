@@ -86,6 +86,7 @@ source.BlackHole.Waveform = 'IMRPhenomB'; %PRL 106, 241101 (2011)
 source.Stochastic.powerlaw = 2/3;           % used to be 0. Changed to 2/3.
 source.Stochastic.integration_time = 1;           % years
 source.Stochastic.confidence = 0.9;               % confidence level for frequentist upper limit
+source.Stochastic.referenceFrequency = 25;
 
 %% Pulsar
 

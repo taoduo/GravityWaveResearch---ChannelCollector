@@ -25,7 +25,7 @@ switch OverlapMode
    integrandSt = nse.ovlp.^2.*f.^(npow-6)./(h2.^2);
   otherwise
     integrandSt = nse.ovlp.^2.*f.^(npow-6)./(h2.^2);
-end;
+end
 x = trapz(f,integrandSt);
 
 x = 2*x;				                      % positive & negative frequencies

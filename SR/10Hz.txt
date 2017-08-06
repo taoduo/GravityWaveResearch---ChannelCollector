@@ -1,0 +1,6 @@
+5W Stochastic Optimal Configurations:
+Transmission:0.170000
+Phase:69.000000
+Omega:6.67E-10
+BNS Range:181.598922
+-------------------------
