@@ -5,7 +5,7 @@ function [optOmega, optTransmission, optPhase, optBNSRange] = scan_src(finenessT
     % varargin{1}: power
     % varargin{2}: .mat file to save the results. Empty not to save
     % varargin{3}: print results to file, not to terminal. Empty not to
-    % save.
+    % save.2
     % varargin{4}: lower frequency cutoff. Default at 10Hz.
     
     % fetch the optional parameters
