@@ -4,7 +4,6 @@ function score = intStoch(f, h2, OverlapMode, ifo, source)
 % score via the f^7/3 integral
 
 npow = source.Stochastic.powerlaw;
-
 % try to find global f_bounce, set by gwinc in suspR
 % this is used to define the start of the integral
 global f_bounce
@@ -24,7 +23,7 @@ switch OverlapMode
    nse.ovlp = ovlp(f, ifo);
    integrandSt = nse.ovlp.^2.*f.^(npow-6)./(h2.^2);
   otherwise
-    integrandSt = nse.ovlp.^2.*f.^(npow-6)./(h2.^2);
+   integrandSt = nse.ovlp.^2.*f.^(npow-6)./(h2.^2);
 end
 x = trapz(f,integrandSt);
 
@@ -34,7 +33,8 @@ time = source.Stochastic.integration_time * ifo.Constants.yr; % integration time
 x = x*(3*H0^2/(10*pi^2))^2*time;	                      % 
 
 % Omega*h_100^2
-% Factor 2.5 is for 99% unified confidence interval on Gaussian test statistic. 
+% Factor 2.5 is for 99% unified confidence interval on Gaussian test
+% statistic.
 score = 2.5/sqrt(x);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -56,5 +56,4 @@ j2 = j2./a.^2;
 % Coefficients from Allen Les Houche lectures correspond to LIGO
 % detector relative arm orientations
 g = -0.124842*j0 - 2.90014*j1 + 3.00837*j2;  
-
 return

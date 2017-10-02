@@ -33,12 +33,11 @@ function [n, alpha, zeta] = shotrad(f, ifo)
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   
   if ~isfield(ifo.Optics, 'Type')
-        % -->
-      fname = 'shotradSignalRecycled';
+    fname = 'shotradSignalRecycled';
   else
     fname = ['shotrad' ifo.Optics.Type];
   end
-  [coeff, Mifo, Msig, Mn] = feval(fname, f, ifo); % coeff len: 3000
+  [coeff, Mifo, Msig, Mn] = feval(fname, f, ifo);
 
   % check for consistent dimensions
   Nfield = size(Msig, 1);
@@ -72,14 +71,13 @@ function [n, alpha, zeta] = shotrad(f, ifo)
   %<<<<<<<<<<<<<<<<< Modified to include frequency dependent squeezing angle (LB)
   
   % useful numbers
-  eta   = ifo.Optics.Quadrature.dc;         % Homodyne Readout phase, pi/2
+  eta   = ifo.Optics.Quadrature.dc;         % Homodyne Readout phase
   lambda_PD = 1 - ifo.Optics.PhotoDetectorEfficiency;  % PD losses
   
   % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   % determine squeezer type, if any
   % and extract common parameters
   if ~isfield(ifo, 'Squeezer')
-      % -->
     sqzType = 'None';
     etaRMS = 0;
   else
@@ -90,7 +88,7 @@ function [n, alpha, zeta] = shotrad(f, ifo)
     end
     
     % Freq Indep quadrature noise
-    if isfield(ifo.Squeezer,'LOAngleRMS')
+    if isfield(ifo.Squeezer,'LOAngleRMS') 
       etaRMS = ifo.Squeezer.LOAngleRMS;    
     else
       etaRMS = 0;
@@ -99,7 +97,6 @@ function [n, alpha, zeta] = shotrad(f, ifo)
   
   % extract common parameters
   if strcmp(sqzType, 'None')
-      % -->
     SQZ_DB = 0;                               % Squeeing in dB
     alpha = 0 ;                               % Squeeze angle
     lambda_in = 0;                            % Loss to squeezing before injection [Power]
@@ -119,7 +116,6 @@ function [n, alpha, zeta] = shotrad(f, ifo)
   % switch on squeezing type for other input squeezing modifications
   switch sqzType
     case 'None'
-        % -->
       %if ~vv  
       %  display('You are not injecting squeezing!')
       %end
@@ -186,7 +182,7 @@ function [n, alpha, zeta] = shotrad(f, ifo)
   % Inject squeezed field into the IFO via some filter cavities
   if isfield(ifo, 'Squeezer') && ...
       isfield(ifo.Squeezer, 'FilterCavity') && ....
-      strcmp(sqzType, 'Freq Dependent') % did not get in
+      strcmp(sqzType, 'Freq Dependent')
     if ~vv
       fprintf('  Applying %d input filter cavities\n', ...
       numel(ifo.Squeezer.FilterCavity));
@@ -207,7 +203,7 @@ function [n, alpha, zeta] = shotrad(f, ifo)
 
   % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   % pass IFO output through some filter cavities
-  if isfield(ifo, 'OutputFilter') % did not enter
+  if isfield(ifo, 'OutputFilter')
     switch ifo.OutputFilter.Type
       case 'None'
         % do nothing, say nothing
@@ -244,25 +240,16 @@ function [n, alpha, zeta] = shotrad(f, ifo)
   
   % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
   % add PD efficiency
-  Mnoise = sqzInjectionLoss(Mnoise, lambda_PD); % dim: 2, 16, 3000
-  Msig = Msig * sqrt(1 - lambda_PD); % lambda_PD = 0.1
-
+  Mnoise = sqzInjectionLoss(Mnoise, lambda_PD);
+  Msig = Msig * sqrt(1 - lambda_PD);
+  
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   % Compute the final noise
   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   if etaRMS <= 0
-      % -> 
-    vHD = [sin(eta) cos(eta)]; % 1, 0
-    noise_temp = squeeze(sum(abs(getProdTF(vHD, Mnoise)).^2, 2));
-    sig_temp = squeeze(sum(abs(getProdTF(vHD, Msig)).^2, 2));
+    vHD = [sin(eta) cos(eta)];
     n = coeff(:) .* squeeze(sum(abs(getProdTF(vHD, Mnoise)).^2, 2)) ./ ...
       squeeze(sum(abs(getProdTF(vHD, Msig)).^2, 2));
-    [~, idx] = min(abs(f - 15));
-%     fprintf('index for 15Hz: %d\n', idx);
-%     fprintf('quantum noise at 15Hz: %e\n', n(idx))
-%     fprintf('coeff at 15Hz: %e\n', coeff(idx))
-%     fprintf('noise temp at 15Hz: %e\n', noise_temp(idx))
-%     fprintf('sig temp at 15Hz: %e\n', sig_temp(idx))
   else
     % include quadrature noise
     vHD = [sin(eta + etaRMS) cos(eta + etaRMS)];

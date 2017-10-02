@@ -1,48 +1,5 @@
-function varargout = gwinc(flo, fhi, ifoin, sourcein, varargin)
-% GWINC   Calculates strain noise due to various noise sources, for a
-% specified set of interferometer parameters. Also evaluates the
-% sensitivity of the interferometer to the detection of several potential 
-% gravitational wave sources. Usage:
-%
-%      VARARGOUT = GWINC(FLO,FHI,IFO,SOURCE,VARARGIN)
-%
-%      FLO, FHI = minimum and maximum frequencies between which
-%                  calculations are made
-%                  If one is a vector, and the other empty,
-%                  the vector is used for calculations.
-%      IFO       = structure containing interferometer parameters
-%      SOURCE    = structure containing source parameters
-%
-% Optional input arguments (the last 4 override IFO parameters):
-%      VARARGIN{1}: PLOT_FLAG set to 4 for score, only calculating shotrad
-%                                    3 for score and plots
-%                                    2 for score only
-%                                    1 to make plots but no score
-%                                    else 0 (DEF)
-%      VARARGIN{2}: LASER POWER -> ifo.Laser.Power
-%      VARARGIN{3}: SRC PHASE   -> ifo.Optics.SRM.Tunephase
-%      VARARGIN{4}: SRM TRANS   -> ifo.Optics.SRM.Transmittance
-%      VARARGIN{5}: ITM TRANS   -> ifo.Optics.ITM.Transmittance
-%      VARARGIN{6}: PRM TRANS   -> ifo.Optics.PRM.Transmittance
-%      VARARGIN{7}: HOMO PHASE  -> ifo.Optics.Quadrature.dc
-%
-% Optional output arguments
-%      VARARGOUT{1}: SCORE  structure containing source sensitivities
-%      VARARGOUT{2}: NOISE  structure containing noise terms
-%      VARARGOUT{3}: IFO  structure containing IFO model (arg with precomp)
-%      VARARGOUT{4}: SOURCE  structure containing source model (= arg)
-%
-% Ex.1    [score,noise] = gwinc(5,5000,IFOModel,SourceModel,1)
-%
-% OR, just specify the IFO model and take default FLO, FHI, and SOURCE
-%
-%      VARARGOUT = GWINC()          % use default IFOModel
-%      VARARGOUT = GWINC(ifo)       % use specified IFOModel struct
-%      VARARGOUT = GWINC(ifo_name)  % call IFOModel_<ifo_name> to get model
-%
-% Ex.2    gwinc             % make plot using IFOModel.m
-% Ex.3    gwinc(myIFO)      % use the given IFO model
-% Ex.4    gwinc('sqz')      % call IFOModel_sqz.m to make IFO model
+function varargout = sr(flo, fhi, ifoin, sourcein, varargin)
+% signal recycling optimization script
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Parse Arguments
@@ -165,7 +122,7 @@ end
 % Frequency vector on which everything is calculated
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 if isscalar(flo) && isscalar(fhi)
-  f = logspace(log10(flo),log10(fhi),3000);
+  f = 10 : 0.25 : 100;
 elseif isvector(flo) && isempty(fhi)
   f   = flo(:)';
   flo = f(1);
@@ -308,7 +265,7 @@ if (fig ~= 0)
                  f,sqrt(y5),'--',...        % Substrate brownian
                  f,sqrt(y4),'--',...        % Gas
                  f,sqrt(ys),'k');            % Total Noise
-  set(hndls(1:(end)),'LineWidth',2);
+  set(hndls(1:(end)),'LineWidth',5);
   leggravg = strcat('Newtonian background(\beta=',num2str(ifo.Seismic.Beta),')');
   legpower = [num2str(ifo.Laser.Power,'%3.1f') ' W'];
   legend('Quantum',...
@@ -321,15 +278,15 @@ if (fig ~= 0)
          'Excess Gas',...
          'Total noise',...
          'Location','NorthEast');
-  xlabel('Frequency [Hz]','FontSize',9);
-  ylabel('Strain [1/\surdHz]','FontSize',9);
+  xlabel('Frequency [Hz]','FontSize',24);
+  ylabel('Strain [1/\surdHz]','FontSize',24);
   grid on
   
   % set axis limits
   amin = 10^(round(2 * log10(min(sqrt(ys))) + 0.2) / 2 - 1);
   amax = amin * 3000;
   axis([flo fhi amin amax]);
-  title([plotTitle ' Noise Curve: P_{in} = ' legpower],'FontSize',9)  
+  title([plotTitle ' Noise Curve: P_{in} = ' legpower],'FontSize',18)  
   
   % set color table
   clrtable=[0.7   0.0   0.9
@@ -393,14 +350,15 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Output Text
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 % Report astrophysical scores if so desired
 if (makescore == 1)
+  load('ovlp.mat');
+  nse.ovlp = transpose(ovlp);
   sss = int73(nse.Freq, nse.Total, ifo, source);
-  sss.Omega = intStoch(nse.Freq, nse.Total, 0, ifo, source);
+  sss.Omega = intStoch(nse.Freq, nse.Total, 1, ifo, source);
   if nargout > 0
     varargout{1} = sss;
-  end  
+  end
 end
 
 % Report finesse, power recycling factors
@@ -415,7 +373,7 @@ if ( fig > 0 )
   M=[ifo.TCS.s_cc,ifo.TCS.s_cs;ifo.TCS.s_cs,ifo.TCS.s_ss];
   S_uncorr=transpose(PowAbsITM)*M*PowAbsITM;
   TCSeff=1-sqrt(ifo.TCS.SRCloss/S_uncorr);
-  disp(sprintf('Thermal load on ITM:    %8.3f W', sum(PowAbsITM) ));
+  disp(sprintf('Thermal load on ITM:    %8.3f W', sum(PowAbsITM)));
   disp(sprintf('Thermal load on BS:     %8.3f W',     ifo.Materials.MassThickness*ifo.Optics.SubstrateAbsorption    *pbs));
   %disp(sprintf(['Reqired TCS efficiency: %8.3f' ...
   %              '(estimate, see IFOModel.m for definition)'],    TCSeff));  
@@ -439,7 +397,23 @@ if ( fig > 0 )
       disp(sprintf('BNS reach:              %7.2f Gpc (comoving, z = %2.1f)', ...
         sss.NeutronStar.advanced.comovingReachMpc / 1000,sss.NeutronStar.reachZ))
     end
-    disp(sprintf('Stochastic Omega:          %4.3g',sss.Omega)) 
+
+    if sss.BlackHole.horizonZ < 0.5
+      disp(sprintf('BBH range:              %7.2f Mpc (comoving)', ...
+                   sss.BlackHole.comovingRangeMpc))
+      disp(sprintf('BBH horizon:            %7.2f Mpc (comoving)', ...
+                   sss.BlackHole.advanced.comovingHorizonMpc))
+      disp(sprintf('BBH reach:              %7.2f Mpc (comoving)', ...
+                   sss.BlackHole.advanced.comovingReachMpc))
+    else
+      disp(sprintf('BBH range:              %7.2f Gpc (comoving, z = %2.1f)', ...
+        sss.BlackHole.comovingRangeMpc / 1000, sss.BlackHole.advanced.rangeZ))
+      disp(sprintf('BBH horizon:            %7.2f Gpc (comoving, z = %2.1f)', ...
+        sss.BlackHole.advanced.comovingHorizonMpc / 1000,sss.BlackHole.horizonZ))
+      disp(sprintf('BBH reach:              %7.2f Gpc (comoving, z = %2.1f)', ...
+        sss.BlackHole.advanced.comovingReachMpc / 1000,sss.BlackHole.reachZ))
+    end
+      disp(sprintf('Stochastic Omega:          %4.3g',sss.Omega)) 
   end  
 end
 
