@@ -25,7 +25,7 @@ function [coeff, Mifo, Msig, Mnoise] = shotradSignalRecycled(f, ifo)
   c       = ifo.Constants.c;                    % SOL [m/s]
   Omega   = 2*pi*f;                             % [BnC, table 1] Signal angular frequency [rads/s]
   omega_0 = 2*pi*c/lambda;                      % [BnC, table 1] Laser angular frequency [rads/s]
-  
+
   % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   L       = ifo.Infrastructure.Length;          % Length of arm cavities [m]
   l       = ifo.Optics.SRM.CavityLength;        % SRC Length [m]
@@ -88,7 +88,7 @@ function [coeff, Mifo, Msig, Mnoise] = shotradSignalRecycled(f, ifo)
   D2_L    = ( - (-1+rho*exp(2i*beta) ) * cos(phi) + ...
     1/4*epsilon * ( -3+rho+2*rho*exp(4*1i*beta) + exp(2i*beta) * (-1+5*rho) ) * cos(phi)+ ...
     1/2*lambda_SR * exp(2i*beta) * rho * cos(phi) );
-  
+
   % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   P11     = 0.5 * sqrt(lambda_SR) * tau *...
     ( -2*rho*exp(2i*beta)+2*cos(2*phi)+Kappa*sin(2*phi) );
@@ -110,7 +110,6 @@ function [coeff, Mifo, Msig, Mnoise] = shotradSignalRecycled(f, ifo)
   Q22     = Q11;
   Q12     = 0;
   Q21     = 0;
-  
   % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   N11     = sqrt(epsilon/2)*tau *(Kappa.*(1+rho*exp(2i*beta))*sin(phi)+...
     2*cos(beta).*(exp(-1i*beta)*cos(phi)-rho*exp(1i*beta).*(cos(phi)+Kappa*sin(phi))));
@@ -130,10 +129,17 @@ function [coeff, Mifo, Msig, Mnoise] = shotradSignalRecycled(f, ifo)
   
   % 3D transfer matrices from vectors for each element
   Mifo = getProdTF(Mq, make2x2TF(C11_L, C12_L, C21_L, C22_L));
-  Msig = getProdTF(Mq, permute([D1_L(:), D2_L(:)], [2, 3, 1]));
+  Msig = getProdTF(Mq, permute([D1_L(:), D2_L(:)], [2, 3, 1])); % 2 2 x 2 1
   
   % put all output noises together
   Mp = make2x2TF(P11, P12, P21, P22);
   Mn = make2x2TF(N11, N12, N21, N22);
-  Mnoise = getProdTF(Mq, [Mn, Mp]);
+  Mnoise = getProdTF(Mq, [Mn, Mp]); % 2 2 x 2 4 = 2 4
+  
+%   disp('D1_L')
+%   disp(D1_L(214))
+%   disp('D2_L')
+%   disp(D2_L(214))
+%   disp('Mq')
+%   disp(Mq(:, :, 214))
 end
