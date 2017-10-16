@@ -40,7 +40,6 @@ function [optOmega, optTransmission, optPhase, optBNSRange] = scan_src(finenessT
         for phase_deg = minPhase : finenessPhase : maxPhase
             %try
                 phase = deg2rad(phase_deg); % change to radian
-                fprintf('phase:%d  trans:%f\n', phase, transmission);
                 score = gwinc(cutoff, 3000, ifo, src, 2, power, phase, transmission);
                 dataArray(n, :) = [transmission, phase_deg, score.NeutronStar.comovingRangeMpc, score.Omega];
                 n = n + 1;
