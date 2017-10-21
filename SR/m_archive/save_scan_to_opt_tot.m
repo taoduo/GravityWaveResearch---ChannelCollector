@@ -1,11 +1,12 @@
 % handle all mat in a folder all named e.g."2.0_10Hz.mat"
-mat = dir('./stuff/*.mat'); 
+folder = './low_freq';
+mat = dir(strcat(folder, '/*.mat')); 
 for q = 1 : length(mat)
     % prepare the file
-    load(strcat(mat(q).folder, '/', mat(q).name));
+    load(strcat(folder, '/', mat(q).name));
     dataArray = dataArray(~isinf(dataArray(:, 4)), :);
     % get info from file name
-    [~, name, ~] = fileparts(strcat(mat(q).folder, '/', mat(q).name));
+    [~, name, ~] = fileparts(strcat(folder, '/', mat(q).name));
     tstr = strsplit(name, '_');
     pwr = str2double(tstr(1));
     i = int32(pwr / 0.5);
