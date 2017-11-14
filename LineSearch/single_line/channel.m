@@ -21,7 +21,7 @@ function channel(data_path, search, line, output_path)
 		fh = ceil((line.line + offset) / freqGap) + 1;
 		fcp = coh(fl : fh);
 		filt_max = max(fcp);
-		if (filt_max >= all_avg * search.filter)
+		if (abs(filt_max - all_avg) >= var(cp) * search.filter)
 			output(channel_name, fp, cp, line.line, output_path);
 		end
 	else
