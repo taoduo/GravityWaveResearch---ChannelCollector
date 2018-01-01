@@ -10,19 +10,23 @@ function channel(data_path, search, line, output_path)
 	load(data_path);
 	[~, channel_name, ~] = fileparts(data_path);
 	freqGap = freqs(2) - freqs(1);
-	[fp, cp] = search.chopData(data_path, freqs, coh, line);
+	[fp, cp] = search.chopData(data_path, freqs, coh, line); % 2Hz band
 	if (fp == false)
 		return;
 	end
 	if (search.filter ~= 0)
 		offset = line.resolution;
-		fl = floor((line.line - offset) / freqGap) + 1;
-		fh = ceil((line.line + offset) / freqGap) + 1;
-        nontarget = cp([1:fl - 1, fh:end]);
-        background = nontarget(nontarget );
-        bg_avg = mean(cp([1:fl - 1, fh:end]));
-        bg_var = var(cp([1:fl - 1, fh + 1:end]));
-		fcp = coh(fl : fh);
+        % get the indices
+        window_low = floor((line.line - search.zoom) / freqGap) + 1;
+		line_low = floor((line.line - offset) / freqGap) + 1;
+		line_high = min(length(coh), ceil((line.line + offset) / freqGap) + 1);
+        window_high = min(length(coh), ceil((line.line + search.zoom) / freqGap) + 1);
+        % bg calculate
+        background = coh([window_low:line_low - 1, line_high + 1:window_high]);
+        bg_avg = mean(background);
+        bg_var = var(background);
+		% filter
+        fcp = coh(line_low : line_high);
 		filt_max = max(fcp);
 		if (abs(filt_max - bg_avg) >= bg_var * search.filter)
 			output(channel_name, fp, cp, line.line, output_path);
