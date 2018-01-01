@@ -6,7 +6,7 @@ function line_search(data_path, search, line, output_path)
 	% output_path: the folder where all the week folders locate in
 		% the output_path will be created
 		% the structure is output_path/<weeks>/<plots>
-	output_path = strcat(output_path, '/line_', num2str(line.line));
+	output_path = strcat(output_path, '/', line.run, '_', line.observatory, '_line_', num2str(line.line));
 	mkdir(output_path);
 	files = dir(data_path);
 	dirFlags = [files.isdir];

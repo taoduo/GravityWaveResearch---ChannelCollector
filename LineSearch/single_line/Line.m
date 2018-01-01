@@ -1,17 +1,20 @@
 classdef Line
 	% Line configurations
 	properties
-		line,
-		resolution
+		line, % frequency of the line in Hz
+        run, % the LIGO run of the line when it is found
+        observatory, % the observatory where it is found
+		resolution % the resolution of the line, 1mHz by default
 	end
 	methods
-		function obj = Line(line, resolution)
-			if nargin == 1
-				obj.line = line;
+		function obj = Line(line, run, observatory, resolution)
+            obj.line = line;
+            obj.run = run;
+            obj.observatory = observatory;
+			if nargin == 3
 				obj.resolution = 0.001;
 			end
-			if nargin == 2
-				obj.line = line;
+			if nargin == 4
 				obj.resolution = resolution;
 			end
 		end
