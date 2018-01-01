@@ -15,13 +15,16 @@ function channel(data_path, search, line, output_path)
 		return;
 	end
 	if (search.filter ~= 0)
-		all_avg = mean(cp);
 		offset = line.resolution;
 		fl = floor((line.line - offset) / freqGap) + 1;
 		fh = ceil((line.line + offset) / freqGap) + 1;
+        nontarget = cp([1:fl - 1, fh:end]);
+        background = nontarget(nontarget );
+        bg_avg = mean(cp([1:fl - 1, fh:end]));
+        bg_var = var(cp([1:fl - 1, fh + 1:end]));
 		fcp = coh(fl : fh);
 		filt_max = max(fcp);
-		if (abs(filt_max - all_avg) >= var(cp) * search.filter)
+		if (abs(filt_max - bg_avg) >= bg_var * search.filter)
 			output(channel_name, fp, cp, line.line, output_path);
 		end
 	else
