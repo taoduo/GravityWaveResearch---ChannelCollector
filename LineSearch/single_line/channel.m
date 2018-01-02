@@ -24,11 +24,11 @@ function channel(data_path, search, line, output_path)
         % bg calculate
         background = coh([window_low:line_low - 1, line_high + 1:window_high]);
         bg_avg = mean(background);
-        bg_var = var(background);
+        bg_std = std(background);
 		% filter
         fcp = coh(line_low : line_high);
 		filt_max = max(fcp);
-		if (abs(filt_max - bg_avg) >= bg_var * search.filter)
+		if (abs(filt_max - bg_avg) >= bg_std * search.filter)
 			output(channel_name, fp, cp, line.line, output_path);
 		end
 	else
