@@ -25,7 +25,7 @@ function channel(data_path, search, line, output_path)
         background = coh([window_low:line_low - 1, line_high + 1:window_high]);
         bg_avg = mean(background);
         bg_std = std(background);
-        bg_omega = bg_std / (1 - 2 / pi);
+        bg_omega = bg_std / sqrt(1 - 2 / pi);
 		% filter
         fcp = coh(line_low : line_high);
 		filt_max = max(fcp);
