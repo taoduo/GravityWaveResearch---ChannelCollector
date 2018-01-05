@@ -36,7 +36,7 @@ function channel(data_path, search, line, output_path)
             p = erf(sig / sqrt(2));
             [weekpath,~,~] = fileparts(output_path);
             fd = fopen(fullfile(weekpath, 'sig.txt'), 'a');
-            fprintf(fd, strcat(channel_name, '\t', sig, '\t', p, '\n'));
+            fprintf(fd, strcat(channel_name, '\t', num2str(sig), '\t', num2str(p), '\n'));
             fclose(fd);
 			output(channel_name, fp, cp, line.line, output_path);
 		end
