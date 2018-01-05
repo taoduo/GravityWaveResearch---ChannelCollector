@@ -29,17 +29,32 @@ function channel(data_path, search, line, output_path)
 		% filter
         fcp = coh(line_low : line_high);
 		filt_max = max(fcp);
-		if (abs(filt_max - bg_avg) >= bg_omega * search.filter)
-            % output the significance as 
-            % channel <tab> significance <tab> confidence
-            sig = abs(filt_max - bg_avg) / bg_omega;
-            p = erf(sig / sqrt(2));
-            [weekpath,~,~] = fileparts(output_path);
-            fd = fopen(fullfile(weekpath, 'sig.txt'), 'a');
-            fprintf(fd, strcat(channel_name, '\t', num2str(sig), '\t', num2str(p), '\n'));
-            fclose(fd);
-			output(channel_name, fp, cp, line.line, output_path);
-		end
+        md = median(cp);
+        if (md < 0.5)
+            if (abs(filt_max - bg_avg) >= bg_omega * search.filter)
+                % output the significance as 
+                % channel <tab> significance <tab> confidence
+                sig = abs(filt_max - bg_avg) / bg_omega;
+                p = erf(sig / sqrt(2));
+                [weekpath,~,~] = fileparts(output_path);
+                fd = fopen(fullfile(weekpath, 'sig.txt'), 'a');
+                fprintf(fd, strcat(channel_name, '\t', num2str(sig), '\t', num2str(p), '\n'));
+                fclose(fd);
+                output(channel_name, fp, cp, line.line, output_path);
+            end
+        else
+            if (abs(filt_max - bg_avg) <= 1 - bg_omega * search.filter)
+                % output the significance as 
+                % channel <tab> significance <tab> confidence
+                sig = abs(filt_max - bg_avg) / bg_omega;
+                p = erf(sig / sqrt(2));
+                [weekpath,~,~] = fileparts(output_path);
+                fd = fopen(fullfile(weekpath, 'sig.txt'), 'a');
+                fprintf(fd, strcat(channel_name, '\t', num2str(sig), '\t', num2str(p), '\n'));
+                fclose(fd);
+                output(channel_name, fp, cp, line.line, output_path);
+            end
+        end
 	else
 		output(channel_name, fp, cp, line.line, output_path);
 	end
