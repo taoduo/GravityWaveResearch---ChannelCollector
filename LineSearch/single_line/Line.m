@@ -8,6 +8,13 @@ classdef Line
 	end
 	methods
 		function obj = Line(line, run, observatory, resolution)
+            if nargin == 0
+               obj.line = 0;
+               obj.run = '';
+               obj.observatory = '';
+               obj.resolution = 0;
+               return
+            end
             obj.line = line;
             obj.run = run;
             obj.observatory = observatory;
