@@ -159,7 +159,8 @@ def writehead(f, run, observatory, weeks, line, source):
     f.write('          <em>- The distribution is modeled with half normal distribution. A significant coherence is defined as being more than seven standard deviations off the center, which is mostly zero (i.e. |z-score| > 7). \
         The confidence of this correlation is close to one within 10<sup>-11</sup>.</em><br>')
     f.write('          <em>- The z-score is given in the parenthesis after the channels.</em><br>')
-    f.write('          <em>- Contact Duo Tao if there are any questions or problems.</em>')
+    now = datetime.datetime.now()
+    f.write('          <em>- This is produced by Duo Tao at ' + str(now.year) + '-' + str(now.month) + '-' + str(now.day) +  '. Contact Duo if there are any questions or problems.</em>')
     f.write('        </div>')
     f.write('        <div class="modal-footer">')
     f.write('           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>')
