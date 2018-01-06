@@ -31,7 +31,7 @@ function channel(data_path, search, line, output_path)
         filt_min = min(fcp);
         md = median(cp);
         if (md < 0.5)
-            if (filt_max >= bg_omega * search.filter)
+            if (filt_max >= bg_omega * search.filter && filt_max >= 0.025)
                 % output the significance as 
                 % channel <tab> significance <tab> confidence
                 sig = filt_max / bg_omega;
@@ -43,7 +43,7 @@ function channel(data_path, search, line, output_path)
                 output(channel_name, fp, cp, line.line, output_path);
             end
         else
-            if (filt_min <= 1 - bg_omega * search.filter && filter_min <= 0.95)
+            if (filt_min <= 1 - bg_omega * search.filter && filter_min <= 0.975)
                 % output the significance as 
                 % channel <tab> significance <tab> confidence
                 sig = (1 - filt_min) / bg_omega;
