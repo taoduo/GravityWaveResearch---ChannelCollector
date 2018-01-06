@@ -34,7 +34,7 @@ function channel(data_path, search, line, output_path)
             if (filt_max >= bg_omega * search.filter)
                 % output the significance as 
                 % channel <tab> significance <tab> confidence
-                sig = abs(filt_max - bg_avg) / bg_omega;
+                sig = filt_max / bg_omega;
                 p = erf(sig / sqrt(2));
                 [weekpath,~,~] = fileparts(output_path);
                 fd = fopen(fullfile(weekpath, 'sig.txt'), 'a');
@@ -46,7 +46,7 @@ function channel(data_path, search, line, output_path)
             if (filt_min <= 1 - bg_omega * search.filter)
                 % output the significance as 
                 % channel <tab> significance <tab> confidence
-                sig = abs(filt_min - bg_avg) / bg_omega;
+                sig = filt_min / bg_omega;
                 p = erf(sig / sqrt(2));
                 [weekpath,~,~] = fileparts(output_path);
                 fd = fopen(fullfile(weekpath, 'sig.txt'), 'a');
