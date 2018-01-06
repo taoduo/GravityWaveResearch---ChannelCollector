@@ -23,15 +23,15 @@ function channel(data_path, search, line, output_path)
         window_high = min(length(coh), ceil((line.line + search.zoom) / freqGap) + 1);
         % bg calculate
         background = coh([window_low:line_low - 1, line_high + 1:window_high]);
-        bg_avg = mean(background);
         bg_std = std(background);
         bg_omega = bg_std / sqrt(1 - 2 / pi);
 		% filter
         fcp = coh(line_low : line_high);
 		filt_max = max(fcp);
+        filt_min = maxin(fcp);
         md = median(cp);
         if (md < 0.5)
-            if (abs(filt_max - bg_avg) >= bg_omega * search.filter)
+            if (filt_max >= bg_omega * search.filter)
                 % output the significance as 
                 % channel <tab> significance <tab> confidence
                 sig = abs(filt_max - bg_avg) / bg_omega;
@@ -43,10 +43,10 @@ function channel(data_path, search, line, output_path)
                 output(channel_name, fp, cp, line.line, output_path);
             end
         else
-            if (abs(filt_max - bg_avg) <= 1 - bg_omega * search.filter)
+            if (filt_min <= 1 - bg_omega * search.filter)
                 % output the significance as 
                 % channel <tab> significance <tab> confidence
-                sig = abs(filt_max - bg_avg) / bg_omega;
+                sig = abs(filt_min - bg_avg) / bg_omega;
                 p = erf(sig / sqrt(2));
                 [weekpath,~,~] = fileparts(output_path);
                 fd = fopen(fullfile(weekpath, 'sig.txt'), 'a');
