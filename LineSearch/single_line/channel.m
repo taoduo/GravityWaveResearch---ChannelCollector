@@ -43,7 +43,7 @@ function channel(data_path, search, line, output_path)
                 output(channel_name, fp, cp, line.line, output_path);
             end
         else
-            if (filt_min <= 1 - bg_omega * search.filter && filter_min <= 0.975)
+            if (filt_min <= 1 - bg_omega * search.filter && filt_min <= 0.975)
                 % output the significance as 
                 % channel <tab> significance <tab> confidence
                 sig = (1 - filt_min) / bg_omega;
