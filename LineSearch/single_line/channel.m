@@ -43,10 +43,10 @@ function channel(data_path, search, line, output_path)
                 output(channel_name, fp, cp, line.line, output_path);
             end
         else
-            if (filt_min <= 1 - bg_omega * search.filter)
+            if (filt_min <= 1 - bg_omega * search.filter && filter_min <= 0.95)
                 % output the significance as 
                 % channel <tab> significance <tab> confidence
-                sig = filt_min / bg_omega;
+                sig = (1 - filt_min) / bg_omega;
                 p = erf(sig / sqrt(2));
                 [weekpath,~,~] = fileparts(output_path);
                 fd = fopen(fullfile(weekpath, 'sig.txt'), 'a');
