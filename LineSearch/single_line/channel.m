@@ -28,7 +28,7 @@ function channel(data_path, search, line, output_path)
 		% filter
         fcp = coh(line_low : line_high);
 		filt_max = max(fcp);
-        filt_min = maxin(fcp);
+        filt_min = min(fcp);
         md = median(cp);
         if (md < 0.5)
             if (filt_max >= bg_omega * search.filter)
