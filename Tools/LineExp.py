@@ -154,8 +154,8 @@ def writehead(f, run, observatory, weeks, line, source):
     for tup in channelDictList:
         f.write('<tr>')
         f.write('  <th scope="row">' + tup[0] + '</th>')
-        f.write('  <td>' + tup[1][0] + '</td>')
-        f.write('  <td>' + tup[1][0] + '</td>')
+        f.write('  <td>' + str(tup[1][0]) + '</td>')
+        f.write('  <td>' + str(round(tup[1][1],2)) + '</td>')
         f.write('</tr>')
     f.write('</tbody>')
     f.write('</table>')
