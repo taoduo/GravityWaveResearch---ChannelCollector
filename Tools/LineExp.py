@@ -96,7 +96,7 @@ def writehead(f, run, observatory, weeks, line, source):
     f.write("       <header>\n")
     f.write("           <h4>\n")
     if (len(source) != 0):
-        f.write("               Presented here are the coherence tool search results of a " + line + " Hz line during the " + run + " run at the " + observatory + " observatory.\n")
+        f.write("               Presented here are the coherence tool search results of a " + line + " Hz line during the " + run + " run at the " + observatory + " observatory.<br>\n")
         f.write("               The line is posted<a href='" + source + "'> here</a>.\n")
     else:
         f.write("               Presented here are the coherence tool search results of a " + line + " Hz line during the " + run + " run at the " + observatory + " observatory.\n")
