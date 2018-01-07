@@ -120,7 +120,7 @@ def writehead(f, run, observatory, weeks, line, source):
     f.write('          <h5 class="modal-title" id="statModalLabel">Summary</h5>')
     f.write('        </div>')
     f.write('        <div class="modal-body">')
-    f.write('           <b>Subsystems Total: ' + str(stats['totalChannel']) + "</b><br>")
+    f.write('           <b>Channels Total: ' + str(stats['totalChannel']) + "</b><br>")
     f.write('           <div class="row">')
     for key, value in sorted(stats['subsystemDict'].iteritems(), key=lambda (k,v): (v,k), reverse=True):
         if key.startswith("PEM-"):
@@ -135,7 +135,31 @@ def writehead(f, run, observatory, weeks, line, source):
         else:
             f.write("<em>" + key + "</em> - " + str(value))
         f.write('            </div>')
-    f.write('        </div></div>')
+
+    f.write('           </div>') # close row
+    f.write('           <b>Weeks: ' + str(stats['totalWeek']) + '/' + str(length(weeks)) + "</b><br>")
+
+    f.write('           <b>Sigficant Channels: </b><br>')
+    f.write('<table class="table">')
+    f.write('<thead>')
+    f.write('<tr>')
+    f.write('  <th scope="col">Name</th>')
+    f.write('  <th scope="col"># of Weeks</th>')
+    f.write('  <th scope="col">Total Sigficance</th>')
+    f.write('</tr>')
+    f.write('</thead>')
+    f.write('<tbody>')
+    channelDictList = sorted(stats['channelStats'].items(), key=operator.itemgetter(1)[1])
+    for tup in channelDictList:
+        f.write('<tr>')
+        f.write('  <th scope="row">' + tup[0] + '</th>')
+        f.write('  <td>' + tup[1][0] + '</td>')
+        f.write('  <td>' + tup[1][0] + '</td>')
+        f.write('</tr>')
+    f.write('</tbody>')
+    f.write('</table>')
+
+    f.write('       </div>') # close modal body
     f.write('        <div class="modal-footer">')
     f.write('           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>')
     f.write('        </div>')
@@ -213,6 +237,7 @@ def writeweek(f, weekfolder, week):
         f.write("                   </ul>\n")
         f.write("               </li>\n")
 
+
 def writefoot(f):
     f.write("           <img src=\"\" id=\"plot\" style=\"z-index:10;position:fixed;bottom:10px;display:none\" class=\"img-fluid img-thumbnail col-md-5\" alt=\"\">\n")
     f.write("           </div>\n")
@@ -241,7 +266,9 @@ def statCalc(path, weeks):
     weeks: folder names of the weeks
     '''
     subsysDict = {}
+    channelDict = {} # value: [week count, signficance total]
     chnTot = 0
+    wkTot = 0
     for week in weeks:
         if not week.startswith("."):
             weekfolder = os.path.join(path, week)
@@ -252,26 +279,38 @@ def statCalc(path, weeks):
                 if not c.startswith(".") and c.endswith(".jpg"):
                     channels.append(c)
             channels = sorted(channels)
-
-            # statistics of the channels: each subsystem count and total count
+            if length(channels) != 0:
+                wkTot = wkTot + 1
+            # statistics calculations
             for chn in channels:
                 chnTot = chnTot + 1
-                if not c.startswith(".") and c.endswith(".jpg"):
-                    p = re.compile("[\/:]")
-                    subsys = p.split(chn.split("-")[0])[1]
+                # subsystem stats
+                p = re.compile("[\/:]")
+                subsys = p.split(chn.split("-")[0])[1]
+                if subsys in subsysDict:
+                    subsysDict[subsys] = subsysDict[subsys] + 1
+                else:
+                    subsysDict[subsys] = 1
+                if subsys == "PEM":
+                    station = chn.split("-")[1].split("_")[0]
+                    subsys = "PEM-" + station
                     if subsys in subsysDict:
                         subsysDict[subsys] = subsysDict[subsys] + 1
                     else:
                         subsysDict[subsys] = 1
-                    if subsys == "PEM":
-                        station = chn.split("-")[1].split("_")[0]
-                        subsys = "PEM-" + station
-                        if subsys in subsysDict:
-                            subsysDict[subsys] = subsysDict[subsys] + 1
-                        else:
-                            subsysDict[subsys] = 1
+                # channels stats
+                if chn in channelDict:
+                    tup = channelDict[chn]
+                    sigfile = os.path.join(weekfolder, 'sig.txt')
+                    if os.path.isfile(sigfile): # if there is any channel in that week
+                        sigdict = loadSigfile(sigfile)
+                    channelDict[chn] = (tup(0) + 1, tup(1) + sigdict[chn[:-4]])
+                else:
+                    channelDict[chn] = (1, sigdict[chn[:,-4]])
     stats['subsystemDict'] = subsysDict
     stats['totalChannel'] = chnTot
+    stats['channelStats'] = channelDict
+    stats['totalWeek'] = wkTot
 
 
 def writeline(path, run, observatory, source, line):
