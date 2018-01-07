@@ -305,7 +305,7 @@ def statCalc(path, weeks):
                     sigdict = loadSigfile(sigfile)
                 if chn in channelDict:
                     tup = channelDict[chn]
-                    channelDict[chn] = (tup(0) + 1, tup(1) + sigdict[chn[:-4]])
+                    channelDict[chn] = (tup[0] + 1, tup[1] + sigdict[chn[:-4]])
                 else:
                     channelDict[chn] = (1, sigdict[chn[:-4]])
     stats['subsystemDict'] = subsysDict
