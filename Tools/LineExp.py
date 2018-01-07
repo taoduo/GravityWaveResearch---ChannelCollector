@@ -150,7 +150,7 @@ def writehead(f, run, observatory, weeks, line, source):
     f.write('</tr>')
     f.write('</thead>')
     f.write('<tbody>')
-    channelDictList = sorted(stats['channelStats'].items(), key=operator.itemgetter(1)[1])
+    channelDictList = sorted(stats['channelStats'].items(), key=lambda x:x[1][1])
     for tup in channelDictList:
         f.write('<tr>')
         f.write('  <th scope="row">' + tup[0] + '</th>')
