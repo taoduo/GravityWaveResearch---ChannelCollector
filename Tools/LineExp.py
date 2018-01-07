@@ -130,7 +130,7 @@ def writehead(f, run, observatory, weeks, line, source):
     f.write('           </div>') # close row
     f.write('           <b>Weeks: ' + str(stats['totalWeek']) + '/' + str(len(weeks)) + "</b><br>")
 
-    f.write('           <b>7 Most sigficant channels: </b><br>')
+    f.write('           <b>Top 7 sigficant channels: </b><br>')
     f.write('<table class="table">')
     f.write('<thead>')
     f.write('<tr>')
