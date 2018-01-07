@@ -299,12 +299,12 @@ def statCalc(path, weeks):
                     else:
                         subsysDict[subsys] = 1
                 # channels stats
+                sigfile = os.path.join(weekfolder, 'sig.txt')
+                sigdict = {}
+                if os.path.isfile(sigfile): # if there is any channel in that week
+                    sigdict = loadSigfile(sigfile)
                 if chn in channelDict:
                     tup = channelDict[chn]
-                    sigfile = os.path.join(weekfolder, 'sig.txt')
-                    sigdict = {}
-                    if os.path.isfile(sigfile): # if there is any channel in that week
-                        sigdict = loadSigfile(sigfile)
                     channelDict[chn] = (tup(0) + 1, tup(1) + sigdict[chn[:-4]])
                 else:
                     channelDict[chn] = (1, sigdict[chn[:,-4]])
