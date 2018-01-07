@@ -176,8 +176,11 @@ def writehead(f, run, observatory, weeks, line, source):
     f.write('          <em>- Button disabled means there is no significant coherence found in the data of that week. Button with delete line means the data is not available for that week.</em><br>')
     f.write('          <em>- The dates indicate the start of the integration week in UTC, with GPS time in parenthesis.</em><br>')
     f.write('          <em>- Click on the channel to save the plot. </em><br>')
-    f.write('          <em>- Definition of significance coherence: the distribution is modeled with half normal distribution. A significant coherence is defined as being more than seven standard deviations off the center, which is mostly zero (i.e. |z-score| > 7) and the value of deviation greater than 0.025. \
-        The confidence of this correlation is close to one within 10<sup>-11</sup>.</em><br>')
+    f.write('          <em>- Definition of significance coherence: the distribution is modeled with half normal distribution centered at 0 or 1. A significant coherence is defined as<br> ')
+    f.write('           (1) more than seven standard deviations away from the center (i.e. |z-score| > 7 for normal distribution) <br>')
+    f.write('           and<br>')
+    f.write('           (2) more 0.025 deviated from the center. <br>')
+    f.write('               Note that the standard deviation above is the standard deviation of the model, which is different from the standard deviation of the data. The confidence of this correlation is close to one within 10<sup>-11</sup>.</em><br>')
     f.write('          <em>- The numbers in the parenthesis after the channels are the z-scores of the significant coherence found as is defined above.</em><br>')
     f.write('          <em>- "Significance" refers to the total z-scores of all occurences of a channel. That is used to indicate how much a channel is related to the noise line. </em><br>')
     now = datetime.datetime.now()
