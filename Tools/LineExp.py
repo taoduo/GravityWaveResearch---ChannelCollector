@@ -190,7 +190,7 @@ def writehead(f, run, observatory, weeks, line, source):
     f.write('          <em>- The z-scores are given in the parenthesis after the channels.</em><br>')
     f.write('          <em>- "Significance" refers to the total z-scores of all occurences of a channel.')
     now = datetime.datetime.now()
-    f.write('          <em>- This is produced by Duo Tao at ' + str(now.year) + '-' + str(now.month) + '-' + str(now.day) +  '. Contact Duo if there are any questions or problems.</em>')
+    f.write('          <em>- This is produced by Duo Tao at ' + str(now.year) + '-' + str(now.month) + '-' + str(now.day) +  '. Contact Duo if there are any questions, problems or suggestions.</em>')
     f.write('        </div>')
     f.write('        <div class="modal-footer">')
     f.write('           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>')
