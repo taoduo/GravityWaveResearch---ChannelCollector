@@ -3,6 +3,7 @@ import os
 import datetime
 import time
 import re
+import operator
 
 # globals
 path = "" # path to the lines folder
