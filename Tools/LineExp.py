@@ -150,13 +150,17 @@ def writehead(f, run, observatory, weeks, line, source):
     f.write('</tr>')
     f.write('</thead>')
     f.write('<tbody>')
-    channelDictList = sorted(stats['channelStats'].items(), key=lambda x:x[1][1])
+    channelDictList = sorted(stats['channelStats'].items(), key=lambda x:x[1][1], reverse=True)
+    int limit = 7
     for tup in channelDictList:
         f.write('<tr>')
         f.write('  <th scope="row">' + tup[0] + '</th>')
         f.write('  <td>' + str(tup[1][0]) + '</td>')
         f.write('  <td>' + str(round(tup[1][1],2)) + '</td>')
         f.write('</tr>')
+        limit = limit - 1
+        if limit == 0:
+            break
     f.write('</tbody>')
     f.write('</table>')
 
