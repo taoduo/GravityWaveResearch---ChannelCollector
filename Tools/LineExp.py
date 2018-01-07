@@ -279,7 +279,7 @@ def statCalc(path, weeks):
                 if not c.startswith(".") and c.endswith(".jpg"):
                     channels.append(c)
             channels = sorted(channels)
-            if length(channels) != 0:
+            if len(channels) != 0:
                 wkTot = wkTot + 1
             # statistics calculations
             for chn in channels:
