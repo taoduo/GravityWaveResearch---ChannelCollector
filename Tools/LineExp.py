@@ -111,7 +111,7 @@ def writehead(f, run, observatory, weeks, line, source):
     f.write('          <h5 class="modal-title" id="statModalLabel">Summary</h5>')
     f.write('        </div>')
     f.write('        <div class="modal-body">')
-    f.write('           <b>Channels Total: ' + str(stats['totalChannel']) + "</b><br>")
+    f.write('           <b>Channels occurrences total <span>  <a href="#" data-toggle="tooltip" title="One channels might occur multiple times in different weeks."> ? </a></span>: ' + str(stats['totalChannel']) + "</b><br>")
     f.write('           <div class="row">')
     for key, value in sorted(stats['subsystemDict'].iteritems(), key=lambda (k,v): (v,k), reverse=True):
         if key.startswith("PEM-"):
