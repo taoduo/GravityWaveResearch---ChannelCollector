@@ -307,7 +307,7 @@ def statCalc(path, weeks):
                     tup = channelDict[chn]
                     channelDict[chn] = (tup(0) + 1, tup(1) + sigdict[chn[:-4]])
                 else:
-                    channelDict[chn] = (1, sigdict[chn[:,-4]])
+                    channelDict[chn] = (1, sigdict[chn[:-4]])
     stats['subsystemDict'] = subsysDict
     stats['totalChannel'] = chnTot
     stats['channelStats'] = channelDict
