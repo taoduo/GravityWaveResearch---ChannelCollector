@@ -173,7 +173,7 @@ def writehead(f, run, observatory, weeks, line, source):
     f.write('  </div>')
 
     # help modal
-    f.write('   <button type="button" class="btn btn-info btn-circle" data-toggle="modal" data-target="#exampleModal" style="position:absolute;top:10px;right:10px">?</button>')
+    f.write('   <button type="button" class="btn btn-info btn-circle" data-toggle="modal" data-target="#exampleModal" style="position:absolute;top:10px;right:10px">Readme</button>')
     f.write('   <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">')
     f.write('    <div class="modal-dialog" role="document">')
     f.write('      <div class="modal-content">')
