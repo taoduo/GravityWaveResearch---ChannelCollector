@@ -180,7 +180,8 @@ def writehead(f, run, observatory, weeks, line, source):
     f.write('           (1) more than seven standard deviations away from the center (i.e. |z-score| > 7 for normal distribution) <br>')
     f.write('           and<br>')
     f.write('           (2) more 0.025 deviated from the center. <br>')
-    f.write('               Note that the standard deviation above is the standard deviation of the model, which is different from the standard deviation of the data. The confidence of this correlation is close to one within 10<sup>-11</sup>.</em><br>')
+    f.write('               Note that the standard deviation above is the standard deviation of the model, which is different from the standard deviation of the data. \
+        By the two conditions above, the confidence that the line is related to the channel is close to 100% within 10<sup>-11</sup>.</em><br>')
     f.write('          <em>- The numbers in the parenthesis after the channels are the z-scores of the significant coherence found as is defined above.</em><br>')
     f.write('          <em>- "Significance" refers to the total z-scores of all occurences of a channel. That is used to indicate how much a channel is related to the noise line. </em><br>')
     now = datetime.datetime.now()
