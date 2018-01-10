@@ -11,7 +11,7 @@ function channel(data_path, search, line, output_path)
 	[~, channel_name, ~] = fileparts(data_path);
 	freqGap = freqs(2) - freqs(1);
 	[fp, cp] = search.chopData(data_path, freqs, coh, line); % 2Hz band
-    if (fp == false || ismember(1, isNaN(cp)))
+    if (fp == false)
 		return;
     end
 	if (search.filter ~= 0)

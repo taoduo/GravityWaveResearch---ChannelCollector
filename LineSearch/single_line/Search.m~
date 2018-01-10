@@ -28,8 +28,8 @@ classdef Search
 				fp = false;
 				cp = false;
 				return;
-            elseif ismember(1, isnan(coh(il, ih)))
-                disp(strcat(data_path, 'nan data involved.'));
+            elseif ismember(1, isnan(coh(il, ih))
+                
                 fp = false;
                 cp = false;
                 return;
