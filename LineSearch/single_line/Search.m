@@ -2,7 +2,7 @@ classdef Search
 	% Search configurations
 	properties
 		zoom, % the x-axis range of the plot, centerd at the single line. One-sided.
-		filter, % filter thresold
+		filter, % log p-value thresold
 		selected_weeks % the weeks selected, as array, in folder names. Empty to select all.
 	end
 	methods
@@ -47,7 +47,7 @@ classdef Search
 
 		function dump(obj)
 			disp(strcat('Zoom: ', num2str(obj.zoom), '#', num2str(obj.filter)));
-			if length(obj.selected_weeks) == 0
+			if isempty(obj.selected_weeks)
 				disp('All weeks selected.');
 			else
 				disp('Weeks selected:');

@@ -47,12 +47,12 @@ function channel(data_path, search, line, output_path)
         else
             logp = log10(vpa((normcdf(vpa(zdev)) - normcdf(vpa(z0))) / vpa(totarea)));
         end
-        if (logp < -16 && maxDev >= 0.025) % p-value should be less than 10^-16
+        if (logp < filter && maxDev >= 0.025) % p-value should be less than 10^-16
             % output the significance as 
             % channel <tab> log p value            
             [weekpath,~,~] = fileparts(output_path);
             fd = fopen(fullfile(weekpath, 'sig.txt'), 'a');
-            fprintf(fd, strcat(channel_name, '\t', num2str(ceil(p)), '\n'));
+            fprintf(fd, strcat(channel_name, '\t', ceil(logp), '\n'));
             fclose(fd);
             output(channel_name, fp, cp, line.line, output_path);
         end
