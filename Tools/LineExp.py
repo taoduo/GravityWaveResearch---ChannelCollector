@@ -16,7 +16,7 @@ def loadSigfile(path):
         for line in f:
             sp = line.split('\t')
             chn = sp[0]
-            sig = float(sp[1])
+            sig = -int(sp[1])
             ret[chn] = sig
     return ret
 
@@ -176,14 +176,12 @@ def writehead(f, run, observatory, weeks, line, source):
     f.write('          <em>- Button disabled means there is no significant coherence found in the data of that week. Button with delete line means the data is not available for that week.</em><br>')
     f.write('          <em>- The dates indicate the start of the integration week in UTC, with GPS time in parenthesis.</em><br>')
     f.write('          <em>- Click on the channel to save the plot. </em><br>')
-    f.write('          <em>- Definition of significance coherence: the distribution is modeled with half normal distribution centered at 0 or 1. A significant coherence is defined as<br> ')
-    f.write('           (1) more than seven standard deviations away from the center (i.e. |z-score| > 7 for normal distribution) <br>')
+    f.write('          <em>- Definition of significance coherence: the distribution is modeled with a clipped normal distribution between. A significant coherence is defined as<br> ')
+    f.write('           (1) having an uncertainty level below 10<sup>-11</sup> <br>')
     f.write('           and<br>')
     f.write('           (2) more 0.025 deviated from the center. <br>')
-    f.write('               Note that the standard deviation above is the standard deviation of the model, which is different from the standard deviation of the data. \
-        By the two conditions above, the confidence that the line is related to the channel is close to 100% within 10<sup>-11</sup>.</em><br>')
-    f.write('          <em>- The numbers in the parenthesis after the channels are the z-scores of the significant coherence found as is defined above.</em><br>')
-    f.write('          <em>- "Significance" refers to the total z-scores of all occurences of a channel. That is used to indicate how much a channel is related to the noise line. </em><br>')
+    f.write('          <em>- The numbers in the parenthesis after the channels are the uncertainty levels of the significant coherence rounded to the upper log of ten.</em><br>')
+    f.write('          <em>- "Significance" is invented as the sum of [-log(uncertainty)] of all occurences of a channel. That is used to indicate how much a channel is related to the noise line. </em><br>')
     now = datetime.datetime.now()
     f.write('          <em>- This is produced by Duo Tao at ' + str(now.year) + '-' + str(now.month) + '-' + str(now.day) +  '. Contact Duo if there are any questions, problems or suggestions.</em>')
     f.write('        </div>')
@@ -233,7 +231,7 @@ def writeweek(f, weekfolder, week):
         for chn in channels:
             f.write("                   <li>\n")
             f.write("                       <a class='btn plot-link' href='./" + week + "/" + chn + "' data-plot='./" + week + "/" + chn + "'>" + \
-                chn[:-12] + "</a>(" + str(round(sigdict[chn[:-4]], 2)) + ")\n")
+                chn[:-12] + "</a>(10<sup>-" + str(sigdict[chn[:-4]]) + "</sup>)\n")
             f.write("                   </li>\n")
         f.write("                   </ul>\n")
         f.write("               </li>\n")
@@ -309,9 +307,9 @@ def statCalc(path, weeks):
                     sigdict = loadSigfile(sigfile)
                 if chn in channelDict:
                     tup = channelDict[chn]
-                    channelDict[chn] = (tup[0] + 1, tup[1] + sigdict[chn[:-4]])
+                    channelDict[chn] = (tup[0] + 1, tup[1] - sigdict[chn[:-4]])
                 else:
-                    channelDict[chn] = (1, sigdict[chn[:-4]])
+                    channelDict[chn] = (1, -sigdict[chn[:-4]])
     stats['subsystemDict'] = subsysDict
     stats['totalChannel'] = chnTot
     stats['channelStats'] = channelDict
