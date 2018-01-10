@@ -29,7 +29,7 @@ function channel(data_path, search, line, output_path)
         filt_min = min(fcp);
         % get params of the model
         if (ismember(1, isnan(background)))
-            disp(window_low, line_low, line_high, window_high, length(coh))
+            disp([window_low, line_low, line_high, window_high, length(coh)])
         end
         pd = fitdist(background, 'Normal');
         ctr = pd.mu;
