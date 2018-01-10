@@ -31,7 +31,7 @@ function channel(data_path, search, line, output_path)
         % get params of the model
         pd = fitdist(background, 'Normal');
         ctr = pd.mu;
-        stdd = pd.omega;
+        stdd = pd.sigma;
         z0 = (0 - ctr) / stdd;
         z1 = (1 - ctr) / stdd;
         totarea = vpa(normcdf(vpa(z1)) - normcdf(vpa(z0)));
