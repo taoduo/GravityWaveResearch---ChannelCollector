@@ -28,13 +28,9 @@ function channel(data_path, search, line, output_path)
 		filt_max = max(fcp);
         filt_min = min(fcp);
         % get params of the model
-        if (ismember(1, isnan(background)))
-            disp([window_low, line_low, line_high, window_high, length(coh)])
-            if ismember(1, isnan(coh))
-               disp('nan in coh') 
-            else
-               disp('no nan in coh')
-            end
+        if (ismember(1, isnan(coh)))
+            disp(channel_name)
+            disp(freqs(isnan(coh)))
         end
         pd = fitdist(background, 'Normal');
         ctr = pd.mu;
