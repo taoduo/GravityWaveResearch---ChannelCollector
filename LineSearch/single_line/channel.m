@@ -29,7 +29,11 @@ function channel(data_path, search, line, output_path)
         filt_min = min(fcp);
         
         % get params of the model
-        pd = fitdist(background, 'Normal');
+        if (isrow(background))
+            pd = fitdist(background', 'Normal');
+        else
+            pd = fitdist(background, 'Normal');
+        end
         ctr = pd.mu;
         stdd = pd.sigma;
         z0 = (0 - ctr) / stdd;
