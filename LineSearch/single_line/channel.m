@@ -11,7 +11,7 @@ function channel(data_path, search, line, output_path)
 	[~, channel_name, ~] = fileparts(data_path);
 	freqGap = freqs(2) - freqs(1);
 	[fp, cp] = search.chopData(data_path, freqs, coh, line); % 2Hz band
-    if (fp == false)
+    if (fp == false || ismember(1, isNaN(cp)))
 		return;
     end
 	if (search.filter ~= 0)
@@ -27,11 +27,8 @@ function channel(data_path, search, line, output_path)
         fcp = coh(line_low : line_high);
 		filt_max = max(fcp);
         filt_min = min(fcp);
+        
         % get params of the model
-        if (ismember(1, isnan(coh)))
-            disp(channel_name)
-            disp(freqs(end))
-        end
         pd = fitdist(background, 'Normal');
         ctr = pd.mu;
         stdd = pd.sigma;
