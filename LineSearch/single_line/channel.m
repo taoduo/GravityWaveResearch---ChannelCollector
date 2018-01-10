@@ -30,7 +30,7 @@ function channel(data_path, search, line, output_path)
         % get params of the model
         if (ismember(1, isnan(coh)))
             disp(channel_name)
-            disp(freqs(isnan(coh)))
+            disp(freqs(end))
         end
         pd = fitdist(background, 'Normal');
         ctr = pd.mu;
