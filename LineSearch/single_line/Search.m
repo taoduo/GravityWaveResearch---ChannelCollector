@@ -28,14 +28,14 @@ classdef Search
 				fp = false;
 				cp = false;
 				return;
+			elseif ih > length(coh)
+				disp(strcat(data_path, ' range chopped.'));
+				ih = length(coh);
             elseif ismember(1, isnan(coh(il, ih)))
                 disp(strcat(data_path, 'nan data involved.'));
                 fp = false;
                 cp = false;
-                return;
-			elseif ih > length(coh)
-				disp(strcat(data_path, ' range chopped.'));
-				ih = length(coh);
+            return;
 			end
 			fp = freqs(il : ih);
 			cp = coh(il : ih);
