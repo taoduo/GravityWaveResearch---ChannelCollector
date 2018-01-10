@@ -15,11 +15,10 @@ function channel(data_path, search, line, output_path)
 		return;
     end
 	if (search.filter ~= 0)
-		offset = line.resolution;
         % get the indices
         window_low = floor((line.line - search.zoom) / freqGap) + 1;
-		line_low = floor((line.line - offset) / freqGap) + 1;
-		line_high = min(length(coh), ceil((line.line + offset) / freqGap) + 1);
+		line_low = floor((line.line - line.resolution) / freqGap) + 1;
+		line_high = min(length(coh), ceil((line.line + line.resolution) / freqGap) + 1);
         window_high = min(length(coh), ceil((line.line + search.zoom) / freqGap) + 1);
         % bg calculate
         background = coh([window_low:line_low - 1, line_high + 1:window_high]);
@@ -29,7 +28,9 @@ function channel(data_path, search, line, output_path)
 		filt_max = max(fcp);
         filt_min = min(fcp);
         % get params of the model
-        disp(background);
+        if (ismember(1, isnan(background)))
+            disp(window_low, line_low, line_high, window_high, length(coh))
+        end
         pd = fitdist(background, 'Normal');
         ctr = pd.mu;
         stdd = pd.sigma;
