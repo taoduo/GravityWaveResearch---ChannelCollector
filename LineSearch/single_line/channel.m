@@ -52,7 +52,8 @@ function channel(data_path, search, line, output_path)
             % channel <tab> log p value            
             [weekpath,~,~] = fileparts(output_path);
             fd = fopen(fullfile(weekpath, 'sig.txt'), 'a');
-            fprintf(fd, strcat(channel_name, '\t', num2str(ceil(logp)), '\n'));
+            disp(ceil(logp))
+            fprintf(fd, strcat(channel_name, '\t', char(ceil(logp)), '\n'));
             fclose(fd);
             output(channel_name, fp, cp, line.line, output_path);
         end
