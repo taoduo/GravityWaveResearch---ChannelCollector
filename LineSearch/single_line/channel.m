@@ -47,7 +47,7 @@ function channel(data_path, search, line, output_path)
         else
             logp = log10(vpa((normcdf(vpa(zdev)) - normcdf(vpa(z0))) / vpa(totarea)));
         end
-        if (logp < filter && maxDev >= 0.025) % p-value should be less than 10^-16
+        if (logp < search.filter && maxDev >= 0.025) % p-value should be less than 10^-16
             % output the significance as 
             % channel <tab> log p value            
             [weekpath,~,~] = fileparts(output_path);
