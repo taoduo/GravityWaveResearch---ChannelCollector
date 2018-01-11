@@ -111,7 +111,7 @@ def writehead(f, run, observatory, weeks, line, source):
     f.write('          <h5 class="modal-title" id="statModalLabel">Summary</h5>')
     f.write('        </div>')
     f.write('        <div class="modal-body">')
-    f.write('           <b>Channels occurrences total: ' + str(stats['totalChannel']) + "</b>" + '<span>  <a href="#" data-toggle="tooltip" title="One channels might occur multiple times in different weeks."> ? </a></span>' + "<br>")
+    f.write('           <b>Channels occurrences total: ' + str(stats['totalChannel']) + '<span>  <a href="#" data-toggle="tooltip" title="One channels might occur multiple times in different weeks."> ? </a></span></b><br>')
     f.write('           <div class="row">')
     for key, value in sorted(stats['subsystemDict'].iteritems(), key=lambda (k,v): (v,k), reverse=True):
         if key.startswith("PEM-"):
@@ -130,29 +130,25 @@ def writehead(f, run, observatory, weeks, line, source):
     f.write('           </div>') # close row
     f.write('           <b>Weeks: ' + str(stats['totalWeek']) + '/' + str(len(weeks)) + "</b><br>")
 
-    f.write('           <b>Top 7 sigficant channels: </b><br>')
-    f.write('<table class="table">')
+    f.write('           <b>Channels sorted by significance: </b><br>')
+    f.write('<div style="height: 300px !important;overflow: auto;"><table class="table">')
     f.write('<thead>')
     f.write('<tr>')
     f.write('  <th scope="col">Name</th>')
     f.write('  <th scope="col"># of Weeks</th>')
-    f.write('  <th scope="col">Total Sigficance <span>  <a href="#" data-toggle="tooltip" title="The sum of z-scores of all occurrences of this channel."> ? </a></span></th>')
+    f.write('  <th scope="col">Total Sigficance <span>  <a href="#" data-toggle="tooltip" title="The sum of sigficances of all occurrences of this channel."> ? </a></span></th>')
     f.write('</tr>')
     f.write('</thead>')
     f.write('<tbody>')
     channelDictList = sorted(stats['channelStats'].items(), key=lambda x:x[1][1], reverse=True)
-    limit = 7
     for tup in channelDictList:
         f.write('<tr>')
         f.write('  <th scope="row">' + tup[0][:-12] + '</th>')
         f.write('  <td>' + str(tup[1][0]) + '</td>')
         f.write('  <td>' + str(round(tup[1][1],2)) + '</td>')
         f.write('</tr>')
-        limit = limit - 1
-        if limit == 0:
-            break
     f.write('</tbody>')
-    f.write('</table>')
+    f.write('</table></div>')
 
     f.write('       </div>') # close modal body
     f.write('        <div class="modal-footer">')
@@ -171,17 +167,18 @@ def writehead(f, run, observatory, weeks, line, source):
     f.write('          <h5 class="modal-title" id="exampleModalLabel">Help</h5>')
     f.write('        </div>')
     f.write('        <div class="modal-body">')
+    f.write('          <em>- Click on the channel link to save the plot. </em><br>')
     f.write('          <em>- The coherence data is integrated weekly.</em><br>')
-    f.write('          <em>- The resolution of the coherence tool is 1 mHz.</em><br>')
+    f.write('          <em>- The resolution of the coherence tool is approximately 1 mHz (1/1024 Hz). The frequency of the line shown on the page is written in its original resolution which might not 1 mHz.</em><br>')
     f.write('          <em>- Button disabled means there is no significant coherence found in the data of that week. Button with delete line means the data is not available for that week.</em><br>')
     f.write('          <em>- The dates indicate the start of the integration week in UTC, with GPS time in parenthesis.</em><br>')
-    f.write('          <em>- Click on the channel to save the plot. </em><br>')
     f.write('          <em>- Definition of significance coherence: the distribution is modeled with a clipped normal distribution between. A significant coherence is defined as<br> ')
-    f.write('           (1) having an uncertainty level below 10<sup>-11</sup> <br>')
+    f.write('           (1) having an uncertainty level below 10<sup>-30</sup> <br>')
     f.write('           and<br>')
-    f.write('           (2) more 0.025 deviated from the center. <br>')
-    f.write('          <em>- The numbers in the parenthesis after the channels are the uncertainty levels of the significant coherence rounded to the upper log of ten.</em><br>')
-    f.write('          <em>- "Significance" is invented as the sum of [-log(uncertainty)] of all occurences of a channel. That is used to indicate how much a channel is related to the noise line. </em><br>')
+    f.write('           (2) the coherence value deviates more than 0.025 from the center. <br>')
+    f.write('          <em>- The numbers in the parenthesis after the channels are the uncertainty levels of the significant coherence rounded to the bigger log of ten.</em><br>')
+    f.write('          <em>- "Significance" is invented as a term to indicate how strong a channel is related to the noise line being studied. It is the log of the uncertainty level with the minus sign cancelled. \
+        For example, a occurrence of uncertainty 10<sup>-40</sup> will contribute a significance of 40 to the sum.</em><br>')
     now = datetime.datetime.now()
     f.write('          <em>- This is produced by Duo Tao at ' + str(now.year) + '-' + str(now.month) + '-' + str(now.day) +  '. Contact Duo if there are any questions, problems or suggestions.</em>')
     f.write('        </div>')
