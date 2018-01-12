@@ -37,8 +37,7 @@ function channel(data_path, search, line, output_path)
         ctr = pd.mu;
         stdd = pd.sigma;
         z0 = (0 - ctr) / stdd;
-        z1 = (1 - ctr) / stdd;
-        totarea = vpa(normcdf(vpa(z1)) - normcdf(vpa(z0)));
+        totarea = vpa(vpa(1) - normcdf(vpa(z0)));
         % deviation calculation
         if (abs(filt_max - ctr) >= abs(filt_min - ctr))
             maxDev = filt_max - ctr;
@@ -47,7 +46,7 @@ function channel(data_path, search, line, output_path)
         end
         zdev = maxDev / stdd;
         if (maxDev > 0)
-            logp = log10(vpa((normcdf(vpa(z1)) - normcdf(vpa(zdev))) / vpa(totarea)));
+            logp = log10(vpa(vpa(1) - normcdf(vpa(zdev))) / vpa(totarea));
         else
             logp = log10(vpa((normcdf(vpa(zdev)) - normcdf(vpa(z0))) / vpa(totarea)));
         end
@@ -55,8 +54,8 @@ function channel(data_path, search, line, output_path)
             % output the significance as 
             % channel <tab> log p value            
             [weekpath,~,~] = fileparts(output_path);
+            disp(logp)
             fd = fopen(fullfile(weekpath, 'sig.txt'), 'a');
-            disp(ceil(logp))
             fprintf(fd, strcat(channel_name, '\t', char(ceil(logp)), '\n'));
             fclose(fd);
             output(channel_name, fp, cp, line.line, output_path);
