@@ -54,7 +54,6 @@ function channel(data_path, search, line, output_path)
             % output the significance as 
             % channel <tab> log p value            
             [weekpath,~,~] = fileparts(output_path);
-            disp(logp)
             fd = fopen(fullfile(weekpath, 'sig.txt'), 'a');
             fprintf(fd, strcat(channel_name, '\t', char(ceil(logp)), '\n'));
             fclose(fd);
